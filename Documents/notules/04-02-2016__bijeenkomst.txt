@@ -1,0 +1,54 @@
+Gedaan/Todo:
+-----------------------------------
+- Opzetten van Github
+
+- Git workflow
+- Pull requests en code conventies
+- Leerdoelen van team
+- Engine keuze
+- Game concept
+
+-Gemotiveerd, hoog cijfer
+
+Individuele leerdoelen:
+  Sebastiaan van Dijk:
+	volledig begrijpen engine in elkaar zitten
+	veel programmeren
+	c++
+	physics programming
+	graphics programming
+	
+
+  Bart Dikmans:
+	Understanding c++ and engines, possibilities
+	all round understanding 3d engines
+	Deep engine code
+	Graphical programming
+	
+
+  Jan-Willem:
+	Graag goed leren c++ leren schrijven
+	Gimmicks kunnen programmeren c++
+	Leren hoe je textures en materials
+	Modelling van 3d objecten
+	Mooie graphics ontwerpen
+
+
+  Lionel Ritchy:
+	Geen specifiek leerdoel
+	Engine programmeren
+	C++
+	Beetje modelleren	
+
+	
+  Nick Kortleve:
+	C++, algemeenheid process
+	HLSL, shader development
+	Scrum process
+
+
+Scrum master                  -    Nick
+Delegate product owner        -    Bart
+Validatie van documentatie    -    iedereen
+Notulist                      -    Aanwijzen per meeting
+
