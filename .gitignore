@@ -16,6 +16,8 @@ _ReSharper*/
 [Tt]emp/
 
 !*.sln
+!.vcxproj.user
+#*.user
 
 # ===================================== #
 #             Visual Studio             #
@@ -27,7 +29,7 @@ _ReSharper*/
 *.csproj
 *.pidb
 *.suo
-*.user
+
 *.booproj
 *.dropbox
 *.ilk

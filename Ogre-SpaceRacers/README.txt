@@ -13,7 +13,9 @@ to be able to compile this project.
 The library files in this project were compiled using visual studio 2012.
 You therefore need visual studio 2012 to build this project.
 
-Open the project using visual studio 2015! (Platform toolset has been set)
+-- Visual studio integration ---
+- When opening project, select no when prompt to migrate to vs2015.
+
 
 --- Additional Notes ---
 Tutorial: http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Basic+Tutorial+Introduction&structure=Tutorials
