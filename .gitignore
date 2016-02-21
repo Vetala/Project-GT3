@@ -8,14 +8,14 @@
 # ===================================== #
 #            Excluded Folders           #
 # ===================================== #
-/.vs/
-/[Bb]in/
-/[Dd]ebug*/
-/ExportedObj/
-/[Oo]bj/
-/[Rr]elease*/
-/_ReSharper*/
-/[Tt]emp/
+/.vs/*
+/[Bb]in/*
+/[Dd]ebug*/*
+/ExportedObj/*
+/[Oo]bj/*
+/[Rr]elease*/*
+/_ReSharper*/*
+/[Tt]emp/*
 
 # ===================================== #
 #             Visual Studio             #
