@@ -20,26 +20,30 @@ http://www.ogre3d.org/wiki/
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
+	//to declare variables here the variables have to be determined in the header file
+	rotate = .13;
+	move = 250;
+	startPosition = (0, 0, 0);
 }
 //---------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
 {
 }
 
+
+
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
-	//mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
 	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
-
+		
 	//Creates the ship
-	Ogre::Entity* shipEntity = mSceneMgr->createEntity("Cube.mesh");
+	Ogre::Entity* shipEntity = mSceneMgr->createEntity("Ship2.mesh");
 	shipEntity->setCastShadows(true);
-	//shipEntity->setMaterialName("ship.material");
-	Ogre::SceneNode* ogreNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	ogreNode->setPosition(0, 20, 20);
-	ogreNode->setScale(20, 10, 10);
-	ogreNode->attachObject(shipEntity);
+	Ogre::SceneNode* shipNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("shipNode");
+	shipNode->setPosition(startPosition);
+	shipNode->attachObject(shipEntity);
+	shipNode->attachObject(mCamera);
 	
 	//creates a floor
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
@@ -53,7 +57,7 @@ void TutorialApplication::createScene(void)
 		Ogre::Vector3::UNIT_Z);
 	Ogre::Entity* groundEntity = mSceneMgr->createEntity("ground");
 	groundEntity->setCastShadows(false);
-	groundEntity->setMaterialName("/rockwall_NH.tga");
+	groundEntity->setMaterialName("rockwall.tga");  //WAAROM WERKT DEZE NIET WAT DE FUCK MATERIAL PLEASE, hebben we later toch niet nodig but fug it
 	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
 	
 	//creates the blue light
@@ -66,10 +70,10 @@ void TutorialApplication::createScene(void)
 	spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
 
 	//creates the background light
-	Ogre::Light* directionalLight = mSceneMgr->createLight("DirectionalLight");
+	Ogre::Light* directionalLight = mSceneMgr->createLight("BackgroundLight");
 	directionalLight->setType(Ogre::Light::LT_DIRECTIONAL);
-	directionalLight->setDiffuseColour(Ogre::ColourValue(.4, 0, 0));
-	directionalLight->setSpecularColour(Ogre::ColourValue(.4, 0, 0));
+	directionalLight->setDiffuseColour(Ogre::ColourValue(1, 1, 1));
+	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here :)
 }
@@ -77,8 +81,8 @@ void TutorialApplication::createScene(void)
 void TutorialApplication::createCamera()
 {
 	mCamera = mSceneMgr->createCamera("PlayerCam");
-	mCamera->setPosition(Ogre::Vector3(0, 300, 500));
-	mCamera->lookAt(Ogre::Vector3(0, 0, 0));
+	mCamera->setPosition(Ogre::Vector3(startPosition+(100,0,100)));
+	//mCamera->lookAt(startPosition);
 	mCamera->setNearClipDistance(5);
 	mCameraMan = new OgreBites::SdkCameraMan(mCamera);	
 }
@@ -91,6 +95,69 @@ void TutorialApplication::createViewports()
 		Ogre::Real(vp->getActualWidth()) /
 		Ogre::Real(vp->getActualHeight()));
 }
+//this is where you put all of your input stuff (mouse clicks and keyboard presses)
+bool TutorialApplication::processUnbufferedInput(const Ogre::FrameEvent& fe)
+{
+	static Ogre::Real toggleTimerLeft = 0.0;
+	static Ogre::Real toggleTimerRight = 0.0;
+
+	toggleTimerLeft -= fe.timeSinceLastFrame;
+	toggleTimerRight -= fe.timeSinceLastFrame;
+
+	if ((toggleTimerLeft < 0) && mMouse->getMouseState().buttonDown(OIS::MB_Left))
+	{
+		toggleTimerLeft = 0.5;
+		Ogre::Light* light = mSceneMgr->getLight("SpotLight");
+		light->setVisible(!light->isVisible());
+	}
+	if ((toggleTimerRight < 0) && mMouse->getMouseState().buttonDown(OIS::MB_Right))
+	{
+		toggleTimerRight = 0.5;
+		Ogre::Light* light = mSceneMgr->getLight("BackgroundLight");
+		light->setVisible(!light->isVisible());
+	}
+	return true;
+}
+
+//This is your Update, it runs every single frame
+bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
+{
+	bool ret = BaseApplication::frameRenderingQueued(fe);
+	moveShip(fe);
+	return ret;
+}
+
+void TutorialApplication::moveShip(const Ogre::FrameEvent& fe)
+{
+	Ogre::Vector3 dirVec = Ogre::Vector3::ZERO;
+	if (mKeyboard->isKeyDown(OIS::KC_I))
+		dirVec.z -= move;
+	if (mKeyboard->isKeyDown(OIS::KC_K))
+		dirVec.z += move;
+	if (mKeyboard->isKeyDown(OIS::KC_U))
+		dirVec.y += move;
+	if (mKeyboard->isKeyDown(OIS::KC_O))
+		dirVec.y -= move;
+	if (mKeyboard->isKeyDown(OIS::KC_J))
+	{
+		if (mKeyboard->isKeyDown(OIS::KC_LSHIFT))
+			mSceneMgr->getSceneNode("shipNode")->yaw(Ogre::Degree(5 * rotate));
+		else
+			dirVec.x -= move;
+	}
+
+	if (mKeyboard->isKeyDown(OIS::KC_L))
+	{
+		if (mKeyboard->isKeyDown(OIS::KC_LSHIFT))
+			mSceneMgr->getSceneNode("shipNode")->yaw(Ogre::Degree(-5 * rotate));
+		else
+			dirVec.x += move;
+	}
+	mSceneMgr->getSceneNode("shipNode")->translate(
+		dirVec * fe.timeSinceLastFrame,
+		Ogre::Node::TS_LOCAL);
+}
+
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN

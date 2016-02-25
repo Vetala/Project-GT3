@@ -32,8 +32,17 @@ protected:
     virtual void createScene(void);
 	virtual void createCamera();
 	virtual void createViewports();
-};
+	virtual bool frameRenderingQueued(const Ogre::FrameEvent& fe);
+	virtual void moveShip(const Ogre::FrameEvent& fe);
 
+private:
+	bool processUnbufferedInput(const Ogre::FrameEvent& fe);
+
+	Ogre::Real rotate;
+	Ogre::Real move;
+	Ogre::Vector3 startPosition;
+};
+	
 //---------------------------------------------------------------------------
 
 #endif // #ifndef __TutorialApplication_h_
