@@ -23,6 +23,22 @@
     <ClCompile Include="source\TutorialApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\body.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\collide_coarse.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\collide_fine.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\contacts.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\core.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\cyclone.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\fgen.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\joints.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\particle.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\pcontacts.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\pfgen.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\plinks.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\precision.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\pworld.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\random.h" />
+    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\world.h" />
     <ClInclude Include="source\BaseApplication.h" />
     <ClInclude Include="source\TutorialApplication.h" />
   </ItemGroup>
