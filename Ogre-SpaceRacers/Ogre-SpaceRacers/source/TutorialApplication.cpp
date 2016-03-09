@@ -20,10 +20,6 @@ http://www.ogre3d.org/wiki/
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
-	//to declare variables here the variables have to be determined in the header file
-	rotate = .13;
-	move = 250;
-	startPosition = (0, 0, 0);
 }
 //---------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
@@ -36,15 +32,9 @@ TutorialApplication::~TutorialApplication(void)
 void TutorialApplication::createScene(void)
 {
 	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
-		
-	//Creates the ship
-	Ogre::Entity* shipEntity = mSceneMgr->createEntity("Ship2.mesh");
-	shipEntity->setCastShadows(true);
-	Ogre::SceneNode* shipNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("shipNode");
-	shipNode->setPosition(startPosition);
-	shipNode->attachObject(shipEntity);
-	shipNode->attachObject(mCamera);
+
 	
+
 	//creates a floor
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
 	Ogre::MeshManager::getSingleton().createPlane(
@@ -76,86 +66,18 @@ void TutorialApplication::createScene(void)
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here :)
-}
-//---------------------------------------------------------------------------
-void TutorialApplication::createCamera()
-{
-	mCamera = mSceneMgr->createCamera("PlayerCam");
-	mCamera->setPosition(Ogre::Vector3(startPosition+(100,0,100)));
-	//mCamera->lookAt(startPosition);
-	mCamera->setNearClipDistance(5);
-	mCameraMan = new OgreBites::SdkCameraMan(mCamera);	
-}
-
-void TutorialApplication::createViewports()
-{
-	Ogre::Viewport* vp = mWindow->addViewport(mCamera);
-	vp->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
-	mCamera->setAspectRatio(
-		Ogre::Real(vp->getActualWidth()) /
-		Ogre::Real(vp->getActualHeight()));
-}
-//this is where you put all of your input stuff (mouse clicks and keyboard presses)
-bool TutorialApplication::processUnbufferedInput(const Ogre::FrameEvent& fe)
-{
-	static Ogre::Real toggleTimerLeft = 0.0;
-	static Ogre::Real toggleTimerRight = 0.0;
-
-	toggleTimerLeft -= fe.timeSinceLastFrame;
-	toggleTimerRight -= fe.timeSinceLastFrame;
-
-	if ((toggleTimerLeft < 0) && mMouse->getMouseState().buttonDown(OIS::MB_Left))
-	{
-		toggleTimerLeft = 0.5;
-		Ogre::Light* light = mSceneMgr->getLight("SpotLight");
-		light->setVisible(!light->isVisible());
-	}
-	if ((toggleTimerRight < 0) && mMouse->getMouseState().buttonDown(OIS::MB_Right))
-	{
-		toggleTimerRight = 0.5;
-		Ogre::Light* light = mSceneMgr->getLight("BackgroundLight");
-		light->setVisible(!light->isVisible());
-	}
-	return true;
+	cameraName = "Extended Camera";
+	ship = new ShipCharacter("Ship 1", mSceneMgr);
+	exCamera = new ExtendedCamera(cameraName, mSceneMgr, mCamera);
 }
 
 //This is your Update, it runs every single frame
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
 	bool ret = BaseApplication::frameRenderingQueued(fe);
-	moveShip(fe);
+	ship->update(fe.timeSinceLastFrame, mKeyboard);
+	exCamera->update(fe.timeSinceLastFrame, ship->getCameraNode()->getPosition(), ship->getSightNode()->getPosition());
 	return ret;
-}
-
-void TutorialApplication::moveShip(const Ogre::FrameEvent& fe)
-{
-	Ogre::Vector3 dirVec = Ogre::Vector3::ZERO;
-	if (mKeyboard->isKeyDown(OIS::KC_I))
-		dirVec.z -= move;
-	if (mKeyboard->isKeyDown(OIS::KC_K))
-		dirVec.z += move;
-	if (mKeyboard->isKeyDown(OIS::KC_U))
-		dirVec.y += move;
-	if (mKeyboard->isKeyDown(OIS::KC_O))
-		dirVec.y -= move;
-	if (mKeyboard->isKeyDown(OIS::KC_J))
-	{
-		if (mKeyboard->isKeyDown(OIS::KC_LSHIFT))
-			mSceneMgr->getSceneNode("shipNode")->yaw(Ogre::Degree(5 * rotate));
-		else
-			dirVec.x -= move;
-	}
-
-	if (mKeyboard->isKeyDown(OIS::KC_L))
-	{
-		if (mKeyboard->isKeyDown(OIS::KC_LSHIFT))
-			mSceneMgr->getSceneNode("shipNode")->yaw(Ogre::Degree(-5 * rotate));
-		else
-			dirVec.x += move;
-	}
-	mSceneMgr->getSceneNode("shipNode")->translate(
-		dirVec * fe.timeSinceLastFrame,
-		Ogre::Node::TS_LOCAL);
 }
 
 

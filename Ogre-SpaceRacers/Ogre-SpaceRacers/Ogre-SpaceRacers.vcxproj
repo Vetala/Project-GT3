@@ -20,10 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\BaseApplication.cpp" />
+    <ClCompile Include="source\Character.cpp" />
+    <ClCompile Include="source\ExtendedCamera.cpp" />
+    <ClCompile Include="source\ShipCharacter.cpp" />
     <ClCompile Include="source\TutorialApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\BaseApplication.h" />
+    <ClInclude Include="source\Character.h" />
+    <ClInclude Include="source\ExtendedCamera.h" />
+    <ClInclude Include="source\ShipCharacter.h" />
     <ClInclude Include="source\TutorialApplication.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

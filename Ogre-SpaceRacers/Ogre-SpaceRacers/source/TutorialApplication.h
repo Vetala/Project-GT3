@@ -19,7 +19,8 @@ http://www.ogre3d.org/wiki/
 #define __TutorialApplication_h_
 
 #include "BaseApplication.h"
-
+#include "ExtendedCamera.h"
+#include "ShipCharacter.h"
 //---------------------------------------------------------------------------
 
 class TutorialApplication : public BaseApplication
@@ -30,14 +31,12 @@ public:
 
 protected:
     virtual void createScene(void);
-	virtual void createCamera();
-	virtual void createViewports();
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& fe);
-	virtual void moveShip(const Ogre::FrameEvent& fe);
 
 private:
-	bool processUnbufferedInput(const Ogre::FrameEvent& fe);
-
+	Ogre::String cameraName;
+	ShipCharacter *ship;
+	ExtendedCamera *exCamera;
 	Ogre::Real rotate;
 	Ogre::Real move;
 	Ogre::Vector3 startPosition;
