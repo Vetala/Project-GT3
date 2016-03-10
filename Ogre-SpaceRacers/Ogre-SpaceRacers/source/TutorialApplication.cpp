@@ -20,27 +20,22 @@ http://www.ogre3d.org/wiki/
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
+	shipHealth = 100;
 }
 //---------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
 {
 }
 
+
+
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
-	//mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
 	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+	//If there are performance issues try adjusting the shadowtype to: Ogre::SHADOWTYPE_STENCIL_MODULATIVE.
+	//this reduces the quality of the shadow and removes the shadows added by multiple lighting sources on an object	
 
-	//Creates the ship
-	Ogre::Entity* shipEntity = mSceneMgr->createEntity("Cube.mesh");
-	shipEntity->setCastShadows(true);
-	//shipEntity->setMaterialName("ship.material");
-	Ogre::SceneNode* ogreNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	ogreNode->setPosition(0, 20, 20);
-	ogreNode->setScale(20, 10, 10);
-	ogreNode->attachObject(shipEntity);
-	
 	//creates a floor
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
 	Ogre::MeshManager::getSingleton().createPlane(
@@ -53,7 +48,7 @@ void TutorialApplication::createScene(void)
 		Ogre::Vector3::UNIT_Z);
 	Ogre::Entity* groundEntity = mSceneMgr->createEntity("ground");
 	groundEntity->setCastShadows(false);
-	groundEntity->setMaterialName("/rockwall_NH.tga");
+	groundEntity->setMaterialName("rockwall.tga");  //WAAROM WERKT DEZE NIET WAT DE FUCK MATERIAL PLEASE, hebben we later toch niet nodig but fug it
 	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
 	
 	//creates the blue light
@@ -66,31 +61,24 @@ void TutorialApplication::createScene(void)
 	spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
 
 	//creates the background light
-	Ogre::Light* directionalLight = mSceneMgr->createLight("DirectionalLight");
+	Ogre::Light* directionalLight = mSceneMgr->createLight("BackgroundLight");
 	directionalLight->setType(Ogre::Light::LT_DIRECTIONAL);
-	directionalLight->setDiffuseColour(Ogre::ColourValue(.4, 0, 0));
-	directionalLight->setSpecularColour(Ogre::ColourValue(.4, 0, 0));
+	directionalLight->setDiffuseColour(Ogre::ColourValue(1, 1, 1));
+	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
-    // Create your scene here :)
-}
-//---------------------------------------------------------------------------
-void TutorialApplication::createCamera()
-{
-	mCamera = mSceneMgr->createCamera("PlayerCam");
-	mCamera->setPosition(Ogre::Vector3(0, 300, 500));
-	mCamera->lookAt(Ogre::Vector3(0, 0, 0));
-	mCamera->setNearClipDistance(5);
-	mCameraMan = new OgreBites::SdkCameraMan(mCamera);	
+    // Create your scene here
+	cameraName = "Extended Camera";
+	ship = new ShipCharacter("Ship 1", mSceneMgr, shipHealth, mCamera);
 }
 
-void TutorialApplication::createViewports()
+//This is your Update, it runs every single frame
+bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
-	Ogre::Viewport* vp = mWindow->addViewport(mCamera);
-	vp->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
-	mCamera->setAspectRatio(
-		Ogre::Real(vp->getActualWidth()) /
-		Ogre::Real(vp->getActualHeight()));
+	bool ret = BaseApplication::frameRenderingQueued(fe);
+	ship->update(fe.timeSinceLastFrame, mKeyboard);
+	return ret;
 }
+
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN

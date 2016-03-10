@@ -13,15 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Physics">
-      <UniqueIdentifier>{96fad6db-c714-46e9-9a00-c83e993cf43b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\BaseApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\TutorialApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ShipCharacter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ExtendedCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,53 +38,14 @@
     <ClInclude Include="source\TutorialApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\precision.h">
-      <Filter>Physics</Filter>
+    <ClInclude Include="source\Character.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\core.h">
-      <Filter>Physics</Filter>
+    <ClInclude Include="source\ShipCharacter.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\body.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\collide_coarse.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\collide_fine.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\contacts.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\cyclone.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\fgen.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\joints.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\particle.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\pcontacts.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\pfgen.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\plinks.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\pworld.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\random.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\world.h">
-      <Filter>Physics</Filter>
+    <ClInclude Include="source\ExtendedCamera.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
