@@ -20,6 +20,7 @@ http://www.ogre3d.org/wiki/
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
+	shipHealth = 100;
 }
 //---------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
@@ -32,8 +33,8 @@ TutorialApplication::~TutorialApplication(void)
 void TutorialApplication::createScene(void)
 {
 	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
-
-	
+	//If there are performance issues try adjusting the shadowtype to: Ogre::SHADOWTYPE_STENCIL_MODULATIVE.
+	//this reduces the quality of the shadow and removes the shadows added by multiple lighting sources on an object	
 
 	//creates a floor
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
@@ -65,10 +66,10 @@ void TutorialApplication::createScene(void)
 	directionalLight->setDiffuseColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
-    // Create your scene here :)
+    // Create your scene here
 	cameraName = "Extended Camera";
-	ship = new ShipCharacter("Ship 1", mSceneMgr, mCamera);
-	//exCamera = new ExtendedCamera(cameraName, mSceneMgr, mCamera);
+	ship = new ShipCharacter("Ship 1", mSceneMgr, shipHealth);
+	exCamera = new ExtendedCamera(cameraName, mSceneMgr, mCamera);
 }
 
 //This is your Update, it runs every single frame
@@ -76,7 +77,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
 	bool ret = BaseApplication::frameRenderingQueued(fe);
 	ship->update(fe.timeSinceLastFrame, mKeyboard);
-	//exCamera->update(fe.timeSinceLastFrame, ship->getCameraNode()->getPosition(), ship->getSightNode()->getPosition());
+	exCamera->update(fe.timeSinceLastFrame, ship->getCameraNode()->getPosition(), ship->getSightNode()->getPosition());
 	return ret;
 }
 

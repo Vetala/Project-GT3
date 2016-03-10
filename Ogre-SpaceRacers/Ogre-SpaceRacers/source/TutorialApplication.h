@@ -37,6 +37,7 @@ private:
 	Ogre::String cameraName;
 	ShipCharacter *ship;
 	ExtendedCamera *exCamera;
+	int shipHealth;
 	Ogre::Real rotate;
 	Ogre::Real move;
 	Ogre::Vector3 startPosition;
