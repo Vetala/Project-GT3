@@ -1,9 +1,10 @@
 #include "ShipCharacter.h"
 
-ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr) {
+ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, int shipHealth) {
 	// Setup basic member references
 	mName = name;
 	mSceneMgr = sceneMgr;
+	mShipHealth = shipHealth
 
 	// Setup basic node structure to handle 3rd person cameras
 	mMainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(mName);
@@ -19,6 +20,11 @@ void ShipCharacter::setVisible(bool visible) {
 	mMainNode->setVisible(visible);
 }
 
+int setHealth(int shipHealth, int damage){
+	shipHealth = shipHealth - damage;
+	return shipHealth;
+}
+
 ShipCharacter::~ShipCharacter() {
 	mMainNode->detachAllObjects();
 	delete mEntity;
@@ -28,6 +34,9 @@ ShipCharacter::~ShipCharacter() {
 
 void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 {
+	if (mShipHealth < 1) {
+		//insert respawn function here
+	}
 	if (input->isKeyDown(OIS::KC_W)) {
 		mMainNode->translate(mMainNode->getOrientation() * Ogre::Vector3(0, 0, 100 * elapsedTime));
 		mSightNode->translate(mSightNode->getOrientation() * Ogre::Vector3(0, 0, 100 * elapsedTime));
