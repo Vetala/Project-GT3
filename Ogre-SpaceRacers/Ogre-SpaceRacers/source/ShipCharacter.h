@@ -3,15 +3,12 @@
 
 class ShipCharacter : public Character
 {
-protected:
-	Ogre::String mName;
 
 public:
-	Ogre::SceneNode *mMainNode;
-	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr);
+	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::Camera *camera = 0);
 	~ShipCharacter();
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
-	void setVisible(bool visible);
+	void follow(Ogre::SceneNode *node, Ogre::SceneNode *toFollow, Ogre::Vector3 wantedPosition, float lerp);
 };
 
 

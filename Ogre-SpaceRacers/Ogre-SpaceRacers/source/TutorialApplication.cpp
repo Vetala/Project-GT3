@@ -67,8 +67,8 @@ void TutorialApplication::createScene(void)
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here :)
 	cameraName = "Extended Camera";
-	ship = new ShipCharacter("Ship 1", mSceneMgr);
-	exCamera = new ExtendedCamera(cameraName, mSceneMgr, mCamera);
+	ship = new ShipCharacter("Ship 1", mSceneMgr, mCamera);
+	//exCamera = new ExtendedCamera(cameraName, mSceneMgr, mCamera);
 }
 
 //This is your Update, it runs every single frame
@@ -76,7 +76,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
 	bool ret = BaseApplication::frameRenderingQueued(fe);
 	ship->update(fe.timeSinceLastFrame, mKeyboard);
-	exCamera->update(fe.timeSinceLastFrame, ship->getCameraNode()->getPosition(), ship->getSightNode()->getPosition());
+	//exCamera->update(fe.timeSinceLastFrame, ship->getCameraNode()->getPosition(), ship->getSightNode()->getPosition());
 	return ret;
 }
 

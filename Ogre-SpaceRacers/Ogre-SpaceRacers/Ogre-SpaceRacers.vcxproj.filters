@@ -21,13 +21,13 @@
     <ClCompile Include="source\TutorialApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Character.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\ShipCharacter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\ExtendedCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
