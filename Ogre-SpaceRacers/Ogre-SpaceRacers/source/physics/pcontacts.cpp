@@ -10,7 +10,7 @@
  * software licence.
  */
 
-#include <../cyclone-physics-master/include/cyclone/pcontacts.h>
+#include "pcontacts.h"
 
 using namespace cyclone;
 

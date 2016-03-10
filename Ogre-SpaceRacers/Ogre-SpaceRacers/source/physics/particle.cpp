@@ -11,7 +11,7 @@
  */
 
 #include <assert.h>
-#include <../cyclone-physics-master/include/cyclone/particle.h>
+#include "particle.h"
 
 using namespace cyclone;
 

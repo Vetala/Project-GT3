@@ -10,7 +10,7 @@
  * software licence.
  */
 
-#include <../cyclone-physics-master/include/cyclone/collide_fine.h>
+#include "collide_fine.h"
 #include <memory.h>
 #include <assert.h>
 #include <cstdlib>

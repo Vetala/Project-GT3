@@ -22,6 +22,22 @@
     <ClCompile Include="source\BaseApplication.cpp" />
     <ClCompile Include="source\Character.cpp" />
     <ClCompile Include="source\ExtendedCamera.cpp" />
+    <ClCompile Include="source\MovableObject.cpp" />
+    <ClCompile Include="source\Object.cpp" />
+    <ClCompile Include="source\physics\body.cpp" />
+    <ClCompile Include="source\physics\collide_coarse.cpp" />
+    <ClCompile Include="source\physics\collide_fine.cpp" />
+    <ClCompile Include="source\physics\contacts.cpp" />
+    <ClCompile Include="source\physics\core.cpp" />
+    <ClCompile Include="source\physics\fgen.cpp" />
+    <ClCompile Include="source\physics\joints.cpp" />
+    <ClCompile Include="source\physics\particle.cpp" />
+    <ClCompile Include="source\physics\pcontacts.cpp" />
+    <ClCompile Include="source\physics\pfgen.cpp" />
+    <ClCompile Include="source\physics\plinks.cpp" />
+    <ClCompile Include="source\physics\pworld.cpp" />
+    <ClCompile Include="source\physics\random.cpp" />
+    <ClCompile Include="source\physics\world.cpp" />
     <ClCompile Include="source\ShipCharacter.cpp" />
     <ClCompile Include="source\TutorialApplication.cpp" />
   </ItemGroup>
@@ -45,6 +61,8 @@
     <ClInclude Include="source\BaseApplication.h" />
     <ClInclude Include="source\Character.h" />
     <ClInclude Include="source\ExtendedCamera.h" />
+    <ClInclude Include="source\MovableObject.h" />
+    <ClInclude Include="source\Object.h" />
     <ClInclude Include="source\ShipCharacter.h" />
     <ClInclude Include="source\TutorialApplication.h" />
   </ItemGroup>

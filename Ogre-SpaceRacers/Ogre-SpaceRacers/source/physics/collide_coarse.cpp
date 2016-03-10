@@ -10,7 +10,7 @@
  * software licence.
  */
 
-#include <../cyclone-physics-master/include/cyclone/collide_coarse.h>
+#include "collide_coarse.h"
 
 using namespace cyclone;
 

@@ -10,7 +10,7 @@
  * software licence.
  */
 
-#include <../cyclone-physics-master/include/cyclone/plinks.h>
+#include "plinks.h"
 
 using namespace cyclone;
 

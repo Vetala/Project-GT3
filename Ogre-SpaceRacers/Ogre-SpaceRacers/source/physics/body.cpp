@@ -10,7 +10,7 @@
  * software licence.
  */
 
-#include <../cyclone-physics-master/include/cyclone/body.h>
+#include "body.h"
 #include <memory.h>
 #include <assert.h>
 

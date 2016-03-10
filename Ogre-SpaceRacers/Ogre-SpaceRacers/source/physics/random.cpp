@@ -12,7 +12,7 @@
 
 #include <cstdlib>
 #include <ctime>
-#include <../cyclone-physics-master/include/cyclone/random.h>
+#include "random.h"
 
 using namespace cyclone;
 

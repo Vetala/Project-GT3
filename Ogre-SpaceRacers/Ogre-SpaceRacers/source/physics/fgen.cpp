@@ -10,7 +10,7 @@
  * software license.
  */
 
-#include <../cyclone-physics-master/include/cyclone/fgen.h>
+#include "fgen.h"
 
 using namespace cyclone;
 

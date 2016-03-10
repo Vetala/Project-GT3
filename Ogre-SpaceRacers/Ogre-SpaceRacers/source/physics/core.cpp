@@ -10,7 +10,7 @@
  * software licence.
  */
 
-#include <../cyclone-physics-master/include/cyclone/core.h>
+#include "core.h"
 
 using namespace cyclone;
 

@@ -67,7 +67,6 @@ void TutorialApplication::createScene(void)
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here
-	cameraName = "Extended Camera";
 	ship = new ShipCharacter("Ship 1", mSceneMgr, shipHealth, mCamera);
 }
 

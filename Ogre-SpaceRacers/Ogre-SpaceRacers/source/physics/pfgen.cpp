@@ -10,7 +10,7 @@
  * software licence.
  */
 
-#include <../cyclone-physics-master/include/cyclone/pfgen.h>
+#include "pfgen.h"
 
 using namespace cyclone;
 

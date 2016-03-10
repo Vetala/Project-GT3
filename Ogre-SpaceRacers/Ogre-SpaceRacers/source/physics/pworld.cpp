@@ -11,7 +11,7 @@
  */
 
 #include <cstddef>
-#include <../cyclone-physics-master/include/cyclone/pworld.h>
+#include "pworld.h"
 
 using namespace cyclone;
 

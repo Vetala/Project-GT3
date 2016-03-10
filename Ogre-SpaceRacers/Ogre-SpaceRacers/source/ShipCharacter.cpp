@@ -38,6 +38,11 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, in
 
 void ShipCharacter::doDamage(int damage){
 	mShipHealth = mShipHealth - damage;
+	if (mShipHealth < 1) {
+		//insert respawn function here
+		mMainNode->setPosition(mRespawnNode->getPosition());
+		respawning = true;
+	}
 }
 
 ShipCharacter::~ShipCharacter() {
@@ -52,7 +57,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	Character::update(elapsedTime, input);
 	if (!respawning)
 	{
-		if (mShipHealth < 1 || input->isKeyDown(OIS::KC_O)) {
+		if (input->isKeyDown(OIS::KC_O)) {
 			//insert respawn function here
 			mMainNode->setPosition(mRespawnNode->getPosition());
 			respawning = true;

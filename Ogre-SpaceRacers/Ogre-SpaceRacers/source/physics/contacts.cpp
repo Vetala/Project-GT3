@@ -10,7 +10,7 @@
  * software licence.
  */
 
-#include <../cyclone-physics-master/include/cyclone/contacts.h>
+#include "contacts.h"
 #include <memory.h>
 #include <assert.h>
 
