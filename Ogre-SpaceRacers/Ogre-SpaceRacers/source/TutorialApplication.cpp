@@ -42,7 +42,7 @@ void TutorialApplication::createScene(void)
 		"ground",
 		Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 		plane,
-		1500, 1500, 20, 20,
+		5000, 5000, 20, 20,
 		true,
 		1, 5, 5,
 		Ogre::Vector3::UNIT_Z);
@@ -68,6 +68,8 @@ void TutorialApplication::createScene(void)
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here
 	ship = new ShipCharacter("Ship 1", mSceneMgr, shipHealth, mCamera);
+
+	World1 = new World_1(mSceneMgr);
 }
 
 //This is your Update, it runs every single frame
