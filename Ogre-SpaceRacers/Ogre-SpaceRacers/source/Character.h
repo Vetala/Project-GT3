@@ -9,6 +9,7 @@ public:
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 
 	Ogre::SceneNode *mCameraNode;
+	Ogre::SceneNode *mSightNode;
 	Ogre::Camera *mCamera;
 };
 
