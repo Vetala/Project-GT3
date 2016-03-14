@@ -24,6 +24,7 @@
     <ClCompile Include="source\ExtendedCamera.cpp" />
     <ClCompile Include="source\MovableObject.cpp" />
     <ClCompile Include="source\Object.cpp" />
+    <ClCompile Include="source\Object_WorldObject.cpp" />
     <ClCompile Include="source\physics\body.cpp" />
     <ClCompile Include="source\physics\collide_coarse.cpp" />
     <ClCompile Include="source\physics\collide_fine.cpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="source\physics\world.cpp" />
     <ClCompile Include="source\ShipCharacter.cpp" />
     <ClCompile Include="source\TutorialApplication.cpp" />
+    <ClCompile Include="source\World_1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\body.h" />
@@ -63,8 +65,10 @@
     <ClInclude Include="source\ExtendedCamera.h" />
     <ClInclude Include="source\MovableObject.h" />
     <ClInclude Include="source\Object.h" />
+    <ClInclude Include="source\Object_WorldObject.h" />
     <ClInclude Include="source\ShipCharacter.h" />
     <ClInclude Include="source\TutorialApplication.h" />
+    <ClInclude Include="source\World_1.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4BCDD65A-DFB9-4E81-B62B-09D24446A90B}</ProjectGuid>

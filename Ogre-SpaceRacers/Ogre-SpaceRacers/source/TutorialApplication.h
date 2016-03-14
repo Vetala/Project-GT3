@@ -21,6 +21,8 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 #include "ExtendedCamera.h"
 #include "ShipCharacter.h"
+#include "World_1.h"
+
 //---------------------------------------------------------------------------
 
 class TutorialApplication : public BaseApplication
@@ -41,6 +43,8 @@ private:
 	Ogre::Real rotate;
 	Ogre::Real move;
 	Ogre::Vector3 startPosition;
+
+	World_1 *World1;
 };
 	
 //---------------------------------------------------------------------------
