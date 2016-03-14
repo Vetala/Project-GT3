@@ -19,7 +19,6 @@ http://www.ogre3d.org/wiki/
 #define __TutorialApplication_h_
 
 #include "BaseApplication.h"
-#include "ExtendedCamera.h"
 #include "ShipCharacter.h"
 #include "World_1.h"
 
@@ -38,7 +37,6 @@ protected:
 private:
 	Ogre::String cameraName;
 	ShipCharacter *ship;
-	ExtendedCamera *exCamera;
 	int shipHealth;
 	Ogre::Real rotate;
 	Ogre::Real move;

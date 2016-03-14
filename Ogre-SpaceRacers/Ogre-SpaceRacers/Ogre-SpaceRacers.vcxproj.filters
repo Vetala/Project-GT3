@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Cyclone">
-      <UniqueIdentifier>{2ef37eaf-3ec9-4396-a394-83d9363a8b67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Cyclone">
-      <UniqueIdentifier>{acd1930e-874d-4626-8961-ccade0ba0f00}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\BaseApplication.cpp">
@@ -30,53 +24,8 @@
     <ClCompile Include="source\ShipCharacter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\ExtendedCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\Character.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\body.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\collide_coarse.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\collide_fine.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\contacts.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\core.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\fgen.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\joints.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\particle.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\pcontacts.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\pfgen.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\plinks.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\pworld.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\random.cpp">
-      <Filter>Source Files\Cyclone</Filter>
-    </ClCompile>
-    <ClCompile Include="source\physics\world.cpp">
-      <Filter>Source Files\Cyclone</Filter>
     </ClCompile>
     <ClCompile Include="source\MovableObject.cpp">
       <Filter>Source Files</Filter>
@@ -100,57 +49,6 @@
     </ClInclude>
     <ClInclude Include="source\Character.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ExtendedCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\body.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\collide_coarse.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\collide_fine.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\contacts.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\core.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\cyclone.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\fgen.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\joints.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\particle.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\pcontacts.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\pfgen.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\plinks.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\precision.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\pworld.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\random.h">
-      <Filter>Header Files\Cyclone</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\cyclone-physics-master\cyclone-physics-master\include\cyclone\world.h">
-      <Filter>Header Files\Cyclone</Filter>
     </ClInclude>
     <ClInclude Include="source\MovableObject.h">
       <Filter>Header Files</Filter>

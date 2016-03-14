@@ -1,7 +1,23 @@
+/**
+* @class ShipCharacter
+* @author Explosive Shark Studios
+* @date 14/03/2016
+* @brief
+*
+* @section Description
+* This class contains all information regarding a spaceship character. 
+* It handles the input and contains multiple physics elements which are used to move the character
+*/
 #include "ShipCharacter.h"
 
 ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, int shipHealth, Ogre::Camera *camera) {
-	// Setup basic member references
+	/**
+	*The constructor for a controllable spacechip currently asks for a name, the scene manager, a health amount and a camera
+	*The name has to be unique to make sure that the construction of the scene nodes does not overwrite already created scene nodes
+	*The SceneManager has to be the main scenemanager
+	*The shiphealth has to be set in the constructor at the moment.
+	*The camera has to be a predefined camera with a predefined viewport. The constructor asks for a camera to make sure that the camera correctly follows this ship
+	*/
 	mName = name;
 	mSceneMgr = sceneMgr;
 	mShipHealth = shipHealth;
@@ -16,13 +32,11 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, in
 	speed = 3; //Speed at which the spaceship will accelerate
 	damping = 0.98; //factor at which the spaceship will slow down each frame when not accelerating
 
-	cameraNodeOffSet = Ogre::Vector3(0, 30, -50);
-	sightOffSet = Ogre::Vector3(0, 0, 20);
-	respawnNodeOffSet = Ogre::Vector3(0, 0, -50);
-	mTightness = 0.3;
+	cameraNodeOffSet = Ogre::Vector3(0, 30, -50); //The distance between the camera and the spaceship
+	sightOffSet = Ogre::Vector3(0, 0, 20); //The position where the camera is looking, used to add some more depth to the view
+	respawnNodeOffSet = Ogre::Vector3(0, 0, -50); //The position where the player will respawn 
+	mTightness = 0.3; //How tight the camera follows on low speeds. This creates a zoom function which makes the camera zoom out at high speeds but remain zoomed in at low speeds
 	
-
-	// Setup basic node structure to handle 3rd person cameras
 	mMainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(mName);
 	mRespawnNode = mMainNode->createChildSceneNode(mName + "_respawn", respawnNodeOffSet);
 	mShipNode = mMainNode->createChildSceneNode(mName + "_ship", Ogre::Vector3(0,3,0));
@@ -50,7 +64,11 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, in
 	respawnTimer = baseRespawnTime;
 }
 
-void ShipCharacter::doDamage(int damage){
+void ShipCharacter::doDamage(int damage){ 
+	/**
+	*If the player takes damage from hitting an obstacle or being hit by a bullet this function is called.
+	*If the players health drops below 0 the player respawns
+	*/
 	mShipHealth = mShipHealth - damage;
 	if (mShipHealth < 1) {
 		respawn();
@@ -58,6 +76,9 @@ void ShipCharacter::doDamage(int damage){
 }
 
 void ShipCharacter::respawn() {
+	/**
+	*If the characters health drops below 0 this function is called. The players position is set back.
+	*/
 	mMainNode->setPosition(mRespawnNode->_getDerivedPosition());
 	respawning = true;
 }
@@ -71,6 +92,10 @@ ShipCharacter::~ShipCharacter() {
 
 void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 {
+	/**
+	*In the update function all the inputs are handled and the spaceship is moved/rotated
+	*If the player is currently respawning the update does not execute
+	*/
 	Character::update(elapsedTime, input);
 	if (!respawning)
 	{

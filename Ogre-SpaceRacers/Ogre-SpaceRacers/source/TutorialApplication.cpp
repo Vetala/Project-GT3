@@ -1,18 +1,11 @@
-/*
------------------------------------------------------------------------------
-Filename:    TutorialApplication.cpp
------------------------------------------------------------------------------
-
-This source file is part of the
-   ___                 __    __ _ _    _
-  /___\__ _ _ __ ___  / / /\ \ (_) | _(_)
- //  // _` | '__/ _ \ \ \/  \/ / | |/ / |
-/ \_// (_| | | |  __/  \  /\  /| |   <| |
-\___/ \__, |_|  \___|   \/  \/ |_|_|\_\_|
-      |___/
-Tutorial Framework (for Ogre 1.9)
-http://www.ogre3d.org/wiki/
------------------------------------------------------------------------------
+/**
+* @class TutorialApplication
+* @author Explosive Shark Studios
+* @date 14/03/2016
+* @brief
+*
+* @section Description
+* This class is the base class of our game. It contains the initial draw calls aswell as the point where we initialise our update
 */
 
 #include "TutorialApplication.h"

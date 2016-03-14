@@ -14,6 +14,15 @@ Tutorial Framework (for Ogre 1.9)
 http://www.ogre3d.org/wiki/
 -----------------------------------------------------------------------------
 */
+/**
+* @class BaseApplication
+* @author Explosive Shark Studios
+* @date 14/03/2016
+* @brief
+*
+* @section Description
+* This class contains all OgreSDK includes and basic objects
+*/
 
 #include "BaseApplication.h"
 
