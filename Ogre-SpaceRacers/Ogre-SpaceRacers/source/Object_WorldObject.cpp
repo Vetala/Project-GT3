@@ -16,21 +16,11 @@ Object_WorldObject::Object_WorldObject(Ogre::String name, Ogre::SceneManager *sc
 	mMeshName = MeshName;
 	mSceneMgr = sceneMgr;
 
-	/**
-	*Binds the object name to the mesh
-	*/
-	mMainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(mName);
+	mMainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(mName);	//Attaches the object name to the Node
 
-	/**
-	*Sets the position and scale of the object
-	*/
-	mMainNode->setPosition(worldLocation);
-	mMainNode->setScale(objectScale);
+	mMainNode->setPosition(worldLocation);	//Sets the world location of the Node
+	mMainNode->setScale(objectScale);		//Sets the scale of the Node
 
-
-	/**
-	*Assigns the Model.
-	*/
-	mEntity = mSceneMgr->createEntity(mName, mMeshName + ".mesh");
-	mMainNode->attachObject(mEntity);
+	mEntity = mSceneMgr->createEntity(mName, mMeshName + ".mesh");  //Creates the model using the given information
+	mMainNode->attachObject(mEntity);								//Attaches the model to the Node
 }
