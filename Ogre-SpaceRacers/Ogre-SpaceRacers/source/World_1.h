@@ -3,7 +3,6 @@
 class World_1
 {
 public:
-	//Ogre::SceneManager *sceneMgr;
 	World_1(Ogre::SceneManager *mSceneMgr);
 	Object_WorldObject *World1;
 	Object_WorldObject *World2;
