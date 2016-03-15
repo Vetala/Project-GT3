@@ -16,6 +16,9 @@ http://www.ogre3d.org/wiki/
 */
 
 #include "BaseApplication.h"
+#include "Input/XBOXController.h"
+#include "Input/InputManager.h"
+#include "AppExtensions.h"
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #include <macUtils.h>
@@ -237,7 +240,31 @@ void BaseApplication::go(void)
     if (!setup())
         return;
 
-    mRoot->startRendering();
+    //mRoot->startRendering();
+
+	showWin32Console();
+	//mRoot->startRendering();
+	//CreateController();
+	//UpdateController();
+
+	InputManager *inputManager;
+	inputManager = new InputManager();
+
+
+	while (true)
+	{
+		// Pump window messages for nice behaviour
+		//Ogre::WindowEventUtilities::messagePump();
+
+		// Specify the optional parameter for player specific input
+		inputManager->GetButton(XINPUT_GAMEPAD_A);
+		inputManager->GetLeftStick();
+		inputManager->GetRightStick();
+		inputManager->GetTriggers();
+
+		// Render a frame
+		mRoot->renderOneFrame();
+	}
 
     // Clean up
     destroyScene();

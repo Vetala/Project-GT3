@@ -19,11 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\AppExtensions.cpp" />
     <ClCompile Include="source\BaseApplication.cpp" />
+    <ClCompile Include="source\input\InputManager.cpp" />
+    <ClCompile Include="source\input\XBOXController.cpp" />
     <ClCompile Include="source\TutorialApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\AppExtensions.h" />
     <ClInclude Include="source\BaseApplication.h" />
+    <ClInclude Include="source\input\InputManager.h" />
+    <ClInclude Include="source\input\XBOXController.h" />
     <ClInclude Include="source\TutorialApplication.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
