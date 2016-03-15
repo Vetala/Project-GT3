@@ -60,7 +60,7 @@ public:
     virtual ~BaseApplication(void);
 
     virtual void go(void);
-
+	
 protected:
     virtual bool setup();
     virtual bool configure(void);

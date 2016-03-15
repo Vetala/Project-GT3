@@ -29,7 +29,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, in
 	lastFrameAcceleration = (0, 0, 0);
 	rollSpeed = 1; //Speed at which the spaceship rolls when turning
 	pitchSpeed = 0.1; //Speed at which the spaceship pitches when accelerating
-	speed = 3; //Speed at which the spaceship will accelerate
+	accelSpeed = 3; //Speed at which the spaceship will accelerate
 	damping = 0.98; //factor at which the spaceship will slow down each frame when not accelerating
 
 	cameraNodeOffSet = Ogre::Vector3(0, 30, -50); //The distance between the camera and the spaceship
@@ -103,7 +103,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			respawn();
 		}
 		if (input->isKeyDown(OIS::KC_W)) {
-			acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, speed * elapsedTime);
+			acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
 			if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
 			{
 				mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
@@ -111,7 +111,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			}
 		else {
 			if (input->isKeyDown(OIS::KC_S)) {
-				acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*speed * elapsedTime);
+				acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
 				if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
 				{
 					mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));

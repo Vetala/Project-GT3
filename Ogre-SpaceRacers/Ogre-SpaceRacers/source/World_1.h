@@ -10,10 +10,6 @@ public:
 	Object_WorldObject *World3;
 	Object_WorldObject *World4;
 	Object_WorldObject *World5;
-	Object_WorldObject *World6;
-	Object_WorldObject *World7;
-	Object_WorldObject *World8;
-	Object_WorldObject *World9;
-	Object_WorldObject *World10;
+	Object_WorldObject *Finish;
 
 };

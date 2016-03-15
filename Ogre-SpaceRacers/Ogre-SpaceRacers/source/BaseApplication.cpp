@@ -142,6 +142,8 @@ void BaseApplication::createFrameListener(void)
     mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
     mTrayMgr->hideCursor();
 
+	mTrayMgr->createTextBox(OgreBites::TL_BOTTOM, "HUDBOX", "Speed: ", 200, 35);
+
     // Create a params panel for displaying sample details
     Ogre::StringVector items;
     items.push_back("cam.pX");
