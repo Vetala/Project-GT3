@@ -10,7 +10,7 @@
 */
 #include "ShipCharacter.h"
 
-ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, int shipHealth, Ogre::Camera *camera) : Character(name, sceneMgr, camera)
+ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Camera *camera) : Character(name, sceneMgr, meshName, camera)
 {
 	/**
 	*The constructor for a controllable spacechip currently asks for a name, the scene manager, a health amount and a camera
@@ -32,35 +32,22 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, in
 
 	cameraNodeOffSet = Ogre::Vector3(0, 30, -50); //The distance between the camera and the spaceship
 	sightOffSet = Ogre::Vector3(0, 0, 20); //The position where the camera is looking, used to add some more depth to the view
-	respawnNodeOffSet = Ogre::Vector3(0, 0, -50); //The position where the player will respawn 
 	mTightness = 0.3; //How tight the camera follows on low speeds. This creates a zoom function which makes the camera zoom out at high speeds but remain zoomed in at low speeds
-	
-	mMainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(mName);
+	respawnNodeOffSet = Ogre::Vector3(0, 0, -50); //The position where the player will respawn 
+
 	mRespawnNode = mMainNode->createChildSceneNode(mName + "_respawn", respawnNodeOffSet);
 	mShipNode = mMainNode->createChildSceneNode(mName + "_ship", Ogre::Vector3(0,3,0));
-	mCameraNode = mMainNode->createChildSceneNode(mName + "_camera", cameraNodeOffSet);
 	mSightNode = mMainNode->createChildSceneNode(mName + "_sight", sightOffSet);
+	mCameraNode = mMainNode->createChildSceneNode(mName + "_camera", cameraNodeOffSet);
 	mCameraNode->setAutoTracking(true, (mSightNode)); // The camera will always look at the camera target
 	mCameraNode->setFixedYawAxis(true); // Needed because of auto tracking
-
-	collisionSphere = new Ogre::Sphere(mMainNode->getPosition(), mEntity->getBoundingRadius);
-
-	// Create our camera if it wasn't passed as a parameter
-	if (camera == 0) {
-		mCamera = mSceneMgr->createCamera(mName);
-	}
-	else {
-		mCamera = camera;
-		mCamera->setPosition(0.0, 0.0, 0.0);
-	}
-	// Attach the Ogre camera to the camera node
-	mCameraNode->attachObject(mCamera);
 	mCameraNode->setPosition(0, 50, -100);
+	mCameraNode->attachObject(mCamera);	// Attach the Ogre camera to the camera node
 
 	// Give this character a shape 
-	mEntity = mSceneMgr->createEntity(mName, "Ship2.mesh");
 	mEntity->setCastShadows(false);
 	mShipNode->attachObject(mEntity);
+	collisionSphere = new Ogre::Sphere(mMainNode->getPosition(), mEntity->getBoundingRadius());
 	respawnTimer = baseRespawnTime;
 }
 
@@ -98,7 +85,7 @@ void ShipCharacter::handleCollision(Object col)
 	if (col.mName == "Finish")
 	{
 		//Finished the race
-		puts("Finished!");
+		respawn();
 	}
 	if (!col.trigger)
 	{
@@ -194,7 +181,8 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	}
 }
 
-ShipCharacter::~ShipCharacter() {
+ShipCharacter::~ShipCharacter() 
+{
 	mMainNode->detachAllObjects();
 	delete mEntity;
 	mMainNode->removeAndDestroyAllChildren();

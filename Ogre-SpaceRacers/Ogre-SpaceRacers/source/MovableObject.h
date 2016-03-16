@@ -9,7 +9,7 @@ public:
 	Ogre::Vector3 force;
 	Ogre::Real damping;
 
-	MovableObject(Ogre::String name, Ogre::SceneManager *sceneMgr);
+	MovableObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName);
 	~MovableObject();
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 	void handleCollision(MovableObject col);

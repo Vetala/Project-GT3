@@ -1,15 +1,12 @@
-#include "Object_WorldObject.h"
+#include "WorldChunk.h"
 
 class World_1
 {
 public:
-	//Ogre::SceneManager *sceneMgr;
-	World_1(Ogre::SceneManager *mSceneMgr);
-	Object_WorldObject *World1;
-	Object_WorldObject *World2;
-	Object_WorldObject *World3;
-	Object_WorldObject *World4;
-	Object_WorldObject *World5;
-	Object_WorldObject *Finish;
-
+	World_1(Ogre::SceneManager *mSceneMgr, std::list<Object *> &objectList);
+	WorldChunk *Chunk1;
+	WorldChunk *Chunk2;
+	WorldChunk *Chunk3;
+	WorldChunk *Chunk4;
+	WorldChunk *Chunk5;
 };

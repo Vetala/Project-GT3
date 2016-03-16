@@ -21,7 +21,7 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 #include "ShipCharacter.h"
 #include "World_1.h"
-#include "Object_WorldObject.h"
+#include "Finish.h"
 
 //---------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ private:
 	Ogre::Vector3 startPosition;
 	ShipCharacter *ship;
 	World_1 *world1;
-	Object_WorldObject *finish;
+	Finish *finish;
 	
 	bool isCollision(Ogre::Sphere s, Ogre::Sphere s2);
 	void checkCollision();

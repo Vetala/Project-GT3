@@ -10,16 +10,23 @@
 */
 
 #include "World_1.h"
-#include "Object_WorldObject.h"
 
 
-World_1::World_1(Ogre::SceneManager *mSceneMgr)
+World_1::World_1(Ogre::SceneManager *mSceneMgr, std::list<Object *> &objectList)
 {
-	//creates segments of the world and the finish line
-	World1 = new Object_WorldObject("World_1", mSceneMgr, "World_1_part1", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));
-	World2 = new Object_WorldObject("World_2", mSceneMgr, "World_1_part2", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));
-	World3 = new Object_WorldObject("World_3", mSceneMgr, "World_1_part3", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));
-	World4 = new Object_WorldObject("World_4", mSceneMgr, "World_1_part4", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));
-	World5 = new Object_WorldObject("World_5", mSceneMgr, "World_1_part5", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));
-	//Finish = new Object_WorldObject("Finish", mSceneMgr, "Start_Line", (Ogre::Vector3(200, 10, 700)), (Ogre::Vector3(3, 5, 8)));
+	/**
+	*The objects in it are listed for their name, mesh, location and scale.
+	*creates segments of the world and the finish line
+	*/
+	
+	Chunk1 = new WorldChunk("World_1", mSceneMgr, "World_1_part1", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));	//Spawns a cluster of rocks to form the first part of world 1
+	Chunk2 = new WorldChunk("World_2", mSceneMgr, "World_1_part2", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));	//Spawns a cluster of rocks to form the first part of world 2
+	Chunk3 = new WorldChunk("World_3", mSceneMgr, "World_1_part3", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));	//Spawns a cluster of rocks to form the first part of world 3
+	Chunk4 = new WorldChunk("World_4", mSceneMgr, "World_1_part4", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));	//Spawns a cluster of rocks to form the first part of world 4
+	Chunk5 = new WorldChunk("World_5", mSceneMgr, "World_1_part5", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));	//Spawns a cluster of rocks to form the first part of world 5
+	/*objectList.push_back(Chunk1);
+	objectList.push_back(Chunk2);
+	objectList.push_back(Chunk3);
+	objectList.push_back(Chunk4);
+	objectList.push_back(Chunk5);*/
 }

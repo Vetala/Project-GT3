@@ -15,7 +15,7 @@ public:
 	//Ogre::Box collisionBox; //Currently not is use
 	Ogre::SceneManager *mSceneMgr;
 
-	Object(Ogre::String name, Ogre::SceneManager *sceneMgr);
+	Object(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName);
 	~Object();
 	Ogre::Vector3 getWorldPosition() {
 		return mMainNode->_getDerivedPosition();

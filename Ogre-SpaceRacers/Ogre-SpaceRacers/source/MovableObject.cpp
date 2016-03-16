@@ -1,6 +1,6 @@
 #include "MovableObject.h"
 
-MovableObject::MovableObject(Ogre::String name, Ogre::SceneManager *sceneMgr) : Object(name, sceneMgr)
+MovableObject::MovableObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName) : Object(name, sceneMgr, meshName)
 {
 	velocity = (0, 0, 0);
 	acceleration = (0, 0, 0);
