@@ -12,7 +12,7 @@ public:
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 	void respawn();
 	void doDamage(int damage);
-	void handleCollision(Ogre::Sphere sphere, MovableObject col, Ogre::Sphere sphere2);
+	void handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogre::Sphere sphere);
 	void handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere);
 
 	Ogre::SceneNode *mRespawnNode; ///The spot where the ship will respawn in case of a crash

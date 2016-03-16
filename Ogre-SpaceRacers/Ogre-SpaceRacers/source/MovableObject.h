@@ -13,7 +13,6 @@ public:
 	MovableObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName);
 	~MovableObject();
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
-	void handleCollision(MovableObject col);
-	void handleCollision(Object col);
-	void handleCollision(Object col, Ogre::Sphere sphere);
+	void handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogre::Sphere sphere);
+	void handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere);
 };

@@ -47,7 +47,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	// Give this character a shape 
 	mEntity->setCastShadows(false);
 	mShipNode->attachObject(mEntity);
-	collisionSphere = new Ogre::Sphere(mMainNode->getPosition(), mEntity->getBoundingRadius());
+	collisionSphereList.push_back(new Ogre::Sphere(mMainNode->getPosition(), mEntity->getBoundingRadius()));
 	respawnTimer = baseRespawnTime;
 }
 
@@ -72,37 +72,27 @@ void ShipCharacter::respawn()
 	respawning = true;
 }
 
-void ShipCharacter::handleCollision(MovableObject col)
-{
-	if (!col.trigger)
-	{
-		MovableObject::handleCollision(col);
-	}
-}
-
-void ShipCharacter::handleCollision(Object col)
+void ShipCharacter::handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere)
 {
 	if (col.mName == "Finish")
 	{
 		//Finished the race
 		mMainNode->setPosition(0,0,0);
+		velocity = Ogre::Vector3(0,0,0);
+		acceleration = Ogre::Vector3(0, 0, 0);
+		mMainNode->resetOrientation();
 	}
 	if (!col.trigger)
 	{
-		MovableObject::handleCollision(col);
+		MovableObject::handleCollision(mSphere, col, sphere);
 	}
 }
 
-void ShipCharacter::handleCollision(Object col, Ogre::Sphere sphere)
+void ShipCharacter::handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogre::Sphere sphere)
 {
-	if (col.mName == "Finish")
-	{
-		//Finished the race
-		mMainNode->setPosition(0, 0, 0);
-	}
 	if (!col.trigger)
 	{
-		MovableObject::handleCollision(col, sphere);
+		MovableObject::handleCollision(mSphere, col, sphere);
 	}
 }
 

@@ -10,7 +10,7 @@ Finish::Finish(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String mes
 	mMainNode->attachObject(mEntity);
 
 	trigger = true;
-	collisionSphere = new Ogre::Sphere(mMainNode->getPosition(), mEntity->getBoundingRadius() * objectScale.z);
+	collisionSphereList.push_back(new Ogre::Sphere(mMainNode->getPosition(), mEntity->getBoundingRadius() * objectScale.z));
 }
 
 void Finish::update(Ogre::Real elapsedTime, OIS::Keyboard * input)

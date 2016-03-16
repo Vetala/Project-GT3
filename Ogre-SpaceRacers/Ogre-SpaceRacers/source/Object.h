@@ -5,13 +5,14 @@ class Object
 {
 public:
 	float inverseMass;
+	float mass;
 	bool trigger;
 
 	Ogre::String mName;
+	Ogre::String mTag;
 	Ogre::String mMeshName;
 	Ogre::SceneNode *mMainNode; // Character position and rotation
 	Ogre::Entity *mEntity; // Mesh
-	Ogre::Sphere *collisionSphere;
 	std::list<Ogre::Sphere *> collisionSphereList;
 	std::list<Ogre::Box *> collisionBoxList;
 	Ogre::SceneManager *mSceneMgr;
