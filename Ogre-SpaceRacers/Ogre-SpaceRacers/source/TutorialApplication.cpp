@@ -20,8 +20,6 @@ TutorialApplication::~TutorialApplication(void)
 {
 }
 
-
-
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
@@ -59,25 +57,72 @@ void TutorialApplication::createScene(void)
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here
-	ship = new ShipCharacter("Ship 1", mSceneMgr, shipHealth, mCamera);
+	ship = new ShipCharacter("Ship 1", mSceneMgr, "Ship2", shipHealth, mCamera);
+	world1 = new World_1(mSceneMgr, objectList);
+	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
+	shipList.push_back(ship);
+	objectList.push_back(finish);
+}
 
-	World1 = new World_1(mSceneMgr);	
+void TutorialApplication::doUpdate(const Ogre::FrameEvent& fe)
+{
+	for each (ShipCharacter *ship in shipList)
+	{
+		ship->update(fe.timeSinceLastFrame, mKeyboard);
+	}
 }
 
 //This is your Update, it runs every single frame
+//All gui stuff must be done here otherwise ogre decides that it doesnt want to run anymore
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
 	bool ret = BaseApplication::frameRenderingQueued(fe);
-	ship->update(fe.timeSinceLastFrame, mKeyboard);
-	speedGUI->setCaption("Hier komt de snelheid als dit definitief is");
-	mTrayMgr->moveWidgetToTray(speedGUI, OgreBites::TL_BOTTOM, 0);
-	speedGUI->show();
-	controlsGUI->setCaption("Use the WASD keys to move");
-	mTrayMgr->moveWidgetToTray(controlsGUI, OgreBites::TL_TOPLEFT, 0);
-	controlsGUI->show();
+	checkCollision();
+	doUpdate(fe);
 	return ret;
 }
 
+void TutorialApplication::checkCollision()
+{
+	for each (ShipCharacter *ship in shipList)
+	{
+		for each (ShipCharacter *ship2 in shipList)
+		{
+			if (ship != ship2)
+			{
+				bool col = isCollision(*ship->collisionSphere, *ship2->collisionSphere);
+				if (col)
+				{
+					ship->handleCollision(static_cast<MovableObject>(*ship2));
+					ship2->handleCollision(static_cast<MovableObject>(*ship));
+				}
+			}
+		}
+
+		for each (Object *object in objectList)
+		{
+			bool col = isCollision(*ship->collisionSphere, *object->collisionSphere);
+			if (col)
+			{
+				ship->handleCollision(*object);
+			}
+		}
+
+		for each (MovableObject *movableObject in movableObjectList)
+		{
+			bool col = isCollision(*ship->collisionSphere, *movableObject->collisionSphere);
+			if (col)
+			{
+				ship->handleCollision(*movableObject);
+			}
+		}
+	}
+}
+
+bool TutorialApplication::isCollision(Ogre::Sphere s, Ogre::Sphere s2)
+{
+	return s.intersects(s2);
+}
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN

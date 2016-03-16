@@ -21,6 +21,7 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 #include "ShipCharacter.h"
 #include "World_1.h"
+#include "Finish.h"
 
 //---------------------------------------------------------------------------
 
@@ -29,7 +30,6 @@ class TutorialApplication : public BaseApplication
 public:
     TutorialApplication(void);
     virtual ~TutorialApplication(void);
-	
 
 protected:
     virtual void createScene(void);
@@ -37,15 +37,20 @@ protected:
 
 private:
 	Ogre::String cameraName;
-	ShipCharacter *ship;
 	int shipHealth;
 	Ogre::Real rotate;
 	Ogre::Real move;
 	Ogre::Vector3 startPosition;
+	ShipCharacter *ship;
+	World_1 *world1;
+	Finish *finish;
 	
-	OgreBites::Label* mSpeedInfo;
-
-	World_1 *World1;
+	bool isCollision(Ogre::Sphere s, Ogre::Sphere s2);
+	void checkCollision();
+	void doUpdate(const Ogre::FrameEvent& fe);
+	std::list<Object *> objectList;
+	std::list<MovableObject *> movableObjectList;
+	std::list<ShipCharacter *> shipList;
 };
 	
 //---------------------------------------------------------------------------
