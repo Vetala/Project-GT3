@@ -79,6 +79,12 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 	bool ret = BaseApplication::frameRenderingQueued(fe);
 	checkCollision();
 	doUpdate(fe);
+	speedGUI->setCaption("Hier komt de snelheid als dit definitief is");
+	mTrayMgr->moveWidgetToTray(speedGUI, OgreBites::TL_BOTTOM, 0);
+	speedGUI->show();
+	controlsGUI->setCaption("Use the WASD keys to move");
+	mTrayMgr->moveWidgetToTray(controlsGUI, OgreBites::TL_TOPLEFT, 0);
+	controlsGUI->show();
 	return ret;
 }
 
