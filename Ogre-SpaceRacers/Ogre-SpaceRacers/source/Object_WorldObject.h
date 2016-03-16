@@ -5,7 +5,6 @@ class Object_WorldObject : public Object
 {
 public:
 
-	Ogre::String mMeshName;
 	Ogre::Vector3 worldLocation;
 	Ogre::Vector3 objectScale;
 	

@@ -21,5 +21,5 @@ World_1::World_1(Ogre::SceneManager *mSceneMgr)
 	World3 = new Object_WorldObject("World_3", mSceneMgr, "World_1_part3", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));
 	World4 = new Object_WorldObject("World_4", mSceneMgr, "World_1_part4", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));
 	World5 = new Object_WorldObject("World_5", mSceneMgr, "World_1_part5", (Ogre::Vector3(0, -6, 150)), (Ogre::Vector3(3, 3, 3)));
-	Finish = new Object_WorldObject("Finish", mSceneMgr, "Start_Line", (Ogre::Vector3(200, 10, 700)), (Ogre::Vector3(3, 5, 8)));
+	//Finish = new Object_WorldObject("Finish", mSceneMgr, "Start_Line", (Ogre::Vector3(200, 10, 700)), (Ogre::Vector3(3, 5, 8)));
 }

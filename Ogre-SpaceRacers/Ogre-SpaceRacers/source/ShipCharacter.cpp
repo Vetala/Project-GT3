@@ -10,7 +10,8 @@
 */
 #include "ShipCharacter.h"
 
-ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, int shipHealth, Ogre::Camera *camera) {
+ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, int shipHealth, Ogre::Camera *camera) : Character(name, sceneMgr, camera)
+{
 	/**
 	*The constructor for a controllable spacechip currently asks for a name, the scene manager, a health amount and a camera
 	*The name has to be unique to make sure that the construction of the scene nodes does not overwrite already created scene nodes
@@ -18,14 +19,11 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, in
 	*The shiphealth has to be set in the constructor at the moment.
 	*The camera has to be a predefined camera with a predefined viewport. The constructor asks for a camera to make sure that the camera correctly follows this ship
 	*/
-	mName = name;
-	mSceneMgr = sceneMgr;
 	mShipHealth = shipHealth;
 
 	respawning = false;
 	baseRespawnTime = 60;
 	
-	velocity = (0, 0, 0); //start velocity
 	lastFrameAcceleration = (0, 0, 0);
 	rollSpeed = 1; //Speed at which the spaceship rolls when turning
 	pitchSpeed = 0.1; //Speed at which the spaceship pitches when accelerating
@@ -44,6 +42,8 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, in
 	mSightNode = mMainNode->createChildSceneNode(mName + "_sight", sightOffSet);
 	mCameraNode->setAutoTracking(true, (mSightNode)); // The camera will always look at the camera target
 	mCameraNode->setFixedYawAxis(true); // Needed because of auto tracking
+
+	collisionSphere = new Ogre::Sphere(mMainNode->getPosition(), mEntity->getBoundingRadius);
 
 	// Create our camera if it wasn't passed as a parameter
 	if (camera == 0) {
@@ -64,7 +64,8 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, in
 	respawnTimer = baseRespawnTime;
 }
 
-void ShipCharacter::doDamage(int damage){ 
+void ShipCharacter::doDamage(int damage)
+{ 
 	/**
 	*If the player takes damage from hitting an obstacle or being hit by a bullet this function is called.
 	*If the players health drops below 0 the player respawns
@@ -75,7 +76,8 @@ void ShipCharacter::doDamage(int damage){
 	}
 }
 
-void ShipCharacter::respawn() {
+void ShipCharacter::respawn() 
+{
 	/**
 	*If the characters health drops below 0 this function is called. The players position is set back.
 	*/
@@ -83,11 +85,25 @@ void ShipCharacter::respawn() {
 	respawning = true;
 }
 
-ShipCharacter::~ShipCharacter() {
-	mMainNode->detachAllObjects();
-	delete mEntity;
-	mMainNode->removeAndDestroyAllChildren();
-	mSceneMgr->destroySceneNode(mName);
+void ShipCharacter::handleCollision(MovableObject col)
+{
+	if (!col.trigger)
+	{
+		MovableObject::handleCollision(col);
+	}
+}
+
+void ShipCharacter::handleCollision(Object col)
+{
+	if (col.mName == "Finish")
+	{
+		//Finished the race
+		puts("Finished!");
+	}
+	if (!col.trigger)
+	{
+		MovableObject::handleCollision(col);
+	}
 }
 
 void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
@@ -178,5 +194,11 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	}
 }
 
+ShipCharacter::~ShipCharacter() {
+	mMainNode->detachAllObjects();
+	delete mEntity;
+	mMainNode->removeAndDestroyAllChildren();
+	mSceneMgr->destroySceneNode(mName);
+}
 
 

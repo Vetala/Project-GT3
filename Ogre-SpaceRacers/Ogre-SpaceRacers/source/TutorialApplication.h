@@ -21,6 +21,7 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 #include "ShipCharacter.h"
 #include "World_1.h"
+#include "Object_WorldObject.h"
 
 //---------------------------------------------------------------------------
 
@@ -36,13 +37,20 @@ protected:
 
 private:
 	Ogre::String cameraName;
-	ShipCharacter *ship;
 	int shipHealth;
 	Ogre::Real rotate;
 	Ogre::Real move;
 	Ogre::Vector3 startPosition;
-
-	World_1 *World1;
+	ShipCharacter *ship;
+	World_1 *world1;
+	Object_WorldObject *finish;
+	
+	bool isCollision(Ogre::Sphere s, Ogre::Sphere s2);
+	void checkCollision();
+	void doUpdate(const Ogre::FrameEvent& fe);
+	std::list<Object *> objectList;
+	std::list<MovableObject *> movableObjectList;
+	std::list<ShipCharacter *> shipList;
 };
 	
 //---------------------------------------------------------------------------

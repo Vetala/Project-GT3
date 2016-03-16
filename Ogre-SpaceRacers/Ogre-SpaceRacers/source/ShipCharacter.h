@@ -12,6 +12,8 @@ public:
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 	void respawn();
 	void doDamage(int damage);
+	void handleCollision(MovableObject col);
+	void handleCollision(Object col);
 
 	Ogre::SceneNode *mRespawnNode; ///The spot where the ship will respawn in case of a crash
 	Ogre::SceneNode *mShipNode; ///the ship itself gets a node to make sure certain rotations are only done by the ship and do not use any of the other nodes
@@ -20,7 +22,6 @@ public:
 	Ogre::Vector3 respawnNodeOffSet; ///The difference between the ship position and the respawn position
 	Ogre::Vector3 lastFrameAcceleration; ///the acceleration during the last frame on the ship. This is used to check if the ship is accelerating 
 	Ogre::Real mTightness; ///The tightness at which the camera follows the spaceship. This creates a zoom effect resulting in the spaceship being closer to the camera if the ship has a low speed.
-	Ogre::Real damping;///A number which slows down the ship. 
 	Ogre::Radian turned; ///The amount of degrees the ship has turned. Used to turn the ship back after it has stop turning
 	float accelSpeed; ///the speed at which the ship accelerates
 

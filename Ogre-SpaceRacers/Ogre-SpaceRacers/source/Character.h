@@ -5,7 +5,8 @@
 class Character : public MovableObject
 {
 public:
-	Character();
+	Character(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::Camera *camera);
+	~Character();
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 
 	Ogre::SceneNode *mCameraNode;

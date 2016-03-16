@@ -10,11 +10,9 @@
 */
 #include "Object_WorldObject.h"
 
-Object_WorldObject::Object_WorldObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String MeshName, Ogre::Vector3 worldLocation, Ogre::Vector3 objectScale)
+Object_WorldObject::Object_WorldObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String MeshName, Ogre::Vector3 worldLocation, Ogre::Vector3 objectScale) : Object(name, sceneMgr)
 {
-	mName = name;
 	mMeshName = MeshName;
-	mSceneMgr = sceneMgr;
 
 	mMainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(mName);
 

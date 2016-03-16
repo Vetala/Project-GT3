@@ -60,18 +60,69 @@ void TutorialApplication::createScene(void)
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here
 	ship = new ShipCharacter("Ship 1", mSceneMgr, shipHealth, mCamera);
+	world1 = new World_1(mSceneMgr);
+	finish = new Object_WorldObject("Finish", mSceneMgr, "Start_Line", (Ogre::Vector3(200, 10, 700)), (Ogre::Vector3(3, 5, 8)));
+	shipList.push_back(ship);
+	objectList.push_back(finish);
+}
 
-	World1 = new World_1(mSceneMgr);
+void TutorialApplication::doUpdate(const Ogre::FrameEvent& fe)
+{
+	for each (ShipCharacter *ship in shipList)
+	{
+		ship->update(fe.timeSinceLastFrame, mKeyboard);
+	}
 }
 
 //This is your Update, it runs every single frame
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
 	bool ret = BaseApplication::frameRenderingQueued(fe);
-	ship->update(fe.timeSinceLastFrame, mKeyboard);
+	checkCollision();
+	doUpdate(fe);
 	return ret;
 }
 
+void TutorialApplication::checkCollision()
+{
+	for each (ShipCharacter *ship in shipList)
+	{
+		for each (ShipCharacter *ship2 in shipList)
+		{
+			if (ship != ship2)
+			{
+				bool col = isCollision(*ship->collisionSphere, *ship2->collisionSphere);
+				if (col)
+				{
+
+				}
+			}
+		}
+
+		for each (Object *object in objectList)
+		{
+			bool col = isCollision(*ship->collisionSphere, *object->collisionSphere);
+			if (col)
+			{
+
+			}
+		}
+
+		for each (MovableObject *movableObject in movableObjectList)
+		{
+			bool col = isCollision(*ship->collisionSphere, *movableObject->collisionSphere);
+			if (col)
+			{
+
+			}
+		}
+	}
+}
+
+bool TutorialApplication::isCollision(Ogre::Sphere s, Ogre::Sphere s2)
+{
+	return s.intersects(s2);
+}
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
