@@ -139,10 +139,10 @@ void BaseApplication::createFrameListener(void)
     mInputContext.mMouse = mMouse;
     mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName", mWindow, mInputContext, this);
     mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-    mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
     mTrayMgr->hideCursor();
-
-	mTrayMgr->createTextBox(OgreBites::TL_BOTTOM, "HUDBOX", "Speed: ", 200, 35);
+	
+	speedGUI = mTrayMgr->createLabel(OgreBites::TL_BOTTOM, "Speed", "Speed: ", 400);
+	controlsGUI = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "Controls", "Controls:", 400);
 
     // Create a params panel for displaying sample details
     Ogre::StringVector items;

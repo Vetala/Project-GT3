@@ -29,6 +29,7 @@ class TutorialApplication : public BaseApplication
 public:
     TutorialApplication(void);
     virtual ~TutorialApplication(void);
+	
 
 protected:
     virtual void createScene(void);
@@ -41,6 +42,8 @@ private:
 	Ogre::Real rotate;
 	Ogre::Real move;
 	Ogre::Vector3 startPosition;
+	
+	OgreBites::Label* mSpeedInfo;
 
 	World_1 *World1;
 };
