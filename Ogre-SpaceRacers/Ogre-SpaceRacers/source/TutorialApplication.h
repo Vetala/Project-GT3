@@ -49,7 +49,6 @@ private:
 	void checkCollision();
 	void doUpdate(const Ogre::FrameEvent& fe);
 	std::list<Object *> objectList;
-	std::list<MovableObject *> movableObjectList;
 	std::list<ShipCharacter *> shipList;
 };
 	

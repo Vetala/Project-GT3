@@ -57,7 +57,7 @@ void TutorialApplication::createScene(void)
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here
-	ship = new ShipCharacter("Ship 1", mSceneMgr, "Ship2", shipHealth, mCamera);
+	ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, mCamera);
 	world1 = new World_1(mSceneMgr, objectList);
 	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
 	shipList.push_back(ship);
@@ -85,34 +85,34 @@ void TutorialApplication::checkCollision()
 {
 	for each (ShipCharacter *ship in shipList)
 	{
-		for each (ShipCharacter *ship2 in shipList)
+		for each (Ogre::Sphere *sphere in ship->collisionSphereList)
 		{
-			if (ship != ship2)
+			for each (ShipCharacter *ship2 in shipList)
 			{
-				bool col = isCollision(*ship->collisionSphere, *ship2->collisionSphere);
-				if (col)
+				if (ship != ship2)
 				{
-					ship->handleCollision(static_cast<MovableObject>(*ship2));
-					ship2->handleCollision(static_cast<MovableObject>(*ship));
+					for each (Ogre::Sphere *sphere2 in ship2->collisionSphereList)
+					{
+						bool col = isCollision(*sphere, *sphere2);
+						if (col)
+						{
+							ship->handleCollision(*sphere, static_cast<MovableObject>(*ship2), *sphere2);
+							ship2->handleCollision(*sphere, static_cast<MovableObject>(*ship), *sphere2);
+						}
+					}
 				}
 			}
-		}
 
-		for each (Object *object in objectList)
-		{
-			bool col = isCollision(*ship->collisionSphere, *object->collisionSphere);
-			if (col)
+			for each (Object *object in objectList)
 			{
-				ship->handleCollision(*object);
-			}
-		}
-
-		for each (MovableObject *movableObject in movableObjectList)
-		{
-			bool col = isCollision(*ship->collisionSphere, *movableObject->collisionSphere);
-			if (col)
-			{
-				ship->handleCollision(*movableObject);
+				for each (Ogre::Sphere *sphere2 in object->collisionSphereList)
+				{
+					bool col = isCollision(*sphere, *sphere2);
+					if (col)
+					{
+						ship->handleCollision(*sphere, *object, *sphere2);
+					}
+				}
 			}
 		}
 	}

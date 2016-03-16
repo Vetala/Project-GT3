@@ -12,7 +12,8 @@ public:
 	Ogre::SceneNode *mMainNode; // Character position and rotation
 	Ogre::Entity *mEntity; // Mesh
 	Ogre::Sphere *collisionSphere;
-	//Ogre::Box collisionBox; //Currently not is use
+	std::list<Ogre::Sphere *> collisionSphereList;
+	std::list<Ogre::Box *> collisionBoxList;
 	Ogre::SceneManager *mSceneMgr;
 
 	Object(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName);

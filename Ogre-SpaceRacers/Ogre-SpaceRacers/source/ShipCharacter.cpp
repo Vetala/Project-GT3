@@ -85,11 +85,24 @@ void ShipCharacter::handleCollision(Object col)
 	if (col.mName == "Finish")
 	{
 		//Finished the race
-		respawn();
+		mMainNode->setPosition(0,0,0);
 	}
 	if (!col.trigger)
 	{
 		MovableObject::handleCollision(col);
+	}
+}
+
+void ShipCharacter::handleCollision(Object col, Ogre::Sphere sphere)
+{
+	if (col.mName == "Finish")
+	{
+		//Finished the race
+		mMainNode->setPosition(0, 0, 0);
+	}
+	if (!col.trigger)
+	{
+		MovableObject::handleCollision(col, sphere);
 	}
 }
 
@@ -179,6 +192,10 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			respawnTimer = baseRespawnTime;
 		}
 	}
+
+	Ogre::Vector3 fixedY = mMainNode->getPosition();
+	fixedY.y = 3;
+	mMainNode->setPosition(fixedY);
 }
 
 ShipCharacter::~ShipCharacter() 

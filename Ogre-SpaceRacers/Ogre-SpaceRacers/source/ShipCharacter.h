@@ -12,8 +12,8 @@ public:
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 	void respawn();
 	void doDamage(int damage);
-	void handleCollision(MovableObject col);
-	void handleCollision(Object col);
+	void handleCollision(Ogre::Sphere sphere, MovableObject col, Ogre::Sphere sphere2);
+	void handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere);
 
 	Ogre::SceneNode *mRespawnNode; ///The spot where the ship will respawn in case of a crash
 	Ogre::SceneNode *mShipNode; ///the ship itself gets a node to make sure certain rotations are only done by the ship and do not use any of the other nodes
