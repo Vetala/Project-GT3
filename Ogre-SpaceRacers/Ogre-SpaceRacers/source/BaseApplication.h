@@ -58,6 +58,8 @@ class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventList
 public:
     BaseApplication(void);
     virtual ~BaseApplication(void);
+	OgreBites::Label* speedGUI;
+	OgreBites::Label* controlsGUI;
 
     virtual void go(void);
 	
