@@ -116,47 +116,96 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	Character::update(elapsedTime, input);
 	if (!respawning)
 	{
-		if (input->isKeyDown(OIS::KC_O)) {
-			respawn();
-		}
-		if (input->isKeyDown(OIS::KC_W)) {
-			acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
-			if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
-			{
-				mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
+		if (mName == "Ship1")
+		{
+			if (input->isKeyDown(OIS::KC_O)) {
+				respawn();
 			}
-			}
-		else {
-			if (input->isKeyDown(OIS::KC_S)) {
-				acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
-				if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
+			if (input->isKeyDown(OIS::KC_W)) {
+				acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
+				if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
 				{
-					mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
+					mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
 				}
 			}
 			else {
-				acceleration = 0;
+				if (input->isKeyDown(OIS::KC_S)) {
+					acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
+					if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
+					{
+						mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
+					}
+				}
+				else {
+					acceleration = 0;
+				}
 			}
-		}
-		if (input->isKeyDown(OIS::KC_A)) {
-			turning = true;
-			mMainNode->yaw(Ogre::Radian(2 * elapsedTime));
-			if (mShipNode->getOrientation().getRoll() >= Ogre::Radian(-0.3))
-			{
-				mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
-			}
-		}
-		else {
-			if (input->isKeyDown(OIS::KC_D)) {
+			if (input->isKeyDown(OIS::KC_A)) {
 				turning = true;
-				mMainNode->yaw(Ogre::Radian(-2 * elapsedTime));
-				if (mShipNode->getOrientation().getRoll() <= Ogre::Radian(0.3))
+				mMainNode->yaw(Ogre::Radian(2 * elapsedTime));
+				if (mShipNode->getOrientation().getRoll() >= Ogre::Radian(-0.3))
 				{
-					mShipNode->roll(Ogre::Radian(rollSpeed * elapsedTime));
+					mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
 				}
 			}
 			else {
-				turning = false;
+				if (input->isKeyDown(OIS::KC_D)) {
+					turning = true;
+					mMainNode->yaw(Ogre::Radian(-2 * elapsedTime));
+					if (mShipNode->getOrientation().getRoll() <= Ogre::Radian(0.3))
+					{
+						mShipNode->roll(Ogre::Radian(rollSpeed * elapsedTime));
+					}
+				}
+				else {
+					turning = false;
+				}
+			}
+		}
+		if (mName == "Ship2")
+		{
+			if (input->isKeyDown(OIS::KC_P)) {
+				respawn();
+			}
+			if (input->isKeyDown(OIS::KC_UP)) {
+				acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
+				if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
+				{
+					mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
+				}
+			}
+			else {
+				if (input->isKeyDown(OIS::KC_DOWN)) {
+					acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
+					if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
+					{
+						mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
+					}
+				}
+				else {
+					acceleration = 0;
+				}
+			}
+			if (input->isKeyDown(OIS::KC_LEFT)) {
+				turning = true;
+				mMainNode->yaw(Ogre::Radian(2 * elapsedTime));
+				if (mShipNode->getOrientation().getRoll() >= Ogre::Radian(-0.3))
+				{
+					mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
+				}
+			}
+			else {
+				if (input->isKeyDown(OIS::KC_RIGHT)) {
+					turning = true;
+					mMainNode->yaw(Ogre::Radian(-2 * elapsedTime));
+					if (mShipNode->getOrientation().getRoll() <= Ogre::Radian(0.3))
+					{
+						mShipNode->roll(Ogre::Radian(rollSpeed * elapsedTime));
+					}
+				}
+				else {
+					turning = false;
+				}
 			}
 		}
 		if (mShipNode->getOrientation().getRoll() <= mShipNode->getInitialOrientation().getRoll()&& turning == false)
@@ -199,7 +248,6 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			respawnTimer = baseRespawnTime;
 		}
 	}
-
 	Ogre::Vector3 fixedY = mMainNode->getPosition();
 	fixedY.y = 3;
 	mMainNode->setPosition(fixedY);

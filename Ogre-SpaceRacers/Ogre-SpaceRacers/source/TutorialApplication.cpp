@@ -58,11 +58,11 @@ void TutorialApplication::createScene(void)
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here
 	ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0), mCamera);
-	//ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0), mCamera2);
+	ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0), mCamera2);
 	world1 = new World_1(mSceneMgr, objectList);
 	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
 	shipList.push_back(ship);
-	//shipList.push_back(ship2);
+	shipList.push_back(ship2);
 	objectList.push_back(finish);
 }
 
