@@ -42,12 +42,14 @@ private:
 	Ogre::Real move;
 	Ogre::Vector3 startPosition;
 	ShipCharacter *ship;
+	ShipCharacter *ship2;
 	World_1 *world1;
 	Finish *finish;
 	
 	bool isCollision(Ogre::Sphere s, Ogre::Sphere s2);
 	void checkCollision();
 	void doUpdate(const Ogre::FrameEvent& fe);
+	void doGUI();
 	std::list<Object *> objectList;
 	std::list<ShipCharacter *> shipList;
 };

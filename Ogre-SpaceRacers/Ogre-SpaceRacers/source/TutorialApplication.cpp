@@ -57,10 +57,12 @@ void TutorialApplication::createScene(void)
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here
-	ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, mCamera);
+	ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0), mCamera);
+	//ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0), mCamera2);
 	world1 = new World_1(mSceneMgr, objectList);
 	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
 	shipList.push_back(ship);
+	//shipList.push_back(ship2);
 	objectList.push_back(finish);
 }
 
@@ -79,13 +81,16 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 	bool ret = BaseApplication::frameRenderingQueued(fe);
 	checkCollision();
 	doUpdate(fe);
-	speedGUI->setCaption("Hier komt de snelheid als dit definitief is");
-	mTrayMgr->moveWidgetToTray(speedGUI, OgreBites::TL_BOTTOM, 0);
-	speedGUI->show();
+	doGUI();
+	return ret;
+}
+
+void TutorialApplication::doGUI()
+{
 	controlsGUI->setCaption("Use the WASD keys to move");
 	mTrayMgr->moveWidgetToTray(controlsGUI, OgreBites::TL_TOPLEFT, 0);
 	controlsGUI->show();
-	return ret;
+	ship->doGUI(respawnGUI, speedGUI, mTrayMgr);
 }
 
 void TutorialApplication::checkCollision()

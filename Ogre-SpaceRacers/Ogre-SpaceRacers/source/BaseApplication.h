@@ -60,6 +60,7 @@ public:
     virtual ~BaseApplication(void);
 	OgreBites::Label* speedGUI;
 	OgreBites::Label* controlsGUI;
+	OgreBites::Label* respawnGUI;
 
     virtual void go(void);
 	
@@ -90,6 +91,7 @@ protected:
 
     Ogre::Root*                 mRoot;
     Ogre::Camera*               mCamera;
+	Ogre::Camera*				mCamera2;
     Ogre::SceneManager*         mSceneMgr;
     Ogre::RenderWindow*         mWindow;
     Ogre::String                mResourcesCfg;
