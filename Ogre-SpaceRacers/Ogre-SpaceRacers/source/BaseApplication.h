@@ -59,7 +59,6 @@ public:
     BaseApplication(void);
     virtual ~BaseApplication(void);
 	OgreBites::Label* speedGUI;
-	OgreBites::Label* controlsGUI;
 	OgreBites::Label* respawnGUI;
 
     virtual void go(void);

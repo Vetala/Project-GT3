@@ -87,10 +87,8 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 
 void TutorialApplication::doGUI()
 {
-	controlsGUI->setCaption("Use the WASD keys to move");
-	mTrayMgr->moveWidgetToTray(controlsGUI, OgreBites::TL_TOPLEFT, 0);
-	controlsGUI->show();
 	ship->doGUI(respawnGUI, speedGUI, mTrayMgr);
+	ship2->doGUI(respawnGUI, speedGUI, mTrayMgr);
 }
 
 void TutorialApplication::checkCollision()

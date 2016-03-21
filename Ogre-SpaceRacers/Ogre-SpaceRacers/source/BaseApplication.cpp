@@ -147,7 +147,6 @@ void BaseApplication::createFrameListener(void)
     mTrayMgr->hideCursor();
 	
 	speedGUI = mTrayMgr->createLabel(OgreBites::TL_BOTTOM, "Speed", "Speed: ", 400);
-	controlsGUI = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "Controls", "Controls:", 400);
 	respawnGUI = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn", "Respawning in", 400); //Also gets used at the start and finish of the race
 
     // Create a params panel for displaying sample details
