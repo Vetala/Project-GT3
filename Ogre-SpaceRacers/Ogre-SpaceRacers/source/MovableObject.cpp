@@ -12,10 +12,10 @@ MovableObject::MovableObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 void MovableObject::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 {
 	Object::update(elapsedTime, input);
-	for each(Ogre::Sphere *sphere in collisionSphereList)
+	for each(SphereCollider *sCol in sphereColliders)
 	{
 		//This is not yet correct, because it sets al colliders to the position of the main node
-		sphere->setCenter(mMainNode->getPosition());
+		sCol->sphere.setCenter(mMainNode->getPosition());
 	}
 }
 

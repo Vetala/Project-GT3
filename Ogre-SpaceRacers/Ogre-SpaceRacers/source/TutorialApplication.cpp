@@ -7,8 +7,8 @@
 * @section Description
 * This class is the base class of our game. It contains the initial draw calls aswell as the point where we initialise our update
 */
-
 #include "TutorialApplication.h"
+#include "Object.h"
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
@@ -95,19 +95,19 @@ void TutorialApplication::checkCollision()
 {
 	for each (ShipCharacter *ship in shipList)
 	{
-		for each (Ogre::Sphere *sphere in ship->collisionSphereList)
+		for each (SphereCollider *sCol in ship->sphereColliders)
 		{
 			for each (ShipCharacter *ship2 in shipList)
 			{
 				if (ship != ship2)
 				{
-					for each (Ogre::Sphere *sphere2 in ship2->collisionSphereList)
+					for each (SphereCollider *sCol2 in ship2->sphereColliders)
 					{
-						bool col = isCollision(*sphere, *sphere2);
+						bool col = isCollision(sCol->sphere, sCol2->sphere);
 						if (col)
 						{
-							ship->handleCollision(*sphere, static_cast<MovableObject>(*ship2), *sphere2);
-							ship2->handleCollision(*sphere2, static_cast<MovableObject>(*ship), *sphere);
+							ship->handleCollision(*sCol, static_cast<MovableObject>(*ship2), *sCol2);
+							ship2->handleCollision(*sCol2, static_cast<MovableObject>(*ship), *sCol);
 						}
 					}
 				}
@@ -115,12 +115,12 @@ void TutorialApplication::checkCollision()
 
 			for each (Object *object in objectList)
 			{
-				for each (Ogre::Sphere *sphere2 in object->collisionSphereList)
+				for each (SphereCollider *sCol2 in object->sphereColliders)
 				{
-					bool col = isCollision(*sphere, *sphere2);
+					bool col = isCollision(sCol->sphere, sCol2->sphere);
 					if (col)
 					{
-						ship->handleCollision(*sphere, *object, *sphere2);
+						ship->handleCollision(*sCol, *object, *sCol2);
 					}
 				}
 			}

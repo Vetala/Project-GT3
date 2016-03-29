@@ -13,8 +13,8 @@ public:
 	void doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr);
 	void respawn();
 	void doDamage(int damage);
-	void handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogre::Sphere sphere);
-	void handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere);
+	void handleCollision(SphereCollider mSphere, MovableObject col, SphereCollider sphere);
+	void handleCollision(SphereCollider mSphere, Object col, SphereCollider sphere);
 
 	Ogre::SceneNode *mRespawnNode; ///The spot where the ship will respawn in case of a crash
 	Ogre::SceneNode *mShipNode; ///the ship itself gets a node to make sure certain rotations are only done by the ship and do not use any of the other nodes

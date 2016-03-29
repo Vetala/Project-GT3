@@ -51,7 +51,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	// Give this character a shape 
 	mEntity->setCastShadows(false);
 	mShipNode->attachObject(mEntity);
-	collisionSphereList.push_back(new Ogre::Sphere(mMainNode->getPosition(), mEntity->getBoundingRadius()));
+	sphereColliders.push_back(new SphereCollider(false, Ogre::Sphere(mMainNode->getPosition(), mEntity->getBoundingRadius())));
 	respawnTimer = baseRespawnTime;
 }
 
@@ -75,7 +75,7 @@ void ShipCharacter::respawn()
 	respawning = true;
 }
 
-void ShipCharacter::handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere)
+void ShipCharacter::handleCollision(SphereCollider mSphere, Object col, SphereCollider sphere)
 {
 	/**
 	*This handles all the spaceship specific collisions with non moving objects
@@ -90,20 +90,20 @@ void ShipCharacter::handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphe
 		acceleration = Ogre::Vector3(0, 0, 0);
 		mMainNode->resetOrientation();
 	}
-	if (!col.trigger)
+	if (!sphere.trigger)
 	{
-		MovableObject::handleCollision(mSphere, col, sphere);
+		MovableObject::handleCollision(mSphere.sphere, col, sphere.sphere);
 	}
 }
 
-void ShipCharacter::handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogre::Sphere sphere)
+void ShipCharacter::handleCollision(SphereCollider mSphere, MovableObject col, SphereCollider sphere)
 {
 	/**
 	*This handles all the spaceship specific collisions with moving objects
 	*/
-	if (!col.trigger)
+	if (!sphere.trigger)
 	{
-		MovableObject::handleCollision(mSphere, col, sphere);
+		MovableObject::handleCollision(mSphere.sphere, col, sphere.sphere);
 	}
 }
 
