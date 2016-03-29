@@ -1,0 +1,57 @@
+
+# ===================================== #
+#              SPACE RACER              #
+# ===================================== #
+# ===================================== #
+
+
+# ===================================== #
+#            Excluded Folders           #
+# ===================================== #
+.vs/
+[Bb]in/
+ExportedObj/
+[Oo]bj/
+_ReSharper*/
+[Tt]emp/
+
+!*.sln
+!.vcxproj.user
+#*.user
+
+# ===================================== #
+#             Visual Studio             #
+# ===================================== #
+
+*.sdf
+*.VC.opendb
+*.svd
+*.csproj
+*.pidb
+*.suo
+
+*.booproj
+*.dropbox
+*.ilk
+*.log
+*.bak
+*.cache
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.sbr
+
+# ===================================== #
+#        Operating System Files         #
+# ===================================== #
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+*~
