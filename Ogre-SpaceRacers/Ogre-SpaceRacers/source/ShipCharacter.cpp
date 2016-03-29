@@ -250,7 +250,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	}
 	Ogre::Vector3 fixedY = mMainNode->getPosition();
 	fixedY.y = 3;
-	mMainNode->setPosition(fixedY);
+	//mMainNode->setPosition(fixedY);
 }
 
 void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr)

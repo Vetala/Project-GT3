@@ -107,7 +107,7 @@ void TutorialApplication::checkCollision()
 						if (col)
 						{
 							ship->handleCollision(*sphere, static_cast<MovableObject>(*ship2), *sphere2);
-							ship2->handleCollision(*sphere, static_cast<MovableObject>(*ship), *sphere2);
+							ship2->handleCollision(*sphere2, static_cast<MovableObject>(*ship), *sphere);
 						}
 					}
 				}
