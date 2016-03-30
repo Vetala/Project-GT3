@@ -5,16 +5,18 @@ class ShipCharacter : public Character
 {
 protected:
 	int mShipHealth; ///The current health amount the spaceship has
+	int mBoost; ///The current amount of boost the spaceship has
 
 public:
-	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, Ogre::Camera *camera = 0);
+	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, int boost, Ogre::Vector3 positionOffset, Ogre::Camera *camera = 0);
 	~ShipCharacter();
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
-	void doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr);
+	void doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr, OgreBites::Label* speedGUI2);
 	void respawn();
 	void doDamage(int damage);
 	void handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogre::Sphere sphere);
 	void handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere);
+	void boost();
 
 	Ogre::SceneNode *mRespawnNode; ///The spot where the ship will respawn in case of a crash
 	Ogre::SceneNode *mShipNode; ///the ship itself gets a node to make sure certain rotations are only done by the ship and do not use any of the other nodes
@@ -31,6 +33,8 @@ public:
 	int respawnTimer;///The remaining time it takes for the ship to respawn after crashing
 	float rollSpeed;///the speed at which the ship rolls during turning
 	float pitchSpeed;///the speed at which the ship pitches during acceleration/decelleration
+	float baseAccel;///same as accelSpeed. Used to reset accelspeed after boosting
+	float boostAccel;///the acceleration speed during boosts
 	int baseRespawnTime;///the max time it can take for a ship to respawn
 };
 

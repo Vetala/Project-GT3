@@ -10,7 +10,7 @@
 */
 #include "ShipCharacter.h"
 
-ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, Ogre::Camera *camera) : Character(name, sceneMgr, meshName, camera)
+ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, int boost, Ogre::Vector3 positionOffset, Ogre::Camera *camera) : Character(name, sceneMgr, meshName, camera)
 {
 	/**
 	*The constructor for a controllable spacechip currently asks for a name, the scene manager, a health amount and a camera
@@ -20,6 +20,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	*The camera has to be a predefined camera with a predefined viewport. The constructor asks for a camera to make sure that the camera correctly follows this ship
 	*/
 	mShipHealth = shipHealth;
+	mBoost = boost;
 
 	starting = true;
 	finished = false;
@@ -28,13 +29,15 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	
 	lastFrameAcceleration = (0, 0, 0);
 	rollSpeed = 1; //Speed at which the spaceship rolls when turning
-	pitchSpeed = 0.1; //Speed at which the spaceship pitches when accelerating
+	pitchSpeed = 0.1f; //Speed at which the spaceship pitches when accelerating
 	accelSpeed = 3; //Speed at which the spaceship will accelerate
+	baseAccel = accelSpeed; //base number of the acceleration. Used to reset the acceleration speed after boosting
+	boostAccel = accelSpeed + accelSpeed; //Speed at which the spaceship will accelerate while boosting
 	damping = 0.98; //factor at which the spaceship will slow down each frame when not accelerating
 
 	mPositionOffset = positionOffset;
 	cameraNodeOffSet = Ogre::Vector3(0, 30, -50); //The distance between the camera and the spaceship
-	sightOffSet = Ogre::Vector3(0, 0, 20); //The position where the camera is looking, used to add some more depth to the view
+	sightOffSet = Ogre::Vector3(0, 0, 50); //The position where the camera is looking, used to add some more depth to the view
 	mTightness = 0.3; //How tight the camera follows on low speeds. This creates a zoom function which makes the camera zoom out at high speeds but remain zoomed in at low speeds
 	respawnNodeOffSet = Ogre::Vector3(0, 0, -50); //The position where the player will respawn 
 
@@ -67,12 +70,26 @@ void ShipCharacter::doDamage(int damage)
 	}
 }
 
+void ShipCharacter::boost()
+{
+	/**
+	*If the player takes damage from hitting an obstacle or being hit by a bullet this function is called.
+	*If the players health drops below 0 the player respawns
+	*/
+	if (mBoost > 0)
+	{
+		accelSpeed = boostAccel;
+		mBoost--;
+	}
+}
+
 void ShipCharacter::respawn() 
 {
 	/**
 	*If the characters health drops below 0 this function is called. The players position is set back.
 	*/
 	respawning = true;
+	mShipHealth = 100;
 }
 
 void ShipCharacter::handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere)
@@ -118,6 +135,15 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	{
 		if (mName == "Ship1")
 		{
+			OIS::KeyCode key = OIS::KC_LSHIFT;
+			if(input->isKeyDown(key))
+			{
+				boost();
+			}
+			else
+			{
+				accelSpeed = baseAccel;
+			}
 			if (input->isKeyDown(OIS::KC_O)) {
 				respawn();
 			}
@@ -253,7 +279,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	mMainNode->setPosition(fixedY);
 }
 
-void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr)
+void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr, OgreBites::Label* speedGUI2)
 {
 	if (starting)
 	{
@@ -265,16 +291,34 @@ void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedG
 	{
 		if (finished)
 		{
-			respawnGUI->setCaption("Finished!");
-			mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
-			respawnGUI->show();
+			if (mName == "Ship1")
+			{
+				respawnGUI->setCaption("Player 1 finished!");
+				mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
+				respawnGUI->show();
+			}
+			else
+			{
+				respawnGUI->setCaption("Player 2 finished!");
+				mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
+				respawnGUI->show();
+			}
 		}
 		else {
 			if (respawning)
 			{
-				respawnGUI->setCaption("Respawning...");
-				mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
-				respawnGUI->show();
+				if (mName == "Ship1")
+				{
+					respawnGUI->setCaption("Player 1 respawning...");
+					mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
+					respawnGUI->show();
+				}
+				else
+				{
+					respawnGUI->setCaption("Player 2 respawning...");
+					mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
+					respawnGUI->show();
+				}
 			}
 			else {
 				respawnGUI->hide();
@@ -283,8 +327,16 @@ void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedG
 		}
 	}
 	Ogre::StringConverter converter;
-	speedGUI->setCaption("Health: " + converter.toString((int)(mShipHealth)) + "\t\t\tSpeed: " + converter.toString((int)(velocity.length() * 50)));
-	mTrayMgr->moveWidgetToTray(speedGUI, OgreBites::TL_BOTTOM, 0);
+	if (mName == "Ship1")
+	{
+		speedGUI->setCaption("Player1 \t\tHealth: " + converter.toString((int)(mShipHealth)) + "\t\tBoost:" + converter.toString((int)(mBoost)) + "\t\t\tSpeed: " + converter.toString((int)(velocity.length() * 50)));
+		mTrayMgr->moveWidgetToTray(speedGUI, OgreBites::TL_TOP, 0);
+	}
+	else
+	{
+		speedGUI->setCaption("Player2 \t\tHealth: " + converter.toString((int)(mShipHealth)) + "\t\t\tSpeed: " + converter.toString((int)(velocity.length() * 50)));
+		mTrayMgr->moveWidgetToTray(speedGUI, OgreBites::TL_BOTTOM, 0);
+	}
 	speedGUI->show();
 }
 

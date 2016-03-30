@@ -14,7 +14,9 @@
 TutorialApplication::TutorialApplication(void)
 {
 	shipHealth = 100;
+	shipBoost = 100;
 }
+
 //---------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
 {
@@ -38,9 +40,9 @@ void TutorialApplication::createScene(void)
 		Ogre::Vector3::UNIT_Z);
 	Ogre::Entity* groundEntity = mSceneMgr->createEntity("ground");
 	groundEntity->setCastShadows(false);
-	groundEntity->setMaterialName("rockwall.tga");  //WAAROM WERKT DEZE NIET WAT DE FUCK MATERIAL PLEASE, hebben we later toch niet nodig but fug it
+	groundEntity->setMaterialName("rockwall.tga"); //WAAROM WERKT DEZE NIET WAT DE FUCK MATERIAL PLEASE, hebben we later toch niet nodig but fug it
 	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
-	
+
 	//creates the blue light
 	Ogre::Light* spotLight = mSceneMgr->createLight("SpotLight");
 	spotLight->setDiffuseColour(0, 0, 1.0);
@@ -56,9 +58,9 @@ void TutorialApplication::createScene(void)
 	directionalLight->setDiffuseColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
-    // Create your scene here
-	ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0), mCamera);
-	ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0), mCamera2);
+	// Create your scene here
+	ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, shipBoost, Ogre::Vector3(0, 0, 0), mCamera);
+	ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, shipBoost, Ogre::Vector3(10, 0, 0), mCamera2);
 	world1 = new World_1(mSceneMgr, objectList);
 	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
 	shipList.push_back(ship);
@@ -68,7 +70,7 @@ void TutorialApplication::createScene(void)
 
 void TutorialApplication::doUpdate(const Ogre::FrameEvent& fe)
 {
-	for each (ShipCharacter *ship in shipList)
+	for each (ShipCharacter* ship in shipList)
 	{
 		ship->update(fe.timeSinceLastFrame, mKeyboard);
 	}
@@ -87,21 +89,21 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 
 void TutorialApplication::doGUI()
 {
-	ship->doGUI(respawnGUI, speedGUI, mTrayMgr);
-	ship2->doGUI(respawnGUI, speedGUI, mTrayMgr);
+	ship->doGUI(respawnGUI, speedGUI, mTrayMgr, speedGUI2);
+	ship2->doGUI(respawnGUI, speedGUI2, mTrayMgr, speedGUI);
 }
 
 void TutorialApplication::checkCollision()
 {
-	for each (ShipCharacter *ship in shipList)
+	for each (ShipCharacter* ship in shipList)
 	{
-		for each (Ogre::Sphere *sphere in ship->collisionSphereList)
+		for each (Ogre::Sphere* sphere in ship->collisionSphereList)
 		{
-			for each (ShipCharacter *ship2 in shipList)
+			for each (ShipCharacter* ship2 in shipList)
 			{
 				if (ship != ship2)
 				{
-					for each (Ogre::Sphere *sphere2 in ship2->collisionSphereList)
+					for each (Ogre::Sphere* sphere2 in ship2->collisionSphereList)
 					{
 						bool col = isCollision(*sphere, *sphere2);
 						if (col)
@@ -113,9 +115,9 @@ void TutorialApplication::checkCollision()
 				}
 			}
 
-			for each (Object *object in objectList)
+			for each (Object* object in objectList)
 			{
-				for each (Ogre::Sphere *sphere2 in object->collisionSphereList)
+				for each (Ogre::Sphere* sphere2 in object->collisionSphereList)
 				{
 					bool col = isCollision(*sphere, *sphere2);
 					if (col)
@@ -139,34 +141,40 @@ bool TutorialApplication::isCollision(Ogre::Sphere s, Ogre::Sphere s2)
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-    INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
+	INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 #else
     int main(int argc, char *argv[])
 #endif
-    {
-        // Create application object
-        TutorialApplication app;
+	{
+		// Create application object
+		TutorialApplication app;
 
-        try {
-            app.go();
-        } catch(Ogre::Exception& e)  {
+		try
+		{
+			app.go();
+		}
+		catch (Ogre::Exception& e)
+		{
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-            MessageBox(NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+			MessageBox(NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 #else
             std::cerr << "An exception has occurred: " <<
                 e.getFullDescription().c_str() << std::endl;
 #endif
-        }
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 
 #ifdef __cplusplus
 }
 #endif
 
 //---------------------------------------------------------------------------
+
+

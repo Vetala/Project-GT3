@@ -24,6 +24,16 @@ http://www.ogre3d.org/wiki/
 #include "Finish.h"
 
 //---------------------------------------------------------------------------
+struct Keys
+{
+	OIS::KeyCode forwards;
+	OIS::KeyCode backwards;
+	OIS::KeyCode left;
+	OIS::KeyCode right;
+	OIS::KeyCode boost;
+	OIS::KeyCode shoot;
+};
+
 
 class TutorialApplication : public BaseApplication
 {
@@ -38,6 +48,7 @@ protected:
 private:
 	Ogre::String cameraName;
 	int shipHealth;
+	int shipBoost;
 	Ogre::Real rotate;
 	Ogre::Real move;
 	Ogre::Vector3 startPosition;
