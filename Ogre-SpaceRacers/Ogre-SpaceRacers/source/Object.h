@@ -1,29 +1,10 @@
 #pragma once
+#include "Physics.h"
 #include "BaseApplication.h"
-
-struct SphereCollider {
-	bool trigger;
-	Ogre::Sphere sphere;
-	SphereCollider(bool t, Ogre::Sphere s) {
-		trigger = t;
-		sphere = s;
-	}
-};
-struct BoxCollider {
-	bool trigger;
-	Ogre::Box box;
-	BoxCollider(bool t, Ogre::Box b) {
-		trigger = t;
-		box = b;
-	}
-};
 
 class Object
 {
 public:
-	float inverseMass;
-	float mass;
-
 	Ogre::String mName;
 	Ogre::String mTag;
 	Ogre::String mMeshName;
@@ -35,6 +16,7 @@ public:
 
 	Object(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName);
 	~Object();
+
 	Ogre::Vector3 getWorldPosition() {
 		return mMainNode->_getDerivedPosition();
 	}

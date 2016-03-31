@@ -30,7 +30,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	rollSpeed = 1; //Speed at which the spaceship rolls when turning
 	pitchSpeed = 0.1; //Speed at which the spaceship pitches when accelerating
 	accelSpeed = 3; //Speed at which the spaceship will accelerate
-	damping = 0.98; //factor at which the spaceship will slow down each frame when not accelerating
+	rigidbody->drag = 0.98; //factor at which the spaceship will slow down each frame when not accelerating
 
 	mPositionOffset = positionOffset;
 	cameraNodeOffSet = Ogre::Vector3(0, 30, -50); //The distance between the camera and the spaceship
@@ -51,7 +51,9 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	// Give this character a shape 
 	mEntity->setCastShadows(false);
 	mShipNode->attachObject(mEntity);
-	sphereColliders.push_back(new SphereCollider(false, Ogre::Sphere(mMainNode->getPosition(), mEntity->getBoundingRadius())));
+	SphereCollider *s = new SphereCollider(false, Ogre::Sphere(Ogre::Vector3(0, 0, 0), mEntity->getBoundingRadius() * mMainNode->getScale().z));
+	s->setPositionToParentPosition(mMainNode->getPosition());
+	sphereColliders.push_back(s);
 	respawnTimer = baseRespawnTime;
 }
 
@@ -86,8 +88,8 @@ void ShipCharacter::handleCollision(SphereCollider mSphere, Object col, SphereCo
 		finished = true;
 		respawning = true;
 		mMainNode->setPosition(mPositionOffset);
-		velocity = Ogre::Vector3(0,0,0);
-		acceleration = Ogre::Vector3(0, 0, 0);
+		rigidbody->velocity = Ogre::Vector3(0,0,0);
+		rigidbody->acceleration = Ogre::Vector3(0, 0, 0);
 		mMainNode->resetOrientation();
 	}
 	if (!sphere.trigger)
@@ -122,7 +124,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 				respawn();
 			}
 			if (input->isKeyDown(OIS::KC_W)) {
-				acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
+				rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
 				if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
 				{
 					mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
@@ -130,14 +132,14 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			}
 			else {
 				if (input->isKeyDown(OIS::KC_S)) {
-					acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
+					rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
 					if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
 					{
 						mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
 					}
 				}
 				else {
-					acceleration = 0;
+					rigidbody->acceleration = 0;
 				}
 			}
 			if (input->isKeyDown(OIS::KC_A)) {
@@ -168,7 +170,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 				respawn();
 			}
 			if (input->isKeyDown(OIS::KC_UP)) {
-				acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
+				rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
 				if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
 				{
 					mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
@@ -176,14 +178,14 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			}
 			else {
 				if (input->isKeyDown(OIS::KC_DOWN)) {
-					acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
+					rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
 					if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
 					{
 						mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
 					}
 				}
 				else {
-					acceleration = 0;
+					rigidbody->acceleration = 0;
 				}
 			}
 			if (input->isKeyDown(OIS::KC_LEFT)) {
@@ -216,7 +218,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 		{
 			mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
 		}
-		if (acceleration == lastFrameAcceleration)
+		if (rigidbody->acceleration == lastFrameAcceleration)
 		{
 			if (mShipNode->getOrientation().getPitch() < mShipNode->getInitialOrientation().getPitch())
 			{
@@ -228,14 +230,14 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			}
 		}
 		
-		lastFrameAcceleration = acceleration;
-		velocity += acceleration;
-		velocity *= damping;
-		mMainNode->translate(velocity);
-		mSceneMgr->getSceneNode(mName + "_camera")->setPosition(cameraNodeOffSet * (1 + (velocity.length()*mTightness)));
+		lastFrameAcceleration = rigidbody->acceleration;
+		rigidbody->velocity += rigidbody->acceleration;
+		rigidbody->velocity *= rigidbody->drag;
+		mMainNode->translate(rigidbody->velocity);
+		mSceneMgr->getSceneNode(mName + "_camera")->setPosition(cameraNodeOffSet * (1 + (rigidbody->velocity.length()*mTightness)));
 	}
 	else {
-		velocity = (0, 0, 0);
+		rigidbody->velocity = (0, 0, 0);
 		respawnTimer--;
 		if(respawnTimer < 0){
 			if (!starting && !finished)
@@ -283,7 +285,7 @@ void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedG
 		}
 	}
 	Ogre::StringConverter converter;
-	speedGUI->setCaption("Health: " + converter.toString((int)(mShipHealth)) + "\t\t\tSpeed: " + converter.toString((int)(velocity.length() * 50)));
+	speedGUI->setCaption("Health: " + converter.toString((int)(mShipHealth)) + "\t\t\tSpeed: " + converter.toString((int)(rigidbody->velocity.length() * 50)));
 	mTrayMgr->moveWidgetToTray(speedGUI, OgreBites::TL_BOTTOM, 0);
 	speedGUI->show();
 }

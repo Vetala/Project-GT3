@@ -4,11 +4,7 @@
 class MovableObject : public Object
 {
 public:
-	Ogre::Vector3 velocity;
-	Ogre::Vector3 acceleration;
-	Ogre::Vector3 force;
-	Ogre::Real damping;
-	Ogre::Real bounciness;
+	RigidBody *rigidbody;
 
 	MovableObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName);
 	~MovableObject();

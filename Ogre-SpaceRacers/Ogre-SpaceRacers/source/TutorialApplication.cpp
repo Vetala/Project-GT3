@@ -8,7 +8,6 @@
 * This class is the base class of our game. It contains the initial draw calls aswell as the point where we initialise our update
 */
 #include "TutorialApplication.h"
-#include "Object.h"
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
