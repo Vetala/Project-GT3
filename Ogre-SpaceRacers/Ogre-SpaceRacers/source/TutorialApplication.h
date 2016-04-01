@@ -23,14 +23,19 @@ http://www.ogre3d.org/wiki/
 #include "World_1.h"
 #include "Finish.h"
 #include "Physics.h"
+#include "Controls.h"
 
 //---------------------------------------------------------------------------
+
+
 
 class TutorialApplication : public BaseApplication
 {
 public:
     TutorialApplication(void);
     virtual ~TutorialApplication(void);
+	Controls *player1;
+	Controls *player2;
 
 protected:
     virtual void createScene(void);
@@ -39,6 +44,7 @@ protected:
 private:
 	Ogre::String cameraName;
 	int shipHealth;
+	int shipBoost;
 	Ogre::Real rotate;
 	Ogre::Real move;
 	Ogre::Vector3 startPosition;

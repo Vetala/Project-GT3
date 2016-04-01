@@ -13,11 +13,33 @@
 TutorialApplication::TutorialApplication(void)
 {
 	shipHealth = 100;
+	shipBoost = 100;
+	//Setting controls for both players
+	player1 = new Controls();
+	player1->forwards = OIS::KeyCode(OIS::KC_W);
+	player1->backwards = OIS::KeyCode(OIS::KC_S);
+	player1->left = OIS::KeyCode(OIS::KC_A);
+	player1->right = OIS::KeyCode(OIS::KC_D);
+	player1->boost = OIS::KeyCode(OIS::KC_LSHIFT);
+	player1->shoot = OIS::KeyCode(OIS::KC_E);
+
+	player2 = new Controls();
+	player2->forwards = OIS::KeyCode(OIS::KC_UP);
+	player2->backwards = OIS::KeyCode(OIS::KC_DOWN);
+	player2->left = OIS::KeyCode(OIS::KC_LEFT);
+	player2->right = OIS::KeyCode(OIS::KC_RIGHT);
+	player2->boost = OIS::KeyCode(OIS::KC_RSHIFT);
+	player2->shoot = OIS::KeyCode(OIS::KC_PERIOD);
+
+
 }
+
+
 //---------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
 {
 }
+
 
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
@@ -56,8 +78,8 @@ void TutorialApplication::createScene(void)
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here
-	ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0), mCamera);
-	ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0), mCamera2);
+	ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0),shipBoost,player1,mCamera);
+	ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0),shipBoost,player2,mCamera2);
 	world1 = new World_1(mSceneMgr, objectList);
 	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
 	shipList.push_back(ship);
@@ -87,7 +109,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 void TutorialApplication::doGUI()
 {
 	ship->doGUI(respawnGUI, speedGUI, mTrayMgr);
-	ship2->doGUI(respawnGUI, speedGUI, mTrayMgr);
+	ship2->doGUI(respawnGUI, speedGUI2, mTrayMgr);
 }
 
 void TutorialApplication::checkCollision()

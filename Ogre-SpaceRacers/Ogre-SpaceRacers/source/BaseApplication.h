@@ -60,6 +60,8 @@ public:
     virtual ~BaseApplication(void);
 	OgreBites::Label* speedGUI;
 	OgreBites::Label* respawnGUI;
+	OgreBites::Label* speedGUI2;
+	OgreBites::Label* respawnGUI2;
 
     virtual void go(void);
 	
