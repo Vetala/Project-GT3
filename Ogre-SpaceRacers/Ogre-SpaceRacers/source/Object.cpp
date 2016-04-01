@@ -5,9 +5,6 @@ Object::Object(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String mes
 	mName = name;
 	mMeshName = meshName;
 	mSceneMgr = sceneMgr;
-	trigger = false;
-	mass = 1;
-	inverseMass = mass / 1;
 
 	mMainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(mName);
 	mEntity = mSceneMgr->createEntity(mName, mMeshName + ".mesh");

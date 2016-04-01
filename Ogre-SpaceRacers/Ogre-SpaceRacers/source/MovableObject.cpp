@@ -2,20 +2,15 @@
 
 MovableObject::MovableObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName) : Object(name, sceneMgr, meshName)
 {
-	velocity = (0, 0, 0);
-	acceleration = (0, 0, 0);
-	force = (0, 0, 0);
-	damping = 1;
-	bounciness = 1;
+	rigidbody = new RigidBody();
 }
 
 void MovableObject::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 {
 	Object::update(elapsedTime, input);
-	for each(Ogre::Sphere *sphere in collisionSphereList)
+	for each(SphereCollider *sCol in sphereColliders)
 	{
-		//This is not yet correct, because it sets al colliders to the position of the main node
-		sphere->setCenter(mMainNode->getPosition());
+		sCol->setPositionToParentPosition(mMainNode->getPosition());
 	}
 }
 
@@ -31,8 +26,8 @@ void MovableObject::handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogr
 
 	// resolve intersection --
 	// inverse mass quantities
-	float im1 = inverseMass;
-	float im2 = col.inverseMass;
+	float im1 = rigidbody->inverseMass;
+	float im2 = col.rigidbody->inverseMass;
 
 	// push-pull them apart based off their mass
 	pos = pos + (mtd * (im1 / (im1 + im2)));
@@ -41,7 +36,7 @@ void MovableObject::handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogr
 	col.mMainNode->setPosition(col.mMainNode->getPosition() - (mtd * (im2 / (im1 + im2))));
 
 	// impact speed
-	Ogre::Vector3 v = velocity - col.velocity;
+	Ogre::Vector3 v = rigidbody->velocity - col.rigidbody->velocity;
 	float vn = v.dotProduct(mtd.normalisedCopy());
 
 	// sphere intersecting but moving away from each other already
@@ -52,8 +47,8 @@ void MovableObject::handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogr
 	Ogre::Vector3 impulse = mtd * i;
 
 	// change in momentum
-	velocity = velocity + (impulse * (im1));
-	col.velocity = col.velocity - (impulse * (im2));
+	rigidbody->velocity = rigidbody->velocity + (impulse * (im1));
+	col.rigidbody->velocity = col.rigidbody->velocity - (impulse * (im2));
 }
 
 void MovableObject::handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere)
@@ -66,7 +61,7 @@ void MovableObject::handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphe
 	// minimum translation distance to push balls apart after intersecting
 	Ogre::Vector3 mtd = delta * ((mSphere.getRadius() + sphere.getRadius() - d) / d);
 
-	float im1 = inverseMass;
+	float im1 = rigidbody->inverseMass;
 
 	// push-pull them apart based off their mass
 	pos = pos + mtd;
@@ -74,7 +69,7 @@ void MovableObject::handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphe
 	mMainNode->setPosition(mMainNode->getPosition() + mtd);
 
 	// impact speed
-	Ogre::Vector3 v = velocity;
+	Ogre::Vector3 v = rigidbody->velocity;
 	float vn = v.dotProduct(mtd.normalisedCopy());
 
 	// sphere intersecting but moving away from each other already

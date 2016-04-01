@@ -10,14 +10,12 @@
 */
 #include "WorldChunk.h"
 
-WorldChunk::WorldChunk(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, Ogre::Vector3 worldLocation, Ogre::Vector3 objectScale, std::list<Ogre::Sphere *> sphereList) : Object(name, sceneMgr, meshName)
+WorldChunk::WorldChunk(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, Ogre::Vector3 worldLocation, Ogre::Vector3 objectScale) : Object(name, sceneMgr, meshName)
 {
 	mMainNode->setPosition(worldLocation);	//Sets the world location of the Node
 	mMainNode->setScale(objectScale);		//Sets the scale of the Node
 
 	mMainNode->attachObject(mEntity);
-	
-	collisionSphereList = sphereList;
 }
 
 void WorldChunk::update(Ogre::Real elapsedTime, OIS::Keyboard * input)

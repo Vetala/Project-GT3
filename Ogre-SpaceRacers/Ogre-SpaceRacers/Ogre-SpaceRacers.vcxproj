@@ -35,6 +35,7 @@
     <ClInclude Include="source\Finish.h" />
     <ClInclude Include="source\MovableObject.h" />
     <ClInclude Include="source\Object.h" />
+    <ClInclude Include="source\Physics.h" />
     <ClInclude Include="source\WorldChunk.h" />
     <ClInclude Include="source\ShipCharacter.h" />
     <ClInclude Include="source\TutorialApplication.h" />

@@ -22,6 +22,7 @@ http://www.ogre3d.org/wiki/
 #include "ShipCharacter.h"
 #include "World_1.h"
 #include "Finish.h"
+#include "Physics.h"
 
 //---------------------------------------------------------------------------
 struct Keys
