@@ -1,17 +1,22 @@
 #pragma once
 #include "Character.h"
+#include "Controls.h"
+struct Keys;
 
 class ShipCharacter : public Character
 {
 protected:
 	int mShipHealth; ///The current health amount the spaceship has
+	int mBoost;
+	Controls *player;
 
 public:
-	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, Ogre::Camera *camera = 0);
+	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, int shipBoost,Controls *controls, Ogre::Camera *camera = 0);
 	~ShipCharacter();
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 	void doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr);
 	void respawn();
+	void boosting();
 	void doDamage(int damage);
 	void handleCollision(SphereCollider mSphere, MovableObject col, SphereCollider sphere);
 	void handleCollision(SphereCollider mSphere, Object col, SphereCollider sphere);
@@ -22,8 +27,9 @@ public:
 	Ogre::Vector3 lastFrameAcceleration; ///the acceleration during the last frame on the ship. This is used to check if the ship is accelerating 
 	Ogre::Vector3 mPositionOffset; ///The position difference from the starting position
 	Ogre::Radian turned; ///The amount of degrees the ship has turned. Used to turn the ship back after it has stop turning
-	float accelSpeed; ///the speed at which the ship accelerates
-
+	Ogre::Real accelSpeed; ///the speed at which the ship accelerates
+	Ogre::Real baseAccel;
+	
 	bool respawning; ///a boolean to check if the ship is currently respawning. If the ship is respawning the update function cannot be called upon resulting in no possible movement
 	bool starting;
 	bool finished;

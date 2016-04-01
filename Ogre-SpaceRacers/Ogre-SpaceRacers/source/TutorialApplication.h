@@ -23,17 +23,10 @@ http://www.ogre3d.org/wiki/
 #include "World_1.h"
 #include "Finish.h"
 #include "Physics.h"
+#include "Controls.h"
 
 //---------------------------------------------------------------------------
-struct Keys
-{
-	OIS::KeyCode forwards;
-	OIS::KeyCode backwards;
-	OIS::KeyCode left;
-	OIS::KeyCode right;
-	OIS::KeyCode boost;
-	OIS::KeyCode shoot;
-};
+
 
 
 class TutorialApplication : public BaseApplication
@@ -41,6 +34,8 @@ class TutorialApplication : public BaseApplication
 public:
     TutorialApplication(void);
     virtual ~TutorialApplication(void);
+	Controls *player1;
+	Controls *player2;
 
 protected:
     virtual void createScene(void);

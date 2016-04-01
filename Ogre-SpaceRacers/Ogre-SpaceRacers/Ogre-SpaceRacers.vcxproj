@@ -32,6 +32,7 @@
   <ItemGroup>
     <ClInclude Include="source\BaseApplication.h" />
     <ClInclude Include="source\Character.h" />
+    <ClInclude Include="source\Controls.h" />
     <ClInclude Include="source\Finish.h" />
     <ClInclude Include="source\MovableObject.h" />
     <ClInclude Include="source\Object.h" />
