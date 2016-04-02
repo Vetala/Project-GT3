@@ -182,7 +182,14 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 					turning = false;
 				}
 			}
-		
+		if(mShipNode->getOrientation().getRoll() >Ogre::Radian(0) && !turning)
+		{
+			mShipNode->roll(Ogre::Radian(-rollSpeed*elapsedTime));
+		}
+		if (mShipNode->getOrientation().getRoll() < Ogre::Radian(0)&& !turning)
+		{
+			mShipNode->roll(Ogre::Radian(rollSpeed*elapsedTime));
+		}
 		lastFrameAcceleration = rigidbody->acceleration;
 		rigidbody->velocity += rigidbody->acceleration;
 		rigidbody->velocity *= rigidbody->drag;
