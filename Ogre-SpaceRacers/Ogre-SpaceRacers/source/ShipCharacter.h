@@ -1,17 +1,22 @@
 #pragma once
 #include "Character.h"
 #include "Controls.h"
+#include "InputManager.h"
+#include "vector"
 struct Keys;
 
 class ShipCharacter : public Character
 {
 protected:
 	int mShipHealth; ///The current health amount the spaceship has
+	int mStartShipHealth;///The starting amount of health the spaceship has
 	int mBoost;
+	int playerNumber; ///Used if a controller is connected
 	Controls *player;
+	InputManager *controllerManager;
 
 public:
-	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, int shipBoost,Controls *controls, Ogre::Camera *camera = 0);
+	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, int shipBoost,Controls *controls = 0,InputManager *inputManager = 0,  Ogre::Camera *camera = 0);
 	~ShipCharacter();
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 	void doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr);
@@ -38,6 +43,8 @@ public:
 	float rollSpeed;///the speed at which the ship rolls during turning
 	float pitchSpeed;///the speed at which the ship pitches during acceleration/decelleration
 	int baseRespawnTime;///the max time it can take for a ship to respawn
+	int maxVibrateTime;///the max time a controller can vibrate after taking damage
+	int vibrateTimer;///remaining amount of frames the controller is vibrating
 };
 
 

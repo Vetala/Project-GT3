@@ -10,7 +10,7 @@
 */
 #include "ShipCharacter.h"
 
-ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, int shipBoost, Controls *controls, Ogre::Camera *camera) : Character(name, sceneMgr, meshName, camera)
+ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, int shipBoost, Controls *controls,InputManager *inputManager ,Ogre::Camera *camera) : Character(name, sceneMgr, meshName, camera)
 {
 	/**
 	*The constructor for a controllable spacechip currently asks for a name, the scene manager, a health amount and a camera
@@ -19,12 +19,35 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	*The shiphealth has to be set in the constructor at the moment.
 	*The camera has to be a predefined camera with a predefined viewport. The constructor asks for a camera to make sure that the camera correctly follows this ship
 	*/
+	mStartShipHealth = shipHealth;
 	mShipHealth = shipHealth;
 	mBoost = shipBoost;
 	starting = true;
 	finished = false;
 	respawning = true;
 	baseRespawnTime = 60;
+	maxVibrateTime = 30;
+	vibrateTimer = -1;
+
+
+	if(inputManager != 0)
+	{
+		controllerManager = new InputManager();
+		controllerManager = inputManager;
+		if(mName == "Ship1")
+		{
+			playerNumber = 0;
+		}
+		if(mName == "Ship2")
+		{
+			playerNumber = 1;
+		}
+	}
+	if (controls != 0)
+	{
+		player = new Controls();
+		player = controls;
+	}
 	
 	lastFrameAcceleration = (0, 0, 0);
 	rollSpeed = 1; //Speed at which the spaceship rolls when turning
@@ -56,8 +79,6 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	s->setPositionToParentPosition(mMainNode->getPosition());
 	sphereColliders.push_back(s);
 	respawnTimer = baseRespawnTime;
-	player = new Controls();
-	player = controls;
 }
 
 void ShipCharacter::doDamage(int damage)
@@ -67,6 +88,11 @@ void ShipCharacter::doDamage(int damage)
 	*If the players health drops below 0 the player respawns
 	*/
 	mShipHealth = mShipHealth - damage;
+	if (controllerManager != 0)
+	{
+		vibrateTimer = maxVibrateTime;
+		controllerManager->Vibrate(playerNumber);
+	}
 	if (mShipHealth < 1) {
 		respawn();
 	}
@@ -74,6 +100,9 @@ void ShipCharacter::doDamage(int damage)
 
 void ShipCharacter::boosting()
 {
+	/**
+	*If the player presses the boost key it temporarily gets additional acceleration speed resulting in a higher top speed while the player has boost
+	*/
 	if (mBoost > 0)
 	{
 		mBoost--;
@@ -92,6 +121,7 @@ void ShipCharacter::respawn()
 	*If the characters health drops below 0 this function is called. The players position is set back.
 	*/
 	respawning = true;
+	mShipHealth = mStartShipHealth;
 }
 
 void ShipCharacter::handleCollision(SphereCollider mSphere, Object col, SphereCollider sphere)
@@ -135,10 +165,12 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	Character::update(elapsedTime, input);
 	if (!respawning)
 	{
+		if (player != 0)
+		{
 			if (input->isKeyDown(player->shoot)) {
-				respawn();
+				doDamage(1);
 			}
-			if(input->isKeyDown(player->boost))
+			if (input->isKeyDown(player->boost))
 			{
 				boosting();
 			}
@@ -182,19 +214,57 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 					turning = false;
 				}
 			}
-		if(mShipNode->getOrientation().getRoll() >Ogre::Radian(0) && !turning)
-		{
-			mShipNode->roll(Ogre::Radian(-rollSpeed*elapsedTime));
 		}
-		if (mShipNode->getOrientation().getRoll() < Ogre::Radian(0)&& !turning)
+		if (controllerManager != 0)
 		{
-			mShipNode->roll(Ogre::Radian(rollSpeed*elapsedTime));
+			if (controllerManager->GetButton(0x0010,playerNumber)) {
+				doDamage(1);
+			}
+			if (controllerManager->GetButton(0x0200,playerNumber))
+			{
+				boosting();
+			}
+			if (controllerManager->GetButton(0x1000,playerNumber)) {
+				rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
+				if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
+				{
+					mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
+				}
+			}
+			else {
+				if (controllerManager->GetButton(0x2000,playerNumber)) {
+					rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
+					if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
+					{
+						mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
+					}
+				}
+				else {
+					rigidbody->acceleration = 0;
+				}
+			}
+			if (controllerManager->GetLeftStick(playerNumber).at(0)<0) {
+				turning = true;
+				mMainNode->yaw(Ogre::Radian(2 * elapsedTime));
+				if (mShipNode->getOrientation().getRoll() >= Ogre::Radian(-0.3))
+				{
+					mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
+				}
+			}
+			else {
+				if (controllerManager->GetLeftStick(playerNumber).at(0)>0) {
+					turning = true;
+					mMainNode->yaw(Ogre::Radian(-2 * elapsedTime));
+					if (mShipNode->getOrientation().getRoll() <= Ogre::Radian(0.3))
+					{
+						mShipNode->roll(Ogre::Radian(rollSpeed * elapsedTime));
+					}
+				}
+				else {
+					turning = false;
+				}
+			}
 		}
-		lastFrameAcceleration = rigidbody->acceleration;
-		rigidbody->velocity += rigidbody->acceleration;
-		rigidbody->velocity *= rigidbody->drag;
-		mMainNode->translate(rigidbody->velocity);
-		mSceneMgr->getSceneNode(mName + "_camera")->setPosition(cameraNodeOffSet * (1 + (rigidbody->velocity.length()*mTightness)));
 	}
 	else {
 		rigidbody->velocity = (0, 0, 0);
@@ -210,8 +280,31 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			respawnTimer = baseRespawnTime;
 		}
 	}
+	if (mShipNode->getOrientation().getRoll() >Ogre::Radian(0) && !turning)
+	{
+		mShipNode->roll(Ogre::Radian(-rollSpeed*elapsedTime));
+	}
+	if (mShipNode->getOrientation().getRoll() < Ogre::Radian(0) && !turning)
+	{
+		mShipNode->roll(Ogre::Radian(rollSpeed*elapsedTime));
+	}
+	lastFrameAcceleration = rigidbody->acceleration;
+	rigidbody->velocity += rigidbody->acceleration;
+	rigidbody->velocity *= rigidbody->drag;
+	mMainNode->translate(rigidbody->velocity);
+	mSceneMgr->getSceneNode(mName + "_camera")->setPosition(cameraNodeOffSet * (1 + (rigidbody->velocity.length()*mTightness)));
+	accelSpeed = baseAccel;
 	Ogre::Vector3 fixedY = mMainNode->getPosition();
 	fixedY.y = 3;
+	if(vibrateTimer > 0)
+	{
+		vibrateTimer--;
+	}
+	if(vibrateTimer == 0)
+	{
+		vibrateTimer--;
+		controllerManager->StopVibrate(playerNumber);
+	}
 	//mMainNode->setPosition(fixedY);
 }
 
@@ -240,7 +333,14 @@ void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedG
 			}
 			else {
 				respawnGUI->hide();
-				mTrayMgr->removeWidgetFromTray("Respawn");
+				if(mName == "Ship1")
+				{
+					mTrayMgr->removeWidgetFromTray("Respawn");
+				}
+				if(mName == "Ship2")
+				{
+					mTrayMgr->removeWidgetFromTray("Respawn2");
+				}
 			}
 		}
 	}

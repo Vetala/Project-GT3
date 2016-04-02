@@ -22,18 +22,21 @@
     <ClCompile Include="source\BaseApplication.cpp" />
     <ClCompile Include="source\Character.cpp" />
     <ClCompile Include="source\Finish.cpp" />
+    <ClCompile Include="source\InputManager.cpp" />
     <ClCompile Include="source\MovableObject.cpp" />
     <ClCompile Include="source\Object.cpp" />
     <ClCompile Include="source\WorldChunk.cpp" />
     <ClCompile Include="source\ShipCharacter.cpp" />
     <ClCompile Include="source\TutorialApplication.cpp" />
     <ClCompile Include="source\World_1.cpp" />
+    <ClCompile Include="source\XBOXController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\BaseApplication.h" />
     <ClInclude Include="source\Character.h" />
     <ClInclude Include="source\Controls.h" />
     <ClInclude Include="source\Finish.h" />
+    <ClInclude Include="source\InputManager.h" />
     <ClInclude Include="source\MovableObject.h" />
     <ClInclude Include="source\Object.h" />
     <ClInclude Include="source\Physics.h" />
@@ -41,6 +44,7 @@
     <ClInclude Include="source\ShipCharacter.h" />
     <ClInclude Include="source\TutorialApplication.h" />
     <ClInclude Include="source\World_1.h" />
+    <ClInclude Include="source\XBOXController.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4BCDD65A-DFB9-4E81-B62B-09D24446A90B}</ProjectGuid>

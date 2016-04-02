@@ -24,6 +24,7 @@ http://www.ogre3d.org/wiki/
 #include "Finish.h"
 #include "Physics.h"
 #include "Controls.h"
+#include "InputManager.h"
 
 //---------------------------------------------------------------------------
 
@@ -36,6 +37,7 @@ public:
     virtual ~TutorialApplication(void);
 	Controls *player1;
 	Controls *player2;
+	InputManager *inputManager;
 
 protected:
     virtual void createScene(void);

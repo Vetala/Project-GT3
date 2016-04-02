@@ -46,6 +46,7 @@ void TutorialApplication::createScene(void)
 {
 	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
 	//If there are performance issues try adjusting the shadowtype to: Ogre::SHADOWTYPE_STENCIL_MODULATIVE.  or Ogre::SHADOWTYPE_TEXTURE_MODULATIVE.
+	inputManager = new InputManager;
 
 	//creates a floor
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
@@ -78,8 +79,22 @@ void TutorialApplication::createScene(void)
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here
-	ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0),shipBoost,player1,mCamera);
-	ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0),shipBoost,player2,mCamera2);
+	if (inputManager->IsConnected(0))
+	{
+		ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, 0, inputManager, mCamera);
+	}
+	else
+	{
+		ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, player1, 0, mCamera);
+	}
+	if (inputManager->IsConnected(2))
+	{
+		ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, 0, inputManager, mCamera2);
+	}
+	else
+	{
+		ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, player2, 0, mCamera2);
+	}
 	world1 = new World_1(mSceneMgr, objectList);
 	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
 	shipList.push_back(ship);
@@ -109,7 +124,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 void TutorialApplication::doGUI()
 {
 	ship->doGUI(respawnGUI, speedGUI, mTrayMgr);
-	ship2->doGUI(respawnGUI, speedGUI2, mTrayMgr);
+	ship2->doGUI(respawnGUI2, speedGUI2, mTrayMgr);
 }
 
 void TutorialApplication::checkCollision()

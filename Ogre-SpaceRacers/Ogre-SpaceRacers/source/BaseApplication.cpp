@@ -25,6 +25,9 @@ http://www.ogre3d.org/wiki/
 */
 
 #include "BaseApplication.h"
+#include "XBOXController.h"
+#include "InputManager.h"
+
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #include <macUtils.h>
@@ -149,6 +152,7 @@ void BaseApplication::createFrameListener(void)
 	speedGUI2 = mTrayMgr->createLabel(OgreBites::TL_BOTTOM, "Speed2", "Speed: ", 600);
 	speedGUI = mTrayMgr->createLabel(OgreBites::TL_TOP, "Speed", "Speed: ", 600);
 	respawnGUI = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn", "Respawning in", 400); //Also gets used at the start and finish of the race
+	respawnGUI2 = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn2", "Respawning in", 400); //Also gets used at the start and finish of the race
 
     // Create a params panel for displaying sample details
     Ogre::StringVector items;
