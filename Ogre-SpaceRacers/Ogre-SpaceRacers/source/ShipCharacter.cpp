@@ -305,7 +305,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 		vibrateTimer--;
 		controllerManager->StopVibrate(playerNumber);
 	}
-	//mMainNode->setPosition(fixedY);
+	mMainNode->setPosition(fixedY);
 }
 
 void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr)
