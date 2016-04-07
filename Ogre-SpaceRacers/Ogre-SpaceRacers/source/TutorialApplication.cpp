@@ -31,6 +31,10 @@ TutorialApplication::TutorialApplication(void)
 	player2->boost = OIS::KeyCode(OIS::KC_RSHIFT);
 	player2->shoot = OIS::KeyCode(OIS::KC_PERIOD);
 
+	player1Name = "Ship1";
+	player2Name = "Ship2";
+	player1Ship = "Ship";
+	player2Ship = "Ship3";
 
 }
 
@@ -81,19 +85,19 @@ void TutorialApplication::createScene(void)
     // Create your scene here
 	if (inputManager->IsConnected(0))
 	{
-		ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, 0, inputManager, mCamera);
+		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, 0, inputManager, mCamera);
 	}
 	else
 	{
-		ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, player1, 0, mCamera);
+		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, player1, 0, mCamera);
 	}
 	if (inputManager->IsConnected(1))
 	{
-		ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, 0, inputManager, mCamera2);
+		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, 0, inputManager, mCamera2);
 	}
 	else
 	{
-		ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, player2, 0, mCamera2);
+		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, player2, 0, mCamera2);
 	}
 	world1 = new World_1(mSceneMgr, objectList);
 	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));

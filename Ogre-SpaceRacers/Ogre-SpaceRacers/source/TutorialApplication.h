@@ -45,6 +45,10 @@ protected:
 
 private:
 	Ogre::String cameraName;
+	Ogre::String player1Name;
+	Ogre::String player2Name;
+	Ogre::String player1Ship;
+	Ogre::String player2Ship;
 	int shipHealth;
 	int shipBoost;
 	Ogre::Real rotate;
