@@ -29,6 +29,7 @@
     <ClCompile Include="source\WorldChunk.cpp" />
     <ClCompile Include="source\ShipCharacter.cpp" />
     <ClCompile Include="source\TutorialApplication.cpp" />
+    <ClCompile Include="source\WorldObject.cpp" />
     <ClCompile Include="source\World_1.cpp" />
     <ClCompile Include="source\XBOXController.cpp" />
   </ItemGroup>
@@ -45,6 +46,7 @@
     <ClInclude Include="source\WorldChunk.h" />
     <ClInclude Include="source\ShipCharacter.h" />
     <ClInclude Include="source\TutorialApplication.h" />
+    <ClInclude Include="source\WorldObject.h" />
     <ClInclude Include="source\World_1.h" />
     <ClInclude Include="source\XBOXController.h" />
   </ItemGroup>
