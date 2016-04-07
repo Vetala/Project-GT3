@@ -97,9 +97,11 @@ void TutorialApplication::createScene(void)
 	}
 	world1 = new World_1(mSceneMgr, objectList);
 	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
+	powerup = new Powerup("Powerup", mSceneMgr, "Ship", Ogre::Vector3(100, 10, 400), Ogre::Vector3(3, 5, 8));
 	shipList.push_back(ship);
 	shipList.push_back(ship2);
 	objectList.push_back(finish);
+	objectList.push_back(powerup);
 }
 
 void TutorialApplication::doUpdate(const Ogre::FrameEvent& fe)

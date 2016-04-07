@@ -25,6 +25,7 @@
     <ClCompile Include="source\InputManager.cpp" />
     <ClCompile Include="source\MovableObject.cpp" />
     <ClCompile Include="source\Object.cpp" />
+    <ClCompile Include="source\Powerup.cpp" />
     <ClCompile Include="source\WorldChunk.cpp" />
     <ClCompile Include="source\ShipCharacter.cpp" />
     <ClCompile Include="source\TutorialApplication.cpp" />
@@ -40,6 +41,7 @@
     <ClInclude Include="source\MovableObject.h" />
     <ClInclude Include="source\Object.h" />
     <ClInclude Include="source\Physics.h" />
+    <ClInclude Include="source\Powerup.h" />
     <ClInclude Include="source\WorldChunk.h" />
     <ClInclude Include="source\ShipCharacter.h" />
     <ClInclude Include="source\TutorialApplication.h" />
