@@ -57,6 +57,13 @@ struct RigidBody {
 	}
 };
 
+struct PhysicsMaterial {
+	float bounciness;
+	PhysicsMaterial() {
+		bounciness = 1.0f;
+	}
+};
+
 class Physics
 {
 public:
