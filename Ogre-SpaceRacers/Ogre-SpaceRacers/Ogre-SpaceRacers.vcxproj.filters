@@ -57,7 +57,7 @@
     <ClCompile Include="source\XBOXController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\WorldObject.cpp">
+    <ClCompile Include="source\Powerup.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,7 +101,7 @@
     <ClInclude Include="source\XBOXController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\WorldObject.h">
+    <ClInclude Include="source\Powerup.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
