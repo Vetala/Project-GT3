@@ -141,7 +141,10 @@ void ShipCharacter::handleCollision(SphereCollider mSphere, Object col, SphereCo
 	}
 	if (!sphere.trigger)
 	{
+		float speedBefore = rigidbody->velocity.length();
 		MovableObject::handleCollision(mSphere.sphere, col, sphere.sphere);
+		float speedAfter = rigidbody->velocity.length();
+		doDamage((speedBefore - speedAfter) *0.1);
 	}
 }
 

@@ -22,6 +22,7 @@ http://www.ogre3d.org/wiki/
 #include "ShipCharacter.h"
 #include "World_1.h"
 #include "Finish.h"
+#include "Powerup.h"
 #include "Physics.h"
 #include "Controls.h"
 #include "InputManager.h"
@@ -45,6 +46,10 @@ protected:
 
 private:
 	Ogre::String cameraName;
+	Ogre::String player1Name;
+	Ogre::String player2Name;
+	Ogre::String player1Ship;
+	Ogre::String player2Ship;
 	int shipHealth;
 	int shipBoost;
 	Ogre::Real rotate;
@@ -54,6 +59,7 @@ private:
 	ShipCharacter *ship2;
 	World_1 *world1;
 	Finish *finish;
+	Powerup *powerup;
 	
 	bool isCollision(Ogre::Sphere s, Ogre::Sphere s2);
 	void checkCollision();
