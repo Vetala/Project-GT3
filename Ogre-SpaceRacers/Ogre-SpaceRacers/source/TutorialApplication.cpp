@@ -87,7 +87,7 @@ void TutorialApplication::createScene(void)
 	{
 		ship = new ShipCharacter("Ship1", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, player1, 0, mCamera);
 	}
-	if (inputManager->IsConnected(2))
+	if (inputManager->IsConnected(1))
 	{
 		ship2 = new ShipCharacter("Ship2", mSceneMgr, "Ship2", shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, 0, inputManager, mCamera2);
 	}
