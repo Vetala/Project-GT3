@@ -53,7 +53,7 @@ struct RigidBody {
 
 		velocity += resultingAcc * dt;
 		velocity *= pow(drag, dt);
-		force = (0, 0, 0);
+		//force = (0, 0, 0);
 	}
 };
 
