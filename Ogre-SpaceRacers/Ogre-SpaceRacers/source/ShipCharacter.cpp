@@ -89,14 +89,17 @@ void ShipCharacter::doDamage(int damage)
 	*If the player takes damage from hitting an obstacle or being hit by a bullet this function is called.
 	*If the players health drops below 0 the player respawns
 	*/
-	mShipHealth = mShipHealth - damage;
-	if (controllerManager != 0)
+	if (!respawning)
 	{
-		vibrateTimer = maxVibrateTime;
-		controllerManager->Vibrate(playerNumber);
-	}
-	if (mShipHealth < 1) {
-		respawn();
+		mShipHealth = mShipHealth - damage;
+		if (controllerManager != 0)
+		{
+			vibrateTimer = maxVibrateTime;
+			controllerManager->Vibrate(playerNumber);
+		}
+		if (mShipHealth < 1) {
+			respawn();
+		}
 	}
 }
 
