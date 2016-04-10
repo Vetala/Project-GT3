@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\BaseApplication.cpp" />
+    <ClCompile Include="source\Bullet.cpp" />
     <ClCompile Include="source\Character.cpp" />
     <ClCompile Include="source\Finish.cpp" />
     <ClCompile Include="source\InputManager.cpp" />
@@ -35,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\BaseApplication.h" />
+    <ClInclude Include="source\Bullet.h" />
     <ClInclude Include="source\Character.h" />
     <ClInclude Include="source\Controls.h" />
     <ClInclude Include="source\Finish.h" />

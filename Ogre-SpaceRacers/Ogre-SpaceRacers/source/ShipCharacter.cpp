@@ -10,7 +10,7 @@
 */
 #include "ShipCharacter.h"
 
-ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, int shipBoost, Controls *controls,InputManager *inputManager ,Ogre::Camera *camera) : Character(name, sceneMgr, meshName, camera)
+ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, int shipBoost, std::list<Bullet *> &bulletList, Controls *controls,InputManager *inputManager ,Ogre::Camera *camera) : Character(name, sceneMgr, meshName, camera), mBulletList(bulletList)
 {
 	/**
 	*The constructor for a controllable spacechip currently asks for a name, the scene manager, a health amount and a camera
@@ -28,7 +28,9 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	baseRespawnTime = 60;
 	maxVibrateTime = 30;
 	vibrateTimer = -1;
-
+	mSceneMgr = sceneMgr;
+	ammo = 10;
+	bullet = NULL;
 
 	if(inputManager != 0)
 	{
@@ -124,6 +126,26 @@ void ShipCharacter::respawn()
 	mShipHealth = mStartShipHealth;
 }
 
+void ShipCharacter::shoot()
+{
+	/**
+	*If the character can shoot the ship shoots a bullet.
+	*/
+	if (ammo > 0 && shootTimer < 0)
+	{
+		for each (Bullet *b in mBulletList)
+		{
+			if (b->active == false)
+			{
+				bullet = b;
+			}
+		}
+		bullet->setActive(mMainNode);
+		shootTimer = 10;
+		ammo--;
+	}
+}
+
 void ShipCharacter::handleCollision(SphereCollider mSphere, Object col, SphereCollider sphere)
 {
 	/**
@@ -171,7 +193,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 		if (player != 0)
 		{
 			if (input->isKeyDown(player->shoot)) {
-				doDamage(1);
+				shoot();
 			}
 			if (input->isKeyDown(player->boost))
 			{
@@ -221,7 +243,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 		if (controllerManager != 0)
 		{
 			if (controllerManager->GetButton(0x0010,playerNumber)) {
-				doDamage(1);
+				shoot();
 			}
 			if (controllerManager->GetButton(0x0200,playerNumber))
 			{
@@ -309,6 +331,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 		controllerManager->StopVibrate(playerNumber);
 	}
 	mMainNode->setPosition(fixedY);
+	shootTimer--;
 }
 
 void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr)
@@ -347,8 +370,7 @@ void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedG
 			}
 		}
 	}
-	Ogre::StringConverter converter;
-	speedGUI->setCaption("Health: " + converter.toString((int)(mShipHealth)) +"\t\t Boost:"+ converter.toString((int)(mBoost))+ "\t\t\tSpeed: " + converter.toString((int)(rigidbody->velocity.length() * 50)));
+	speedGUI->setCaption("Health: " + converter.toString((int)(mShipHealth)) +"\t\t Boost:"+ converter.toString((int)(mBoost))+ "\t\t\tSpeed: " + converter.toString((int)(rigidbody->velocity.length() * 50))+ "\t\t\t Ammo: " + converter.toString(ammo));
 	speedGUI->show();
 }
 

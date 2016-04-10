@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "Controls.h"
 #include "InputManager.h"
+#include "Bullet.h"
 #include "vector"
 struct Keys;
 
@@ -14,14 +15,19 @@ protected:
 	int playerNumber; ///Used if a controller is connected
 	Controls *player;
 	InputManager *controllerManager;
+	Ogre::SceneManager *mSceneMgr;
+	std::list<Bullet *> &mBulletList;
+	Ogre::StringConverter converter;
+	Bullet *bullet;
 
 public:
-	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, int shipBoost,Controls *controls = 0,InputManager *inputManager = 0,  Ogre::Camera *camera = 0);
+	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, int shipBoost, std::list<Bullet *> &bulletList, Controls *controls = 0,InputManager *inputManager = 0,  Ogre::Camera *camera = 0);
 	~ShipCharacter();
 	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 	void doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr);
 	void respawn();
 	void boosting();
+	void shoot();
 	void doDamage(int damage);
 	void handleCollision(SphereCollider mSphere, MovableObject col, SphereCollider sphere);
 	void handleCollision(SphereCollider mSphere, Object col, SphereCollider sphere);
@@ -45,6 +51,8 @@ public:
 	int baseRespawnTime;///the max time it can take for a ship to respawn
 	int maxVibrateTime;///the max time a controller can vibrate after taking damage
 	int vibrateTimer;///remaining amount of frames the controller is vibrating
+	int ammo;
+	int shootTimer;
 };
 
 

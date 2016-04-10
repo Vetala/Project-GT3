@@ -85,19 +85,19 @@ void TutorialApplication::createScene(void)
     // Create your scene here
 	if (inputManager->IsConnected(0))
 	{
-		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, 0, inputManager, mCamera);
+		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, bulletList, 0, inputManager, mCamera);
 	}
 	else
 	{
-		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, player1, 0, mCamera);
+		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, bulletList, player1, 0, mCamera);
 	}
 	if (inputManager->IsConnected(1))
 	{
-		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, 0, inputManager, mCamera2);
+		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, bulletList, 0, inputManager, mCamera2);
 	}
 	else
 	{
-		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, player2, 0, mCamera2);
+		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, bulletList, player2, 0, mCamera2);
 	}
 	world1 = new World_1(mSceneMgr, objectList);
 	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
@@ -106,6 +106,14 @@ void TutorialApplication::createScene(void)
 	shipList.push_back(ship2);
 	objectList.push_back(finish);
 	objectList.push_back(powerup);
+	for (int i = 0; i < 40; i++)
+	{
+		Bullet *bullet;
+		Ogre::String bulletName;
+		bulletName = "bullets" + converter.toString(bulletList.size());
+		bullet = new Bullet(bulletName, mSceneMgr, "Ship");
+		bulletList.push_back(bullet);
+	}
 }
 
 void TutorialApplication::doUpdate(const Ogre::FrameEvent& fe)
@@ -113,6 +121,10 @@ void TutorialApplication::doUpdate(const Ogre::FrameEvent& fe)
 	for each (ShipCharacter *ship in shipList)
 	{
 		ship->update(fe.timeSinceLastFrame, mKeyboard);
+	}
+	for each (Bullet *bullet in bulletList)
+	{
+		bullet->update(fe.timeSinceLastFrame, mKeyboard);
 	}
 }
 
@@ -139,6 +151,21 @@ void TutorialApplication::checkCollision()
 	{
 		for each (SphereCollider *sCol in ship->sphereColliders)
 		{
+			for each (Bullet *b in bulletList)
+			{
+				if (b->active == true)
+				{
+					for each (SphereCollider *sCol2 in b->sphereColliders)
+					{
+						bool col = isCollision(sCol->sphere, sCol2->sphere);
+						if (col)
+						{
+							ship->doDamage(25);
+							b->setInactive();
+						}
+					}
+				}
+			}
 			for each (ShipCharacter *ship2 in shipList)
 			{
 				if (ship != ship2)

@@ -43,6 +43,7 @@ public:
 protected:
     virtual void createScene(void);
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& fe);
+	Ogre::StringConverter converter;
 
 private:
 	Ogre::String cameraName;
@@ -67,6 +68,7 @@ private:
 	void doGUI();
 	std::list<Object *> objectList;
 	std::list<ShipCharacter *> shipList;
+	std::list<Bullet *> bulletList;
 };
 	
 //---------------------------------------------------------------------------
