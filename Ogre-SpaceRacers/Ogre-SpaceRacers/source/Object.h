@@ -13,6 +13,8 @@ public:
 	std::list<SphereCollider *> sphereColliders;
 	std::list<BoxCollider *> boxColliders;
 	Ogre::SceneManager *mSceneMgr;
+	
+	PhysicsMaterial *physicsMat;
 
 	Object(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName);
 	~Object();

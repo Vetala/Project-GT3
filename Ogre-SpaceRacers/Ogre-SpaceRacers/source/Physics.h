@@ -53,7 +53,14 @@ struct RigidBody {
 
 		velocity += resultingAcc * dt;
 		velocity *= pow(drag, dt);
-		force = (0, 0, 0);
+		//force = (0, 0, 0);
+	}
+};
+
+struct PhysicsMaterial {
+	float bounciness;
+	PhysicsMaterial() {
+		bounciness = 1.0f;
 	}
 };
 

@@ -46,9 +46,11 @@ void MovableObject::handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogr
 	float i = (-(1.0f) * vn) / (im1 + im2);
 	Ogre::Vector3 impulse = mtd * i;
 
+	float bounce = (physicsMat->bounciness + col.physicsMat->bounciness) / 2;
+
 	// change in momentum
-	rigidbody->velocity = rigidbody->velocity + (impulse * (im1));
-	col.rigidbody->velocity = col.rigidbody->velocity - (impulse * (im2));
+	rigidbody->velocity = (rigidbody->velocity + (impulse * (im1)) * bounce);
+	col.rigidbody->velocity = (col.rigidbody->velocity - (impulse * (im2)) * bounce);
 }
 
 void MovableObject::handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere)
@@ -79,8 +81,10 @@ void MovableObject::handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphe
 	float i = (-1.0f * vn) / 1;
 	Ogre::Vector3 impulse = mtd * i;
 
+	float bounce = (physicsMat->bounciness + col.physicsMat->bounciness) / 2;
+
 	// change in momentum
-	//velocity = velocity + (impulse * (im1));
+	rigidbody->velocity = (rigidbody->velocity + (impulse * (im1)) * bounce);
 }
 
 MovableObject::~MovableObject()

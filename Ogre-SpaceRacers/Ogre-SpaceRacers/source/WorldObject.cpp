@@ -20,6 +20,7 @@ WorldObject::WorldObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::
 
 	SphereCollider *s = new SphereCollider(false, Ogre::Sphere(Ogre::Vector3(0, 0, 0), mEntity->getBoundingRadius() * 1 ));// mMainNode->getScale().z));
 	s->setPositionToParentPosition(mMainNode->getPosition());
+	physicsMat->bounciness = 0.1;
 	sphereColliders.push_back(s);
 }
 
