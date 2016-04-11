@@ -1,40 +1,56 @@
-/*
------------------------------------------------------------------------------
-Filename:    TutorialApplication.cpp
------------------------------------------------------------------------------
-
-This source file is part of the
-   ___                 __    __ _ _    _
-  /___\__ _ _ __ ___  / / /\ \ (_) | _(_)
- //  // _` | '__/ _ \ \ \/  \/ / | |/ / |
-/ \_// (_| | | |  __/  \  /\  /| |   <| |
-\___/ \__, |_|  \___|   \/  \/ |_|_|\_\_|
-      |___/
-Tutorial Framework (for Ogre 1.9)
-http://www.ogre3d.org/wiki/
------------------------------------------------------------------------------
+/**
+* @class TutorialApplication
+* @author Explosive Shark Studios
+* @date 14/03/2016
+* @brief
+*
+* @section Description
+* This class is the base class of our game. It contains the initial draw calls aswell as the point where we initialise our update
 */
-
 #include "TutorialApplication.h"
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
 	shipHealth = 100;
+	shipBoost = 100;
+	//Setting controls for both players
+	player1 = new Controls();
+	player1->forwards = OIS::KeyCode(OIS::KC_W);
+	player1->backwards = OIS::KeyCode(OIS::KC_S);
+	player1->left = OIS::KeyCode(OIS::KC_A);
+	player1->right = OIS::KeyCode(OIS::KC_D);
+	player1->boost = OIS::KeyCode(OIS::KC_LSHIFT);
+	player1->shoot = OIS::KeyCode(OIS::KC_E);
+
+	player2 = new Controls();
+	player2->forwards = OIS::KeyCode(OIS::KC_UP);
+	player2->backwards = OIS::KeyCode(OIS::KC_DOWN);
+	player2->left = OIS::KeyCode(OIS::KC_LEFT);
+	player2->right = OIS::KeyCode(OIS::KC_RIGHT);
+	player2->boost = OIS::KeyCode(OIS::KC_RSHIFT);
+	player2->shoot = OIS::KeyCode(OIS::KC_PERIOD);
+
+	player1Name = "Ship1";
+	player2Name = "Ship2";
+	player1Ship = "Ship";
+	player2Ship = "Ship3";
+
 }
+
+
 //---------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
 {
 }
 
 
-
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
-	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
 	//If there are performance issues try adjusting the shadowtype to: Ogre::SHADOWTYPE_STENCIL_MODULATIVE.  or Ogre::SHADOWTYPE_TEXTURE_MODULATIVE.
-	//this reduces the quality of the shadow and removes the shadows added by multiple lighting sources on an object	
+	inputManager = new InputManager;
 
 	//creates a floor
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
@@ -67,19 +83,140 @@ void TutorialApplication::createScene(void)
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
     // Create your scene here
-	ship = new ShipCharacter("Ship 1", mSceneMgr, shipHealth, mCamera);
+	if (inputManager->IsConnected(0))
+	{
+		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, bulletList, 0, inputManager, mCamera);
+	}
+	else
+	{
+		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, bulletList, player1, 0, mCamera);
+	}
+	if (inputManager->IsConnected(1))
+	{
+		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, bulletList, 0, inputManager, mCamera2);
+	}
+	else
+	{
+		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, bulletList, player2, 0, mCamera2);
+	}
+	world1 = new World_1(mSceneMgr, objectList, powerUpList);
+	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
+	shipList.push_back(ship);
+	shipList.push_back(ship2);
+	objectList.push_back(finish);
+	for (int i = 0; i < 40; i++)
+	{
+		Bullet *bullet;
+		Ogre::String bulletName;
+		bulletName = "bullets" + converter.toString(bulletList.size());
+		bullet = new Bullet(bulletName, mSceneMgr, "Bullet");
+		bulletList.push_back(bullet);
+	}
+}
 
-	World1 = new World_1(mSceneMgr);
+void TutorialApplication::doUpdate(const Ogre::FrameEvent& fe)
+{
+	for each (ShipCharacter *ship in shipList)
+	{
+		ship->update(fe.timeSinceLastFrame, mKeyboard);
+	}
+	for each (Bullet *bullet in bulletList)
+	{
+		bullet->update(fe.timeSinceLastFrame, mKeyboard);
+	}
+	for each (Powerup *powerup in powerUpList)
+	{
+		powerup->update(fe.timeSinceLastFrame, mKeyboard);
+	}
 }
 
 //This is your Update, it runs every single frame
+//All gui stuff must be done here otherwise ogre decides that it doesnt want to run anymore
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
 	bool ret = BaseApplication::frameRenderingQueued(fe);
-	ship->update(fe.timeSinceLastFrame, mKeyboard);
+	checkCollision();
+	doUpdate(fe);
+	doGUI();
 	return ret;
 }
 
+void TutorialApplication::doGUI()
+{
+	ship->doGUI(respawnGUI, speedGUI, mTrayMgr);
+	ship2->doGUI(respawnGUI2, speedGUI2, mTrayMgr);
+}
+
+void TutorialApplication::checkCollision()
+{
+	for each (ShipCharacter *ship in shipList)
+	{
+		for each (SphereCollider *sCol in ship->sphereColliders)
+		{
+			for each (Bullet *b in bulletList)
+			{
+				if (b->active == true)
+				{
+					for each (SphereCollider *sCol2 in b->sphereColliders)
+					{
+						bool col = isCollision(sCol->sphere, sCol2->sphere);
+						if (col)
+						{
+							ship->doDamage(25);
+							b->setInactive();
+						}
+					}
+				}
+			}
+			for each (ShipCharacter *ship2 in shipList)
+			{
+				if (ship != ship2)
+				{
+					for each (SphereCollider *sCol2 in ship2->sphereColliders)
+					{
+						bool col = isCollision(sCol->sphere, sCol2->sphere);
+						if (col)
+						{
+							ship->handleCollision(*sCol, static_cast<MovableObject>(*ship2), *sCol2);
+							ship2->handleCollision(*sCol2, static_cast<MovableObject>(*ship), *sCol);
+						}
+					}
+				}
+			}
+
+			for each (Object *object in objectList)
+			{
+				for each (SphereCollider *sCol2 in object->sphereColliders)
+				{
+					bool col = isCollision(sCol->sphere, sCol2->sphere);
+					if (col)
+					{
+						ship->handleCollision(*sCol, *object, *sCol2);
+					}
+				}
+			}
+			for each (Powerup *powerUp in powerUpList)
+			{
+				if (powerUp->Inactive == false){
+					for each (SphereCollider *sCol2 in powerUp->sphereColliders)
+					{
+						bool col = isCollision(sCol->sphere, sCol2->sphere);
+						if (col)
+						{
+							ship->handleCollision(*sCol, *powerUp, *sCol2);
+							powerUp->SetInactive();
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+bool TutorialApplication::isCollision(Ogre::Sphere s, Ogre::Sphere s2)
+{
+	return s.intersects(s2);
+}
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN

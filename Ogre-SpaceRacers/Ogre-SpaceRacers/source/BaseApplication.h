@@ -1,19 +1,4 @@
-/*
------------------------------------------------------------------------------
-Filename:    BaseApplication.h
------------------------------------------------------------------------------
 
-This source file is part of the
-   ___                 __    __ _ _    _
-  /___\__ _ _ __ ___  / / /\ \ (_) | _(_)
- //  // _` | '__/ _ \ \ \/  \/ / | |/ / |
-/ \_// (_| | | |  __/  \  /\  /| |   <| |
-\___/ \__, |_|  \___|   \/  \/ |_|_|\_\_|
-      |___/
-Tutorial Framework (for Ogre 1.9)
-http://www.ogre3d.org/wiki/
------------------------------------------------------------------------------
-*/
 
 #ifndef __BaseApplication_h_
 #define __BaseApplication_h_
@@ -73,9 +58,13 @@ class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventList
 public:
     BaseApplication(void);
     virtual ~BaseApplication(void);
+	OgreBites::Label* speedGUI;
+	OgreBites::Label* respawnGUI;
+	OgreBites::Label* speedGUI2;
+	OgreBites::Label* respawnGUI2;
 
     virtual void go(void);
-
+	
 protected:
     virtual bool setup();
     virtual bool configure(void);
@@ -103,6 +92,7 @@ protected:
 
     Ogre::Root*                 mRoot;
     Ogre::Camera*               mCamera;
+	Ogre::Camera*				mCamera2;
     Ogre::SceneManager*         mSceneMgr;
     Ogre::RenderWindow*         mWindow;
     Ogre::String                mResourcesCfg;

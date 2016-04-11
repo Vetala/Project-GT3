@@ -1,17 +1,24 @@
 #pragma once
+#include "Physics.h"
 #include "BaseApplication.h"
 
 class Object
 {
 public:
-	float inverseMass;
-
 	Ogre::String mName;
+	Ogre::String mTag;
+	Ogre::String mMeshName;
 	Ogre::SceneNode *mMainNode; // Character position and rotation
 	Ogre::Entity *mEntity; // Mesh
+	std::list<SphereCollider *> sphereColliders;
+	std::list<BoxCollider *> boxColliders;
 	Ogre::SceneManager *mSceneMgr;
+	
+	PhysicsMaterial *physicsMat;
 
-	Object();
+	Object(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName);
+	~Object();
+
 	Ogre::Vector3 getWorldPosition() {
 		return mMainNode->_getDerivedPosition();
 	}

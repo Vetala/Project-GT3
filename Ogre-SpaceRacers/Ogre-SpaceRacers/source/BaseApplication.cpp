@@ -14,8 +14,20 @@ Tutorial Framework (for Ogre 1.9)
 http://www.ogre3d.org/wiki/
 -----------------------------------------------------------------------------
 */
+/**
+* @class BaseApplication
+* @author Explosive Shark Studios
+* @date 14/03/2016
+* @brief
+*
+* @section Description
+* This class contains all OgreSDK includes and basic objects
+*/
 
 #include "BaseApplication.h"
+#include "XBOXController.h"
+#include "InputManager.h"
+
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #include <macUtils.h>
@@ -25,6 +37,7 @@ http://www.ogre3d.org/wiki/
 BaseApplication::BaseApplication(void)
     : mRoot(0),
     mCamera(0),
+	mCamera2(0),
     mSceneMgr(0),
     mWindow(0),
     mResourcesCfg(Ogre::StringUtil::BLANK),
@@ -99,6 +112,10 @@ void BaseApplication::createCamera(void)
     mCamera->setNearClipDistance(5);
 
     mCameraMan = new OgreBites::SdkCameraMan(mCamera);   // Create a default camera controller
+
+	mCamera2 = mSceneMgr->createCamera("Player2Cam");
+	mCamera2->setPosition(Ogre::Vector3(0, 0, 0));
+	mCamera2->setNearClipDistance(5);
 }
 //---------------------------------------------------------------------------
 void BaseApplication::createFrameListener(void)
@@ -128,10 +145,14 @@ void BaseApplication::createFrameListener(void)
 
     mInputContext.mKeyboard = mKeyboard;
     mInputContext.mMouse = mMouse;
-    mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName", mWindow, mInputContext, this);
+    mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName",mWindow, mInputContext, this);
     mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-    mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
     mTrayMgr->hideCursor();
+	
+	speedGUI2 = mTrayMgr->createLabel(OgreBites::TL_BOTTOM, "Speed2", "Speed: ", 600);
+	speedGUI = mTrayMgr->createLabel(OgreBites::TL_TOP, "Speed", "Speed: ", 600);
+	respawnGUI = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn", "Respawning in", 400); //Also gets used at the start and finish of the race
+	respawnGUI2 = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn2", "Respawning in", 400); //Also gets used at the start and finish of the race
 
     // Create a params panel for displaying sample details
     Ogre::StringVector items;
@@ -152,6 +173,7 @@ void BaseApplication::createFrameListener(void)
     mDetailsPanel->setParamValue(10, "Solid");
     mDetailsPanel->hide();
 
+	mTrayMgr->toggleAdvancedFrameStats();
     mRoot->addFrameListener(this);
 }
 //---------------------------------------------------------------------------
@@ -162,11 +184,14 @@ void BaseApplication::destroyScene(void)
 void BaseApplication::createViewports(void)
 {
     // Create one viewport, entire window
-    Ogre::Viewport* vp = mWindow->addViewport(mCamera);
+    Ogre::Viewport* vp = mWindow->addViewport(mCamera,0,0,0,1.0f,0.5f);
     vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
+	Ogre::Viewport* vp2 = mWindow->addViewport(mCamera2,1,0.0f,0.5f,1.0f,0.5f);
+	vp2->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
 
     // Alter the camera aspect ratio to match the viewport
     mCamera->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
+	mCamera2->setAspectRatio(Ogre::Real(vp2->getActualWidth()) / Ogre::Real(vp2->getActualHeight()));
 }
 //---------------------------------------------------------------------------
 void BaseApplication::setupResources(void)
@@ -309,75 +334,6 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
     if (arg.key == OIS::KC_F)   // toggle visibility of advanced frame stats
     {
         mTrayMgr->toggleAdvancedFrameStats();
-    }
-    else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
-    {
-        if (mDetailsPanel->getTrayLocation() == OgreBites::TL_NONE)
-        {
-            mTrayMgr->moveWidgetToTray(mDetailsPanel, OgreBites::TL_TOPRIGHT, 0);
-            mDetailsPanel->show();
-        }
-        else
-        {
-            mTrayMgr->removeWidgetFromTray(mDetailsPanel);
-            mDetailsPanel->hide();
-        }
-    }
-    else if (arg.key == OIS::KC_T)   // cycle polygon rendering mode
-    {
-        Ogre::String newVal;
-        Ogre::TextureFilterOptions tfo;
-        unsigned int aniso;
-
-        switch (mDetailsPanel->getParamValue(9).asUTF8()[0])
-        {
-        case 'B':
-            newVal = "Trilinear";
-            tfo = Ogre::TFO_TRILINEAR;
-            aniso = 1;
-            break;
-        case 'T':
-            newVal = "Anisotropic";
-            tfo = Ogre::TFO_ANISOTROPIC;
-            aniso = 8;
-            break;
-        case 'A':
-            newVal = "None";
-            tfo = Ogre::TFO_NONE;
-            aniso = 1;
-            break;
-        default:
-            newVal = "Bilinear";
-            tfo = Ogre::TFO_BILINEAR;
-            aniso = 1;
-        }
-
-        Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(tfo);
-        Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(aniso);
-        mDetailsPanel->setParamValue(9, newVal);
-    }
-    else if (arg.key == OIS::KC_R)   // cycle polygon rendering mode
-    {
-        Ogre::String newVal;
-        Ogre::PolygonMode pm;
-
-        switch (mCamera->getPolygonMode())
-        {
-        case Ogre::PM_SOLID:
-            newVal = "Wireframe";
-            pm = Ogre::PM_WIREFRAME;
-            break;
-        case Ogre::PM_WIREFRAME:
-            newVal = "Points";
-            pm = Ogre::PM_POINTS;
-            break;
-        default:
-            newVal = "Solid";
-            pm = Ogre::PM_SOLID;
-        }
-
-        mCamera->setPolygonMode(pm);
-        mDetailsPanel->setParamValue(10, newVal);
     }
     else if(arg.key == OIS::KC_F5)   // refresh all textures
     {

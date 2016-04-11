@@ -19,32 +19,57 @@ http://www.ogre3d.org/wiki/
 #define __TutorialApplication_h_
 
 #include "BaseApplication.h"
-#include "ExtendedCamera.h"
 #include "ShipCharacter.h"
 #include "World_1.h"
+#include "Finish.h"
+#include "Powerup.h"
+#include "Physics.h"
+#include "Controls.h"
+#include "InputManager.h"
 
 //---------------------------------------------------------------------------
+
+
 
 class TutorialApplication : public BaseApplication
 {
 public:
     TutorialApplication(void);
     virtual ~TutorialApplication(void);
+	Controls *player1;
+	Controls *player2;
+	InputManager *inputManager;
 
 protected:
     virtual void createScene(void);
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& fe);
+	Ogre::StringConverter converter;
 
 private:
 	Ogre::String cameraName;
-	ShipCharacter *ship;
-	ExtendedCamera *exCamera;
+	Ogre::String player1Name;
+	Ogre::String player2Name;
+	Ogre::String player1Ship;
+	Ogre::String player2Ship;
 	int shipHealth;
+	int shipBoost;
 	Ogre::Real rotate;
 	Ogre::Real move;
 	Ogre::Vector3 startPosition;
-
-	World_1 *World1;
+	ShipCharacter *ship;
+	ShipCharacter *ship2;
+	World_1 *world1;
+	Finish *finish;
+	Powerup *powerup;
+	
+	bool isCollision(Ogre::Sphere s, Ogre::Sphere s2);
+	void checkCollision();
+	void doUpdate(const Ogre::FrameEvent& fe);
+	void doGUI();
+	std::list<Object *> objectList;
+	std::list<ShipCharacter *> shipList;
+	std::list<Powerup *> powerUpList;
+	std::list<Bullet *> bulletList;
 };
 	
 //---------------------------------------------------------------------------
