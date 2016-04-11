@@ -10,14 +10,23 @@
 */
 #include "ShipCharacter.h"
 
-ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, int shipBoost, std::list<Bullet *> &bulletList, Controls *controls,InputManager *inputManager ,Ogre::Camera *camera) : Character(name, sceneMgr, meshName, camera), mBulletList(bulletList)
+ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, 
+	int shipBoost, std::list<Bullet *> &bulletList, Controls *controls,InputManager *inputManager ,Ogre::Camera *camera) 
+	: Character(name, sceneMgr, meshName, camera), mBulletList(bulletList)
 {
 	/**
 	*The constructor for a controllable spacechip currently asks for a name, the scene manager, a health amount and a camera
 	*The name has to be unique to make sure that the construction of the scene nodes does not overwrite already created scene nodes
 	*The SceneManager has to be the main scenemanager
-	*The shiphealth has to be set in the constructor at the moment.
-	*The camera has to be a predefined camera with a predefined viewport. The constructor asks for a camera to make sure that the camera correctly follows this ship
+	*The shiphealth is the maximum amount of health this ship has, this is set in the constructor because different shiptypes can have different max health
+	*The positionOffset is the difference between the base starting position in on the racetrack and the starting position this spaceship should have
+	*The shipBoost is the maximum and starting amount of boost the ship has. 
+	*the bulletList reference is a list which contains all bullets. This is used to monitor which bullets are currently active and update them accordingly
+	*The controls is the control struct set for this spaceship.This is given in the construct to allow for changes to be made between races, can be 0 if a controller is used
+	*The inputManager is only given if a controller is connected for this player. Can be 0 if there are no controllers for this player
+	*The camera has to be a predefined camera with a predefined viewport. The constructor asks for a camera to make sure that the camera correctly 
+	*follows this ship. Can be 0
+	*
 	*/
 	mStartShipHealth = shipHealth;
 	mShipHealth = shipHealth;
@@ -29,7 +38,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	maxVibrateTime = 30;
 	vibrateTimer = -1;
 	mSceneMgr = sceneMgr;
-	ammo = 10;
+	mAmmo = 10;
 	bullet = NULL;
 
 	if(inputManager != 0)
@@ -83,7 +92,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	respawnTimer = baseRespawnTime;
 }
 
-void ShipCharacter::doDamage(int damage)
+void ShipCharacter::DoDamage(int damage)
 { 
 	/**
 	*If the player takes damage from hitting an obstacle or being hit by a bullet this function is called.
@@ -98,12 +107,12 @@ void ShipCharacter::doDamage(int damage)
 			controllerManager->Vibrate(playerNumber);
 		}
 		if (mShipHealth < 1) {
-			respawn();
+			Respawn();
 		}
 	}
 }
 
-void ShipCharacter::boosting()
+void ShipCharacter::Boost()
 {
 	/**
 	*If the player presses the boost key it temporarily gets additional acceleration speed resulting in a higher top speed while the player has boost
@@ -120,7 +129,7 @@ void ShipCharacter::boosting()
 
 }
 
-void ShipCharacter::respawn() 
+void ShipCharacter::Respawn() 
 {
 	/**
 	*If the characters health drops below 0 this function is called. The players position is set back.
@@ -129,12 +138,12 @@ void ShipCharacter::respawn()
 	mShipHealth = mStartShipHealth;
 }
 
-void ShipCharacter::shoot()
+void ShipCharacter::Shoot()
 {
 	/**
 	*If the character can shoot the ship shoots a bullet.
 	*/
-	if (ammo > 0 && shootTimer < 0)
+	if (mAmmo > 0 && shootTimer < 0)
 	{
 		for each (Bullet *b in mBulletList)
 		{
@@ -143,13 +152,13 @@ void ShipCharacter::shoot()
 				bullet = b;
 			}
 		}
-		bullet->setActive(mMainNode);
+		bullet->SetActive(mMainNode);
 		shootTimer = 10;
-		ammo--;
+		mAmmo--;
 	}
 }
 
-void ShipCharacter::handleCollision(SphereCollider mSphere, Object col, SphereCollider sphere)
+void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCollider sphere)
 {
 	/**
 	*This handles all the spaceship specific collisions with non moving objects
@@ -167,95 +176,96 @@ void ShipCharacter::handleCollision(SphereCollider mSphere, Object col, SphereCo
 	if (!sphere.trigger)
 	{
 		float speedBefore = rigidbody->velocity.length();
-		MovableObject::handleCollision(mSphere.sphere, col, sphere.sphere);
+		MovableObject::HandleCollision(mSphere.sphere, col, sphere.sphere);
 		float speedAfter = rigidbody->velocity.length();
-		doDamage((speedBefore - speedAfter) * 10);
-	}
-	if (col.mTag == "Powerup")
-	{
-		int v1 = rand() % 100;
-
-		if (v1 <= 33)
-		{
-			mBoost += 100;
-		}
-
-		if (v1 >= 34 && v1 <= 66)
-		{
-			ammo += 10;
-		}
-
-		if (v1 >= 67)
-		{
-			mShipHealth += 100;
-		}
+		DoDamage((speedBefore - speedAfter) * 10);
 	}
 }
 
-void ShipCharacter::handleCollision(SphereCollider mSphere, MovableObject col, SphereCollider sphere)
+void ShipCharacter::HandleCollision(SphereCollider mSphere, MovableObject col, SphereCollider sphere)
 {
 	/**
 	*This handles all the spaceship specific collisions with moving objects
 	*/
 	if (!sphere.trigger)
 	{
-		MovableObject::handleCollision(mSphere.sphere, col, sphere.sphere);
+		MovableObject::HandleCollision(mSphere.sphere, col, sphere.sphere);
 	}
 }
 
-void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
+void ShipCharacter::Forward(Ogre::Real elapsedTime)
+{
+	rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
+	if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
+	{
+		mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
+	}
+}
+
+void ShipCharacter::Backward(Ogre::Real elapsedTime)
+{
+	rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
+	if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
+	{
+		mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
+	}
+}
+
+void ShipCharacter::TurnLeft(Ogre::Real elapsedTime)
+{
+	turning = true;
+	mMainNode->yaw(Ogre::Radian(2 * elapsedTime));
+	if (mShipNode->getOrientation().getRoll() >= Ogre::Radian(-0.3))
+	{
+		mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
+	}
+}
+
+void ShipCharacter::TurnRight(Ogre::Real elapsedTime)
+{
+	turning = true;
+	mMainNode->yaw(Ogre::Radian(-2 * elapsedTime));
+	if (mShipNode->getOrientation().getRoll() <= Ogre::Radian(0.3))
+	{
+		mShipNode->roll(Ogre::Radian(rollSpeed * elapsedTime));
+	}
+}
+
+void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 {
 	/**
 	*In the update function all the inputs are handled and the spaceship is moved/rotated
 	*If the player is currently respawning the update does not execute
 	*/
-	Character::update(elapsedTime, input);
+	Character::Update(elapsedTime, input);
 	if (!respawning)
 	{
 		if (player != 0)
 		{
 			if (input->isKeyDown(player->shoot)) {
-				shoot();
+				Shoot();
 			}
 			if (input->isKeyDown(player->boost))
 			{
-				boosting();
+				Boost();
 			}
 			if (input->isKeyDown(player->forwards)) {
-				rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
-				if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
-				{
-					mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
-				}
+				Forward(elapsedTime);
 			}
 			else {
 				if (input->isKeyDown(player->backwards)) {
-					rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
-					if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
-					{
-						mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
-					}
+					Backward(elapsedTime);
 				}
 				else {
 					rigidbody->acceleration = 0;
 				}
 			}
 			if (input->isKeyDown(player->left)) {
-				turning = true;
-				mMainNode->yaw(Ogre::Radian(2 * elapsedTime));
-				if (mShipNode->getOrientation().getRoll() >= Ogre::Radian(-0.3))
-				{
-					mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
-				}
+				TurnLeft(elapsedTime);
 			}
 			else {
 				if (input->isKeyDown(player->right)) {
-					turning = true;
-					mMainNode->yaw(Ogre::Radian(-2 * elapsedTime));
-					if (mShipNode->getOrientation().getRoll() <= Ogre::Radian(0.3))
-					{
-						mShipNode->roll(Ogre::Radian(rollSpeed * elapsedTime));
-					}
+					TurnRight(elapsedTime);
 				}
 				else {
 					turning = false;
@@ -265,47 +275,29 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 		if (controllerManager != 0)
 		{
 			if (controllerManager->GetButton(0x0100,playerNumber)) {
-				shoot();
+				Shoot();
 			}
 			if (controllerManager->GetButton(0x0200,playerNumber))
 			{
-				boosting();
+				Boost();
 			}
 			if (controllerManager->GetButton(0x1000,playerNumber)) {
-				rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
-				if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
-				{
-					mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
-				}
+				Forward(elapsedTime);
 			}
 			else {
-				if (controllerManager->GetButton(0x2000,playerNumber)) {
-					rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
-					if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
-					{
-						mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
-					}
+				if (controllerManager->GetButton(0x2000, playerNumber)) {
+					Backward(elapsedTime);
 				}
 				else {
 					rigidbody->acceleration = 0;
 				}
 			}
 			if (controllerManager->GetLeftStick(playerNumber).at(0)<0) {
-				turning = true;
-				mMainNode->yaw(Ogre::Radian(2 * elapsedTime));
-				if (mShipNode->getOrientation().getRoll() >= Ogre::Radian(-0.3))
-				{
-					mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
-				}
+				TurnLeft(elapsedTime);
 			}
 			else {
 				if (controllerManager->GetLeftStick(playerNumber).at(0)>0) {
-					turning = true;
-					mMainNode->yaw(Ogre::Radian(-2 * elapsedTime));
-					if (mShipNode->getOrientation().getRoll() <= Ogre::Radian(0.3))
-					{
-						mShipNode->roll(Ogre::Radian(rollSpeed * elapsedTime));
-					}
+					TurnRight(elapsedTime);
 				}
 				else {
 					turning = false;
@@ -356,7 +348,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	shootTimer--;
 }
 
-void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr)
+void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr)
 {
 	if (starting)
 	{
@@ -392,7 +384,8 @@ void ShipCharacter::doGUI(OgreBites::Label* respawnGUI, OgreBites::Label* speedG
 			}
 		}
 	}
-	speedGUI->setCaption("Health: " + converter.toString((int)(mShipHealth)) +"\t\t Boost:"+ converter.toString((int)(mBoost))+ "\t\t\tSpeed: " + converter.toString((int)(rigidbody->velocity.length() * 50))+ "\t\t\t Ammo: " + converter.toString(ammo));
+	speedGUI->setCaption("Health: " + converter.toString((int)(mShipHealth)) +"\t\t Boost:"+ converter.toString((int)(mBoost))
+		+ "\t\t\tSpeed: " + converter.toString((int)(rigidbody->velocity.length() * 50))+ "\t\t\t Ammo: " + converter.toString(mAmmo));
 	speedGUI->show();
 }
 

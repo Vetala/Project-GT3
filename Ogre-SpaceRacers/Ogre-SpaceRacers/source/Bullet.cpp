@@ -7,7 +7,7 @@ Bullet::Bullet(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String mes
 	mSceneMgr = sceneMgr;
 	s = new SphereCollider(false, Ogre::Sphere(Ogre::Vector3(0, 0, 0), mEntity->getBoundingRadius() * mMainNode->getScale().z));
 	sphereColliders.push_back(s);
-	setInactive();
+	SetInactive();
 }
 
 
@@ -15,7 +15,7 @@ Bullet::~Bullet()
 {
 }
 
-void Bullet::setActive(Ogre::SceneNode *mShipNode)
+void Bullet::SetActive(Ogre::SceneNode *mShipNode)
 {
 	mMainNode->setPosition(mShipNode->getPosition());
 	mMainNode->setOrientation(mShipNode->getOrientation());
@@ -27,7 +27,7 @@ void Bullet::setActive(Ogre::SceneNode *mShipNode)
 	activeTimer = 20;
 }
 
-void Bullet::setInactive()
+void Bullet::SetInactive()
 {
 	active = false;
 	mMainNode->detachAllObjects();
@@ -35,7 +35,7 @@ void Bullet::setInactive()
 	s->setPositionToParentPosition(mMainNode->getPosition());
 }
 
-void Bullet::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
+void Bullet::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 {
 	if (active)
 	{
@@ -45,7 +45,7 @@ void Bullet::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 		activeTimer--;
 		if(activeTimer < 1)
 		{
-			setInactive();
+			SetInactive();
 		}
 	}
 }

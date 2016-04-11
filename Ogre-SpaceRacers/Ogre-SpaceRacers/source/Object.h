@@ -22,6 +22,6 @@ public:
 	Ogre::Vector3 getWorldPosition() {
 		return mMainNode->_getDerivedPosition();
 	}
-	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
-	void setVisible(bool visible);
+	void Update(Ogre::Real elapsedTime, OIS::Keyboard * input);
+	void SetVisible(bool visible);
 };

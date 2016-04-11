@@ -14,9 +14,9 @@ Finish::Finish(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String mes
 	sphereColliders.push_back(s);
 }
 
-void Finish::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
+void Finish::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 {
-	Object::update(elapsedTime, input);
+	Object::Update(elapsedTime, input);
 }
 
 Finish::~Finish()

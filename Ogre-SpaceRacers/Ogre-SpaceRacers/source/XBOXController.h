@@ -7,7 +7,7 @@
 #include <windows.h>
 #include <XInput.h>
 
-#pragma comment(lib, "XInput9_1_0.lib")
+#pragma comment(lib, "XInput.lib")
 
 // XBOX Controller Class Definition
 class XBOXController

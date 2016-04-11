@@ -12,12 +12,12 @@ Object::Object(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String mes
 	mEntity = mSceneMgr->createEntity(mName, mMeshName + ".mesh");
 }
 
-void Object::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
+void Object::Update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 {
 
 }
 
-void Object::setVisible(bool visible)
+void Object::SetVisible(bool visible)
 {
 	mMainNode->setVisible(visible);
 }

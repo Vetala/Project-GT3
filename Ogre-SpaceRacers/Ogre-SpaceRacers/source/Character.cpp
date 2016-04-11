@@ -16,9 +16,9 @@ Character::Character(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::Stri
 	}
 }
 
-void Character::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
+void Character::Update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 {
-	MovableObject::update(elapsedTime, input);
+	MovableObject::Update(elapsedTime, input);
 }
 
 Character::~Character()

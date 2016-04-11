@@ -14,13 +14,12 @@ WorldChunk::WorldChunk(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::St
 {
 	mMainNode->setPosition(worldLocation);	//Sets the world location of the Node
 	mMainNode->setScale(objectScale);		//Sets the scale of the Node
-
 	mMainNode->attachObject(mEntity);
 }
 
-void WorldChunk::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
+void WorldChunk::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 {
-	Object::update(elapsedTime, input);
+	Object::Update(elapsedTime, input);
 }
 
 WorldChunk::~WorldChunk()

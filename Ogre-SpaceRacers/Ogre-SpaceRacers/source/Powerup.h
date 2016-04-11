@@ -13,6 +13,6 @@ public:
 	
 	Powerup(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, Ogre::Vector3 worldLocation, Ogre::Quaternion worldRotation, Ogre::Vector3 objectScale, std::list<Ogre::Sphere *> sphereList);
 	~Powerup();
-	void update(Ogre::Real elapsedTime, OIS::Keyboard * input);
+	void Update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 	void SetInactive();
 };

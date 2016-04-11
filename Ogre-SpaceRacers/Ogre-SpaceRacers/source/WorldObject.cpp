@@ -15,7 +15,6 @@ WorldObject::WorldObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::
 	mMainNode->setPosition(worldLocation);		//Sets the world location of the Node
 	mMainNode->setOrientation(worldRotation);	//Sets the world rotation of the Node
 	mMainNode->setScale(objectScale);			//Sets the scale of the Node
-
 	mMainNode->attachObject(mEntity);
 
 	SphereCollider *s = new SphereCollider(false, Ogre::Sphere(Ogre::Vector3(0, 0, 0), mEntity->getBoundingRadius() * 0.75 * mMainNode->getScale().z));
@@ -24,9 +23,9 @@ WorldObject::WorldObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::
 	sphereColliders.push_back(s);
 }
 
-void WorldObject::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
+void WorldObject::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 {
-	Object::update(elapsedTime, input);
+	Object::Update(elapsedTime, input);
 }
 
 WorldObject::~WorldObject()

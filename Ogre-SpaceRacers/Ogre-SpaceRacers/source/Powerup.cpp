@@ -17,9 +17,9 @@ Powerup::Powerup(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String m
 	Inactive = false;
 }
 
-void Powerup::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
+void Powerup::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 {
-	Object::update(elapsedTime, input);
+	Object::Update(elapsedTime, input);
 
 	if (Inactive == true)
 	{
