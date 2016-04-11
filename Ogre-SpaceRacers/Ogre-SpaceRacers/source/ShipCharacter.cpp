@@ -152,7 +152,7 @@ void ShipCharacter::Shoot()
 				bullet = b;
 			}
 		}
-		bullet->setActive(mMainNode);
+		bullet->SetActive(mMainNode);
 		shootTimer = 10;
 		mAmmo--;
 	}
@@ -176,7 +176,7 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 	if (!sphere.trigger)
 	{
 		float speedBefore = rigidbody->velocity.length();
-		MovableObject::handleCollision(mSphere.sphere, col, sphere.sphere);
+		MovableObject::HandleCollision(mSphere.sphere, col, sphere.sphere);
 		float speedAfter = rigidbody->velocity.length();
 		DoDamage((speedBefore - speedAfter) * 10);
 	}
@@ -189,7 +189,45 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, MovableObject col, S
 	*/
 	if (!sphere.trigger)
 	{
-		MovableObject::handleCollision(mSphere.sphere, col, sphere.sphere);
+		MovableObject::HandleCollision(mSphere.sphere, col, sphere.sphere);
+	}
+}
+
+void ShipCharacter::Forward(Ogre::Real elapsedTime)
+{
+	rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
+	if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
+	{
+		mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
+	}
+}
+
+void ShipCharacter::Backward(Ogre::Real elapsedTime)
+{
+	rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
+	if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
+	{
+		mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
+	}
+}
+
+void ShipCharacter::TurnLeft(Ogre::Real elapsedTime)
+{
+	turning = true;
+	mMainNode->yaw(Ogre::Radian(2 * elapsedTime));
+	if (mShipNode->getOrientation().getRoll() >= Ogre::Radian(-0.3))
+	{
+		mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
+	}
+}
+
+void ShipCharacter::TurnRight(Ogre::Real elapsedTime)
+{
+	turning = true;
+	mMainNode->yaw(Ogre::Radian(-2 * elapsedTime));
+	if (mShipNode->getOrientation().getRoll() <= Ogre::Radian(0.3))
+	{
+		mShipNode->roll(Ogre::Radian(rollSpeed * elapsedTime));
 	}
 }
 
@@ -199,7 +237,7 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	*In the update function all the inputs are handled and the spaceship is moved/rotated
 	*If the player is currently respawning the update does not execute
 	*/
-	Character::update(elapsedTime, input);
+	Character::Update(elapsedTime, input);
 	if (!respawning)
 	{
 		if (player != 0)
@@ -209,43 +247,25 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			}
 			if (input->isKeyDown(player->boost))
 			{
-				Boosting();
+				Boost();
 			}
 			if (input->isKeyDown(player->forwards)) {
-				rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
-				if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
-				{
-					mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
-				}
+				Forward(elapsedTime);
 			}
 			else {
 				if (input->isKeyDown(player->backwards)) {
-					rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
-					if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
-					{
-						mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
-					}
+					Backward(elapsedTime);
 				}
 				else {
 					rigidbody->acceleration = 0;
 				}
 			}
 			if (input->isKeyDown(player->left)) {
-				turning = true;
-				mMainNode->yaw(Ogre::Radian(2 * elapsedTime));
-				if (mShipNode->getOrientation().getRoll() >= Ogre::Radian(-0.3))
-				{
-					mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
-				}
+				TurnLeft(elapsedTime);
 			}
 			else {
 				if (input->isKeyDown(player->right)) {
-					turning = true;
-					mMainNode->yaw(Ogre::Radian(-2 * elapsedTime));
-					if (mShipNode->getOrientation().getRoll() <= Ogre::Radian(0.3))
-					{
-						mShipNode->roll(Ogre::Radian(rollSpeed * elapsedTime));
-					}
+					TurnRight(elapsedTime);
 				}
 				else {
 					turning = false;
@@ -259,43 +279,25 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			}
 			if (controllerManager->GetButton(0x0200,playerNumber))
 			{
-				Boosting();
+				Boost();
 			}
 			if (controllerManager->GetButton(0x1000,playerNumber)) {
-				rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
-				if (mShipNode->getOrientation().getPitch() >= Ogre::Radian(-0.1))
-				{
-					mShipNode->pitch(Ogre::Radian(-pitchSpeed * elapsedTime));
-				}
+				Forward(elapsedTime);
 			}
 			else {
-				if (controllerManager->GetButton(0x2000,playerNumber)) {
-					rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, -0.5*accelSpeed * elapsedTime);
-					if (mShipNode->getOrientation().getPitch() <= Ogre::Radian(0.1))
-					{
-						mShipNode->pitch(Ogre::Radian(pitchSpeed * elapsedTime));
-					}
+				if (controllerManager->GetButton(0x2000, playerNumber)) {
+					Backward(elapsedTime);
 				}
 				else {
 					rigidbody->acceleration = 0;
 				}
 			}
 			if (controllerManager->GetLeftStick(playerNumber).at(0)<0) {
-				turning = true;
-				mMainNode->yaw(Ogre::Radian(2 * elapsedTime));
-				if (mShipNode->getOrientation().getRoll() >= Ogre::Radian(-0.3))
-				{
-					mShipNode->roll(Ogre::Radian(-rollSpeed * elapsedTime));
-				}
+				TurnLeft(elapsedTime);
 			}
 			else {
 				if (controllerManager->GetLeftStick(playerNumber).at(0)>0) {
-					turning = true;
-					mMainNode->yaw(Ogre::Radian(-2 * elapsedTime));
-					if (mShipNode->getOrientation().getRoll() <= Ogre::Radian(0.3))
-					{
-						mShipNode->roll(Ogre::Radian(rollSpeed * elapsedTime));
-					}
+					TurnRight(elapsedTime);
 				}
 				else {
 					turning = false;

@@ -30,12 +30,12 @@ public:
 	void Respawn();
 	void Boost();
 	void Shoot();
-	void Forward();
-	void Backward();
-	void TurnLeft();
-	void TurnRight();
 	void DoDamage(int damage);
 	void HandleCollision(SphereCollider mSphere, MovableObject col, SphereCollider sphere);
+	void Forward(Ogre::Real elapsedTime);
+	void Backward(Ogre::Real elapsedTime);
+	void TurnLeft(Ogre::Real elapsedTime);
+	void TurnRight(Ogre::Real elapsedTime);
 	void HandleCollision(SphereCollider mSphere, Object col, SphereCollider sphere);
 
 	Ogre::SceneNode *mRespawnNode; ///The spot where the ship will respawn in case of a crash
