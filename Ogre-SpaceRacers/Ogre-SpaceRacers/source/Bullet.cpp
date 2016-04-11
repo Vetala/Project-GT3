@@ -24,7 +24,7 @@ void Bullet::setActive(Ogre::SceneNode *mShipNode)
 	mEntity->setCastShadows(false);
 	s->setPositionToParentPosition(mMainNode->getPosition());
 	active = true;
-	activeTimer = 180;
+	activeTimer = 20;
 }
 
 void Bullet::setInactive()
@@ -39,7 +39,7 @@ void Bullet::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 {
 	if (active)
 	{
-		rigidbody->velocity = mMainNode->getOrientation() * Ogre::Vector3(0, 0, 240 * elapsedTime);
+		rigidbody->velocity = mMainNode->getOrientation() * Ogre::Vector3(0, 0, 600 * elapsedTime);
 		mMainNode->translate(rigidbody->velocity);
 		s->setPositionToParentPosition(mMainNode->getPosition());
 		activeTimer--;

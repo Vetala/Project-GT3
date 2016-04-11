@@ -245,7 +245,7 @@ void ShipCharacter::update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 		}
 		if (controllerManager != 0)
 		{
-			if (controllerManager->GetButton(0x0010,playerNumber)) {
+			if (controllerManager->GetButton(0x0100,playerNumber)) {
 				shoot();
 			}
 			if (controllerManager->GetButton(0x0200,playerNumber))

@@ -111,7 +111,7 @@ void TutorialApplication::createScene(void)
 		Bullet *bullet;
 		Ogre::String bulletName;
 		bulletName = "bullets" + converter.toString(bulletList.size());
-		bullet = new Bullet(bulletName, mSceneMgr, "Ship");
+		bullet = new Bullet(bulletName, mSceneMgr, "Bullet");
 		bulletList.push_back(bullet);
 	}
 }
