@@ -180,6 +180,25 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 		float speedAfter = rigidbody->velocity.length();
 		DoDamage((speedBefore - speedAfter) * 10);
 	}
+	if (col.mTag == "Powerup")
+	{
+		int v1 = rand() % 100;
+
+		if (v1 <= 33)
+		{
+			mBoost += 100;
+		}
+
+		if (v1 >= 34 && v1 <= 66)
+		{
+			mAmmo += 10;
+		}
+
+		if (v1 >= 67)
+		{
+			mShipHealth += 100;
+		}
+	}
 }
 
 void ShipCharacter::HandleCollision(SphereCollider mSphere, MovableObject col, SphereCollider sphere)
