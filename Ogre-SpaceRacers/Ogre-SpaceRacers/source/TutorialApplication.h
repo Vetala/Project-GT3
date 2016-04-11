@@ -63,9 +63,9 @@ private:
 	Powerup *powerup;
 	
 	bool isCollision(Ogre::Sphere s, Ogre::Sphere s2);
-	void checkCollision();
-	void doUpdate(const Ogre::FrameEvent& fe);
-	void doGUI();
+	void CheckCollision();
+	void DoUpdate(const Ogre::FrameEvent& fe);
+	void DoGUI();
 	std::list<Object *> objectList;
 	std::list<ShipCharacter *> shipList;
 	std::list<Bullet *> bulletList;

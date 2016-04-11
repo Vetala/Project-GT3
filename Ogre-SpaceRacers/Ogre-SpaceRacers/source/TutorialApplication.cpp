@@ -133,19 +133,19 @@ void TutorialApplication::doUpdate(const Ogre::FrameEvent& fe)
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
 	bool ret = BaseApplication::frameRenderingQueued(fe);
-	checkCollision();
-	doUpdate(fe);
-	doGUI();
+	CheckCollision();
+	DoUpdate(fe);
+	DoGUI();
 	return ret;
 }
 
-void TutorialApplication::doGUI()
+void TutorialApplication::DoGUI()
 {
-	ship->doGUI(respawnGUI, speedGUI, mTrayMgr);
-	ship2->doGUI(respawnGUI2, speedGUI2, mTrayMgr);
+	ship->DoGui(respawnGUI, speedGUI, mTrayMgr);
+	ship2->DoGui(respawnGUI2, speedGUI2, mTrayMgr);
 }
 
-void TutorialApplication::checkCollision()
+void TutorialApplication::CheckCollision()
 {
 	for each (ShipCharacter *ship in shipList)
 	{
@@ -160,8 +160,8 @@ void TutorialApplication::checkCollision()
 						bool col = isCollision(sCol->sphere, sCol2->sphere);
 						if (col)
 						{
-							ship->doDamage(25);
-							b->setInactive();
+							ship->DoDamage(25);
+							b->SetInactive();
 						}
 					}
 				}
@@ -175,8 +175,8 @@ void TutorialApplication::checkCollision()
 						bool col = isCollision(sCol->sphere, sCol2->sphere);
 						if (col)
 						{
-							ship->handleCollision(*sCol, static_cast<MovableObject>(*ship2), *sCol2);
-							ship2->handleCollision(*sCol2, static_cast<MovableObject>(*ship), *sCol);
+							ship->HandleCollision(*sCol, static_cast<MovableObject>(*ship2), *sCol2);
+							ship2->HandleCollision(*sCol2, static_cast<MovableObject>(*ship), *sCol);
 						}
 					}
 				}
@@ -189,7 +189,7 @@ void TutorialApplication::checkCollision()
 					bool col = isCollision(sCol->sphere, sCol2->sphere);
 					if (col)
 					{
-						ship->handleCollision(*sCol, *object, *sCol2);
+						ship->HandleCollision(*sCol, *object, *sCol2);
 					}
 				}
 			}

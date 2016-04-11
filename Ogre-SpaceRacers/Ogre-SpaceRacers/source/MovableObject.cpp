@@ -5,7 +5,7 @@ MovableObject::MovableObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	rigidbody = new RigidBody();
 }
 
-void MovableObject::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
+void MovableObject::Update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 {
 	Object::update(elapsedTime, input);
 	for each(SphereCollider *sCol in sphereColliders)
@@ -14,7 +14,7 @@ void MovableObject::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 	}
 }
 
-void MovableObject::handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogre::Sphere sphere)
+void MovableObject::HandleCollision(Ogre::Sphere mSphere, MovableObject col, Ogre::Sphere sphere)
 {
 	Ogre::Vector3 pos = mSphere.getCenter();
 	Ogre::Vector3 colPos = sphere.getCenter();
@@ -53,7 +53,7 @@ void MovableObject::handleCollision(Ogre::Sphere mSphere, MovableObject col, Ogr
 	col.rigidbody->velocity = (col.rigidbody->velocity - (impulse * (im2)) * bounce);
 }
 
-void MovableObject::handleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere)
+void MovableObject::HandleCollision(Ogre::Sphere mSphere, Object col, Ogre::Sphere sphere)
 {
 	Ogre::Vector3 pos = mSphere.getCenter();
 	Ogre::Vector3 colPos = sphere.getCenter();
