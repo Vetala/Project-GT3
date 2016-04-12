@@ -15,8 +15,8 @@
 World_1::World_1(Ogre::SceneManager *mSceneMgr, std::list<Object *> &objectList, std::list<Powerup *> &powerUpList)
 {
 	/**
-	*The objects in it are listed for their name, mesh, location and scale.
-	*creates segments of the world and the finish line
+	*The objects in it are listed for their name, mesh, location, rotation, scale and collision-type list.
+	*This class therefore creates mesh objects in the world, including the start and powerups
 	*/
 	std::list<Ogre::Sphere *> sphereList;
 	Start = new WorldObject("Start", mSceneMgr, "Start_Line", Ogre::Vector3(0, 13, 0), Ogre::Quaternion(1.0f, 0.0f, 1.0f, 0.0f), Ogre::Vector3(5, 5, 7), sphereList);
