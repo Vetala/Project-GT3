@@ -200,7 +200,7 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 		{
 			mShipHealth += 100;
 		}
-		soundManager->Play2D("../../Media/sounds/bell.wav");
+		soundManager->Play2D("../../Media/sounds/powerup.wav");
 	}
 }
 
