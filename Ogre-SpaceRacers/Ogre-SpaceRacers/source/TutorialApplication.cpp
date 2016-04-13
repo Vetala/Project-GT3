@@ -12,6 +12,9 @@
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
+	soundManager = new SoundManager();
+	soundManager->Play2D("../../Media/sounds/getout.ogg", true);
+
 	shipHealth = 100;
 	shipBoost = 100;
 	//Setting controls for both players

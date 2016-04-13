@@ -26,7 +26,7 @@ http://www.ogre3d.org/wiki/
 #include "Physics.h"
 #include "Controls.h"
 #include "InputManager.h"
-
+#include "SoundManager.h"
 //---------------------------------------------------------------------------
 
 
@@ -44,6 +44,7 @@ protected:
     virtual void createScene(void);
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& fe);
 	Ogre::StringConverter converter;
+	SoundManager *soundManager;
 
 private:
 	Ogre::String cameraName;

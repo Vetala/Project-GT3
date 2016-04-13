@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include "Bullet.h"
 #include "vector"
+#include "SoundManager.h"
 struct Keys;
 
 class ShipCharacter : public Character
@@ -20,6 +21,7 @@ protected:
 	std::list<Bullet *> &mBulletList;///The bulletlist
 	Ogre::StringConverter converter;///a converter which converts numbers to ogre::string to be used in the GUI
 	Bullet *bullet;///A single bullet
+	SoundManager *soundManager;
 
 public:
 	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, 

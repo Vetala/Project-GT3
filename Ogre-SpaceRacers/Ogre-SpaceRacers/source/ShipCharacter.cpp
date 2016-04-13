@@ -40,6 +40,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	mSceneMgr = sceneMgr;
 	mAmmo = 10;
 	bullet = NULL;
+	soundManager = new SoundManager();
 
 	if(inputManager != 0)
 	{
@@ -155,6 +156,7 @@ void ShipCharacter::Shoot()
 		bullet->SetActive(mMainNode);
 		shootTimer = 10;
 		mAmmo--;
+		soundManager->Play2D("../../Media/sounds/explosion.wav");
 	}
 }
 
@@ -198,6 +200,7 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 		{
 			mShipHealth += 100;
 		}
+		soundManager->Play2D("../../Media/sounds/bell.wav");
 	}
 }
 
