@@ -31,6 +31,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	mStartShipHealth = shipHealth;
 	mShipHealth = shipHealth;
 	mBoost = shipBoost;
+	shield = false;
 	starting = true;
 	finished = false;
 	respawning = true;
@@ -100,14 +101,22 @@ void ShipCharacter::DoDamage(int damage)
 	*/
 	if (!respawning)
 	{
-		mShipHealth = mShipHealth - damage;
-		if (controllerManager != 0)
+		if (!shield)
 		{
-			vibrateTimer = maxVibrateTime;
-			controllerManager->Vibrate(playerNumber);
+
+			mShipHealth = mShipHealth - damage;
+			if (controllerManager != 0)
+			{
+				vibrateTimer = maxVibrateTime;
+				controllerManager->Vibrate(playerNumber);
+			}
+			if (mShipHealth < 1) {
+				Respawn();
+			}
 		}
-		if (mShipHealth < 1) {
-			Respawn();
+		if (shield)
+		{
+			shield = false;
 		}
 	}
 }
@@ -184,19 +193,23 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 	{
 		int v1 = rand() % 100;
 
-		if (v1 <= 33)
+		if (v1 <= 24)
 		{
 			mBoost += 100;
 		}
 
-		if (v1 >= 34 && v1 <= 66)
+		if (v1 >= 25 && v1 <= 49)
 		{
 			mAmmo += 10;
 		}
 
-		if (v1 >= 67)
+		if (v1 >= 50 && v1 <= 74)
 		{
 			mShipHealth += 100;
+		}
+		if (v1 >= 75)
+		{
+			shield = true;
 		}
 	}
 }

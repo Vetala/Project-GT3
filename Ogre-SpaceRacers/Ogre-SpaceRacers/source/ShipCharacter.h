@@ -51,6 +51,7 @@ public:
 	bool starting;///A boolean used to check if the ship is currently starting. Works similarly to the respawning boolean but displays a different text on the gui
 	bool finished;///A boolean used to check if the ship has finished. 
 	bool turning; ///A boolean to check if the ship is turning or not. Used to check if an animation needs to be played
+	bool shield; ///A boolean to check if a shield is up to prevent DoDamage from affecting player health
 	int respawnTimer;///The remaining time it takes for the ship to respawn after crashing
 	float rollSpeed;///The speed at which the ship rolls during turning
 	float pitchSpeed;///The speed at which the ship pitches during acceleration/decelleration
