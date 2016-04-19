@@ -1,0 +1,14 @@
+Collision = collision met shield
+collision2 = collision zonder shield
+explosion = bullet hit
+Boostuse = boostuse
+ammo2, uitknippen en voor ammo pickup
+health2 = health pickup
+shoot1 als bullets gebruikt worden
+shoot2 als lasers gebruikt worden
+
+TO DO:
+Shield sound
+Boost pickup sound
+death sound voor als niet wilhelm
+Background

@@ -13,7 +13,7 @@
 TutorialApplication::TutorialApplication(void)
 {
 	soundManager = new SoundManager();
-	soundManager->Play2D("../../Media/sounds/getout.ogg", true);
+	
 
 	shipHealth = 100;
 	shipBoost = 100;
@@ -51,6 +51,7 @@ TutorialApplication::~TutorialApplication(void)
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
+	soundManager->Play2D("../../Media/sounds/fZero.mp3", true);
 	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
 	//If there are performance issues try adjusting the shadowtype to: Ogre::SHADOWTYPE_STENCIL_MODULATIVE.  or Ogre::SHADOWTYPE_TEXTURE_MODULATIVE.
 	inputManager = new InputManager;
@@ -146,8 +147,8 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 
 void TutorialApplication::DoGUI()
 {
-	ship->DoGui(respawnGUI, speedGUI, mTrayMgr);
-	ship2->DoGui(respawnGUI2, speedGUI2, mTrayMgr);
+	ship->DoGui(respawnGUI, speedGUI, powerupGUI, mTrayMgr);
+	ship2->DoGui(respawnGUI, speedGUI2, powerupGUI2, mTrayMgr);
 }
 
 void TutorialApplication::CheckCollision()
@@ -165,6 +166,7 @@ void TutorialApplication::CheckCollision()
 						bool col = isCollision(sCol->sphere, sCol2->sphere);
 						if (col)
 						{
+							soundManager->Play2D("../../Media/sounds/explosion.wav");
 							ship->DoDamage(25);
 							b->SetInactive();
 						}

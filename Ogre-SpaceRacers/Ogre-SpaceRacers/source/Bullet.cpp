@@ -20,7 +20,7 @@ void Bullet::SetActive(Ogre::SceneNode *mShipNode)
 	mMainNode->setPosition(mShipNode->getPosition());
 	mMainNode->setOrientation(mShipNode->getOrientation());
 	mMainNode->attachObject(mEntity);
-	mMainNode->translate((mMainNode->getOrientation() * Ogre::Vector3(0, 0, 10)));
+	mMainNode->translate((mMainNode->getOrientation() * Ogre::Vector3(0, 0, 5)));
 	mEntity->setCastShadows(false);
 	s->setPositionToParentPosition(mMainNode->getPosition());
 	active = true;

@@ -31,17 +31,24 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	mStartShipHealth = shipHealth;
 	mShipHealth = shipHealth;
 	mBoost = shipBoost;
+	mLifes = 5;
 	shield = false;
 	starting = true;
 	finished = false;
 	respawning = true;
-	baseRespawnTime = 60;
+	baseRespawnTime = 120;
+	startTime = 3;
 	maxVibrateTime = 30;
 	vibrateTimer = -1;
 	mSceneMgr = sceneMgr;
 	mAmmo = 10;
+	powerUp = false;
+	basePUTimer = 90;
+	powerUpTimer = basePUTimer;
+	powerUpText = "";
 	bullet = NULL;
 	soundManager = new SoundManager();
+	shieldEntity = mSceneMgr->createEntity(mName + "shield", "Shield.mesh");
 
 	if(inputManager != 0)
 	{
@@ -87,11 +94,12 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 
 	// Give this character a shape 
 	mEntity->setCastShadows(false);
+	shieldEntity->setCastShadows(false);
 	mShipNode->attachObject(mEntity);
 	SphereCollider *s = new SphereCollider(false, Ogre::Sphere(Ogre::Vector3(0, 0, 0), mEntity->getBoundingRadius() * mMainNode->getScale().z));
 	s->setPositionToParentPosition(mMainNode->getPosition());
 	sphereColliders.push_back(s);
-	respawnTimer = baseRespawnTime;
+	respawnTimer = baseRespawnTime+ 50;
 }
 
 void ShipCharacter::DoDamage(int damage)
@@ -103,8 +111,8 @@ void ShipCharacter::DoDamage(int damage)
 	if (!respawning)
 	{
 		if (!shield)
-		{
-
+		{ 
+			int v2 = rand() % 100;
 			mShipHealth = mShipHealth - damage;
 			if (controllerManager != 0)
 			{
@@ -112,11 +120,46 @@ void ShipCharacter::DoDamage(int damage)
 				controllerManager->Vibrate(playerNumber);
 			}
 			if (mShipHealth < 1) {
-				Respawn();
+				if (v2 == 1)
+				{
+					soundManager->Play2D("../../Media/sounds/Wilhelm.wav");
+				}
+				else
+				{
+					soundManager->Play2D("../../Media/sounds/Wilhelm.wav");
+				}
+				if (mName == "ship1")
+				{
+					if (mLifes > 0)
+					{
+						respawnText = "Player 1 has lost a life!";
+						Respawn();
+					}
+					else
+					{
+						respawnText = "Player 2 wins!";
+					}
+				}
+				else
+				{
+
+					if (mLifes > 0)
+					{
+						respawnText = "Player 2 has lost a life!";
+						Respawn();
+					}
+					else
+					{
+						respawnText = "Player 1 wins!";
+					}
+				}
+				mLifes--;
 			}
 		}
 		if (shield)
 		{
+			soundManager->Play2D("../../Media/sounds/collision2.wav");
+			mMainNode->detachObject(shieldEntity);
 			shield = false;
 		}
 	}
@@ -129,6 +172,7 @@ void ShipCharacter::Boost()
 	*/
 	if (mBoost > 0)
 	{
+		soundManager->Play2D("../../Media/sounds/boostUse.wav");
 		mBoost--;
 		accelSpeed = baseAccel * 2;
 	}
@@ -165,7 +209,7 @@ void ShipCharacter::Shoot()
 		bullet->SetActive(mMainNode);
 		shootTimer = 10;
 		mAmmo--;
-		soundManager->Play2D("../../Media/sounds/explosion.wav");
+		soundManager->Play2D("../../Media/sounds/shoot1.wav");
 	}
 }
 
@@ -186,6 +230,7 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 	}
 	if (!sphere.trigger)
 	{
+		soundManager->Play2D("../../Media/sounds/collision.wav");
 		float speedBefore = rigidbody->velocity.length();
 		MovableObject::HandleCollision(mSphere.sphere, col, sphere.sphere);
 		float speedAfter = rigidbody->velocity.length();
@@ -193,24 +238,35 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 	}
 	if (col.mTag == "Powerup")
 	{
+		powerUp = true;
 		int v1 = rand() % 100;
 
 		if (v1 <= 24)
 		{
+			powerUpText = "       \t\t   Boost!      \t\t\t       \t\t\t       \t\t\t        ";
 			mBoost += 100;
+			powerUpTimer = basePUTimer;
 		}
 
 		if (v1 >= 25 && v1 <= 49)
 		{
+			powerUpText = "       \t\t         \t\t\t       \t\t\t       \t Ammo! \t\t        ";
 			mAmmo += 10;
+			powerUpTimer = basePUTimer;
 		}
 
 		if (v1 >= 50 && v1 <= 74)
 		{
+			powerUpText = "Health!   \t\t\t\t\t         \t\t\t       \t\t\t       \t\t\t        ";
 			mShipHealth += 100;
+			powerUpTimer = basePUTimer;
+			soundManager->Play2D("../../Media/sounds/health2.wav");
 		}
 		if (v1 >= 75)
 		{
+			powerUpText = "Shielded!";
+			powerUpTimer = basePUTimer;
+			mMainNode->attachObject(shieldEntity);
 			shield = true;
 		}
 		soundManager->Play2D("../../Media/sounds/powerup.wav");
@@ -383,44 +439,45 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	shootTimer--;
 }
 
-void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr)
+void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::Label* powerUpGUI,  OgreBites::SdkTrayManager* mTrayMgr)
 {
+	if(powerUp)
+	{
+		powerUpGUI->show();
+		powerUpGUI->setCaption(powerUpText);
+		powerUpTimer--;
+		if(powerUpTimer < 1)
+		{
+			powerUpTimer = basePUTimer;
+			powerUp = false;
+		}
+	}
+	else
+	{
+		powerUpGUI->hide();
+	}
 	if (starting)
 	{
-		respawnGUI->setCaption("Starting");
+		respawnGUI->setCaption("Starting in: " + converter.toString(respawnTimer));
 		mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
 		respawnGUI->show();
 	}
 	else
 	{
-		if (finished)
+		if (respawning)
 		{
-			respawnGUI->setCaption("Finished!");
+			respawnGUI->setCaption(respawnText + " Respawning in: "+ converter.toString(respawnTimer));
 			mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
 			respawnGUI->show();
 		}
 		else {
-			if (respawning)
-			{
-				respawnGUI->setCaption("Respawning...");
-				mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
-				respawnGUI->show();
-			}
-			else {
-				respawnGUI->hide();
-				if(mName == "Ship1")
-				{
-					mTrayMgr->removeWidgetFromTray("Respawn");
-				}
-				if(mName == "Ship2")
-				{
-					mTrayMgr->removeWidgetFromTray("Respawn2");
-				}
-			}
+			respawnGUI->hide();
+			mTrayMgr->removeWidgetFromTray("Respawn");
 		}
 	}
 	speedGUI->setCaption("Health: " + converter.toString((int)(mShipHealth)) +"\t\t Boost:"+ converter.toString((int)(mBoost))
-		+ "\t\t\tSpeed: " + converter.toString((int)(rigidbody->velocity.length() * 50))+ "\t\t\t Ammo: " + converter.toString(mAmmo));
+		+ "\t\t\tSpeed: " + converter.toString((int)(rigidbody->velocity.length() * 50))+ "\t\t\t Ammo: " + converter.toString(mAmmo) 
+		+ "\t\t\t Lifes: " + converter.toString(mLifes));
 	speedGUI->show();
 }
 

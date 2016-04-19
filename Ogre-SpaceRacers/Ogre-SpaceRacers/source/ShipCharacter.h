@@ -12,8 +12,10 @@ class ShipCharacter : public Character
 protected:
 	int mShipHealth; ///The current health amount this spaceship has
 	int mStartShipHealth;///The starting amount of health this spaceship has
+	int startTime;
 	int mBoost;///The current amount of boost this spaceship has
 	int playerNumber; ///Used if a controller is connected
+	int mLifes;
 	int mAmmo; ///The current amount of ammo this spaceship has
 	Controls *player;///The controls for this player if a XBOX controller is not connected
 	InputManager *controllerManager;///The controllermanager which contains the logic used if a XBOX controller is connected
@@ -22,13 +24,19 @@ protected:
 	Ogre::StringConverter converter;///a converter which converts numbers to ogre::string to be used in the GUI
 	Bullet *bullet;///A single bullet
 	SoundManager *soundManager;
+	Ogre::String respawnText;
+	Ogre::Entity* shieldEntity;
+	bool powerUp;
+	Ogre::String powerUpText;
+	int powerUpTimer;
+	int basePUTimer;
 
 public:
 	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, 
 		int shipBoost, std::list<Bullet *> &bulletList, Controls *controls = 0,InputManager *inputManager = 0,  Ogre::Camera *camera = 0);
 	~ShipCharacter();
 	void Update(Ogre::Real elapsedTime, OIS::Keyboard * input);
-	void DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::SdkTrayManager* mTrayMgr);
+	void DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::Label* powerupGUI, OgreBites::SdkTrayManager* mTrayMgr);
 	void Respawn();
 	void Boost();
 	void Shoot();

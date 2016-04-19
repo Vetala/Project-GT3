@@ -38,6 +38,7 @@ BaseApplication::BaseApplication(void)
     : mRoot(0),
     mCamera(0),
 	mCamera2(0),
+	mCamera3(0),
     mSceneMgr(0),
     mWindow(0),
     mResourcesCfg(Ogre::StringUtil::BLANK),
@@ -116,6 +117,9 @@ void BaseApplication::createCamera(void)
 	mCamera2 = mSceneMgr->createCamera("Player2Cam");
 	mCamera2->setPosition(Ogre::Vector3(0, 0, 0));
 	mCamera2->setNearClipDistance(5);
+
+	mCamera3 = mSceneMgr->createCamera("UIcamera");
+	mCamera3->setPosition(500000, 500000, 500000);
 }
 //---------------------------------------------------------------------------
 void BaseApplication::createFrameListener(void)
@@ -146,13 +150,15 @@ void BaseApplication::createFrameListener(void)
     mInputContext.mKeyboard = mKeyboard;
     mInputContext.mMouse = mMouse;
     mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName",mWindow, mInputContext, this);
-    mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+    //mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
     mTrayMgr->hideCursor();
 	
-	speedGUI2 = mTrayMgr->createLabel(OgreBites::TL_BOTTOM, "Speed2", "Speed: ", 600);
-	speedGUI = mTrayMgr->createLabel(OgreBites::TL_TOP, "Speed", "Speed: ", 600);
-	respawnGUI = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn", "Respawning in", 400); //Also gets used at the start and finish of the race
-	respawnGUI2 = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn2", "Respawning in", 400); //Also gets used at the start and finish of the race
+	speedGUI = mTrayMgr->createLabel(OgreBites::TL_TOP, "Speed", "Speed: ",900);
+	powerupGUI2 = mTrayMgr->createLabel(OgreBites::TL_BOTTOM, "Powerup1", "", 900);
+	speedGUI2 = mTrayMgr->createLabel(OgreBites::TL_BOTTOM, "Speed2", "Speed: ",900);
+	powerupGUI = mTrayMgr->createLabel(OgreBites::TL_TOP, "Powerup", "", 900);
+	
+	respawnGUI = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn", "Respawning in",600); //Also gets used at the start and finish of the race
 
     // Create a params panel for displaying sample details
     Ogre::StringVector items;
@@ -188,6 +194,16 @@ void BaseApplication::createViewports(void)
     vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
 	Ogre::Viewport* vp2 = mWindow->addViewport(mCamera2,1,0.0f,0.5f,1.0f,0.5f);
 	vp2->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
+	Ogre::Viewport* vp3 = mWindow->addViewport(mCamera3, 3, 0.0f, 0.0f, 1.0f, 1.0f);
+	vp3->setClearEveryFrame(false);
+	//vp3->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
+
+	vp->setOverlaysEnabled(false);
+	vp2->setOverlaysEnabled(false);
+	vp3->setOverlaysEnabled(true);
+	vp3->setSkiesEnabled(false);
+
+	mWindow->setFullscreen(true,1600,900);
 
     // Alter the camera aspect ratio to match the viewport
     mCamera->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));

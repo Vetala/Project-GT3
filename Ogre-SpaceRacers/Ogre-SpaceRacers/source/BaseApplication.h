@@ -61,7 +61,8 @@ public:
 	OgreBites::Label* speedGUI;
 	OgreBites::Label* respawnGUI;
 	OgreBites::Label* speedGUI2;
-	OgreBites::Label* respawnGUI2;
+	OgreBites::Label* powerupGUI;
+	OgreBites::Label* powerupGUI2;
 
     virtual void go(void);
 	
@@ -93,6 +94,7 @@ protected:
     Ogre::Root*                 mRoot;
     Ogre::Camera*               mCamera;
 	Ogre::Camera*				mCamera2;
+	Ogre::Camera*				mCamera3;
     Ogre::SceneManager*         mSceneMgr;
     Ogre::RenderWindow*         mWindow;
     Ogre::String                mResourcesCfg;
