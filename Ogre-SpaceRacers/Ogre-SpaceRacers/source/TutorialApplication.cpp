@@ -16,7 +16,7 @@ TutorialApplication::TutorialApplication(void)
 	
 
 	shipHealth = 100;
-	shipBoost = 100;
+	shipBoost = 1;
 	//Setting controls for both players
 	player1 = new Controls();
 	player1->forwards = OIS::KeyCode(OIS::KC_W);
@@ -148,7 +148,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 void TutorialApplication::DoGUI()
 {
 	ship->DoGui(respawnGUI, speedGUI, powerupGUI, mTrayMgr);
-	ship2->DoGui(respawnGUI, speedGUI2, powerupGUI2, mTrayMgr);
+	ship2->DoGui(respawnGUI2, speedGUI2, powerupGUI2, mTrayMgr);
 }
 
 void TutorialApplication::CheckCollision()
@@ -182,6 +182,10 @@ void TutorialApplication::CheckCollision()
 						bool col = isCollision(sCol->sphere, sCol2->sphere);
 						if (col)
 						{
+							if (ship->rigidbody->velocity.length() * 50 > 170)
+							{
+								ship2->DoDamage(300);
+							}
 							ship->HandleCollision(*sCol, static_cast<MovableObject>(*ship2), *sCol2);
 							ship2->HandleCollision(*sCol2, static_cast<MovableObject>(*ship), *sCol);
 						}

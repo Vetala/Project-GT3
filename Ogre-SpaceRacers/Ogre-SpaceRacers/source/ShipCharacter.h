@@ -12,11 +12,17 @@ class ShipCharacter : public Character
 protected:
 	int mShipHealth; ///The current health amount this spaceship has
 	int mStartShipHealth;///The starting amount of health this spaceship has
+	int mShipHealthCap;
+	int mShipHealthGain;
 	int startTime;
 	int mBoost;///The current amount of boost this spaceship has
+	int mBoostCap;
+	int mBoostGain;
 	int playerNumber; ///Used if a controller is connected
 	int mLifes;
 	int mAmmo; ///The current amount of ammo this spaceship has
+	int mAmmoCap;
+	int mAmmoGain;
 	Controls *player;///The controls for this player if a XBOX controller is not connected
 	InputManager *controllerManager;///The controllermanager which contains the logic used if a XBOX controller is connected
 	Ogre::SceneManager *mSceneMgr;
@@ -38,7 +44,7 @@ public:
 	void Update(Ogre::Real elapsedTime, OIS::Keyboard * input);
 	void DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::Label* powerupGUI, OgreBites::SdkTrayManager* mTrayMgr);
 	void Respawn();
-	void Boost();
+	void Boost(Ogre::Real elapsedTime);
 	void Shoot();
 	void DoDamage(int damage);
 	void HandleCollision(SphereCollider mSphere, MovableObject col, SphereCollider sphere);

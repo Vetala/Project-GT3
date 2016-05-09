@@ -28,6 +28,12 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	*follows this ship. Can be 0
 	*
 	*/
+	mShipHealthCap = 200;
+	mBoostCap = 1;
+	mAmmoCap = 20;
+	mShipHealthGain = 50;
+	mBoostGain = 1;
+	mAmmoGain = 5;
 	mStartShipHealth = shipHealth;
 	mShipHealth = shipHealth;
 	mBoost = shipBoost;
@@ -114,7 +120,7 @@ void ShipCharacter::DoDamage(int damage)
 		{ 
 			int v2 = rand() % 100;
 			mShipHealth = mShipHealth - damage;
-			if (controllerManager != 0)
+			if (controllerManager != 0 && damage > 0)
 			{
 				vibrateTimer = maxVibrateTime;
 				controllerManager->Vibrate(playerNumber);
@@ -126,7 +132,7 @@ void ShipCharacter::DoDamage(int damage)
 				}
 				else
 				{
-					soundManager->Play2D("../../Media/sounds/Wilhelm.wav");
+					//soundManager->Play2D("../../Media/sounds/Wilhelm.wav");
 				}
 				if (mName == "ship1")
 				{
@@ -165,16 +171,19 @@ void ShipCharacter::DoDamage(int damage)
 	}
 }
 
-void ShipCharacter::Boost()
+void ShipCharacter::Boost(Ogre::Real elapsedTime)
 {
 	/**
 	*If the player presses the boost key it temporarily gets additional acceleration speed resulting in a higher top speed while the player has boost
 	*/
 	if (mBoost > 0)
 	{
-		soundManager->Play2D("../../Media/sounds/boostUse.wav");
+		if (!soundManager->soundEngine->isCurrentlyPlaying("../../Media/sounds/boostUse.wav"))
+		{
+			soundManager->Play2D("../../Media/sounds/boostUse.wav");
+		}
+		rigidbody->velocity = mMainNode->getOrientation() * Ogre::Vector3(0, 0, 250*elapsedTime);
 		mBoost--;
-		accelSpeed = baseAccel * 2;
 	}
 	else
 	{
@@ -209,7 +218,7 @@ void ShipCharacter::Shoot()
 		bullet->SetActive(mMainNode);
 		shootTimer = 10;
 		mAmmo--;
-		soundManager->Play2D("../../Media/sounds/shoot1.wav");
+		soundManager->Play2D("../../Media/sounds/shoot.wav");
 	}
 }
 
@@ -230,7 +239,10 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 	}
 	if (!sphere.trigger)
 	{
-		soundManager->Play2D("../../Media/sounds/collision.wav");
+		if (!soundManager->soundEngine->isCurrentlyPlaying("../../Media/sounds/collision.wav"))
+		{
+			soundManager->Play2D("../../Media/sounds/collision.wav");
+		}
 		float speedBefore = rigidbody->velocity.length();
 		MovableObject::HandleCollision(mSphere.sphere, col, sphere.sphere);
 		float speedAfter = rigidbody->velocity.length();
@@ -243,33 +255,59 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 
 		if (v1 <= 24)
 		{
-			powerUpText = "       \t\t   Boost!      \t\t\t       \t\t\t       \t\t\t        ";
-			mBoost += 100;
-			powerUpTimer = basePUTimer;
+			if (mBoost < mBoostCap)
+			{
+				powerUpText = "       \t\t   Boost!      \t\t\t       \t\t\t       \t\t\t        ";
+				mBoost += mBoostGain;
+				if (mBoost > mBoostCap)
+				{
+					mBoost = mBoostCap;
+				}
+				powerUpTimer = basePUTimer;
+				soundManager->Play2D("../../Media/sounds/boostPickup.mp3");   //TO DO: Make the sound a bit louder
+			}
 		}
 
 		if (v1 >= 25 && v1 <= 49)
 		{
-			powerUpText = "       \t\t         \t\t\t       \t\t\t       \t Ammo! \t\t        ";
-			mAmmo += 10;
-			powerUpTimer = basePUTimer;
+			if (mAmmo < mAmmoCap)
+			{
+				powerUpText = "       \t\t         \t\t\t       \t\t\t       \t Ammo! \t\t        ";
+				mAmmo += mAmmoGain;
+				if (mAmmo > mAmmoCap)
+				{
+					mAmmo = mAmmoCap;
+				}
+				powerUpTimer = basePUTimer;
+				soundManager->Play2D("../../Media/sounds/ammoPickup.wav");
+			}
 		}
 
 		if (v1 >= 50 && v1 <= 74)
 		{
-			powerUpText = "Health!   \t\t\t\t\t         \t\t\t       \t\t\t       \t\t\t        ";
-			mShipHealth += 100;
-			powerUpTimer = basePUTimer;
-			soundManager->Play2D("../../Media/sounds/health2.wav");
+			if (mShipHealth < mShipHealthCap)
+			{
+				powerUpText = "Health!   \t\t\t\t\t         \t\t\t       \t\t\t       \t\t\t        ";
+				mShipHealth += mShipHealthGain;
+				if (mShipHealth > mShipHealthCap)
+				{
+					mShipHealth = mShipHealthCap;
+				}
+				powerUpTimer = basePUTimer;
+				soundManager->Play2D("../../Media/sounds/health2.wav");
+			}
 		}
 		if (v1 >= 75)
 		{
-			powerUpText = "Shielded!";
-			powerUpTimer = basePUTimer;
-			mMainNode->attachObject(shieldEntity);
-			shield = true;
+			if (!shield)
+			{
+				powerUpText = "Shielded!";
+				powerUpTimer = basePUTimer;
+				mMainNode->attachObject(shieldEntity);
+				shield = true;
+				soundManager->Play2D("../../Media/sounds/powerup.wav");
+			}
 		}
-		soundManager->Play2D("../../Media/sounds/powerup.wav");
 	}
 }
 
@@ -338,7 +376,7 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			}
 			if (input->isKeyDown(player->boost))
 			{
-				Boost();
+				Boost(elapsedTime);
 			}
 			if (input->isKeyDown(player->forwards)) {
 				Forward(elapsedTime);
@@ -370,7 +408,7 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			}
 			if (controllerManager->GetButton(0x0200,playerNumber))
 			{
-				Boost();
+				Boost(elapsedTime);
 			}
 			if (controllerManager->GetButton(0x1000,playerNumber)) {
 				Forward(elapsedTime);

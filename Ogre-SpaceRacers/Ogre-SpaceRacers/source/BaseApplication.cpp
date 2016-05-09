@@ -159,6 +159,7 @@ void BaseApplication::createFrameListener(void)
 	powerupGUI = mTrayMgr->createLabel(OgreBites::TL_TOP, "Powerup", "", 900);
 	
 	respawnGUI = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn", "Respawning in",600); //Also gets used at the start and finish of the race
+	respawnGUI2 = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn2", "Respawning in", 600); //Also gets used at the start and finish of the race
 
     // Create a params panel for displaying sample details
     Ogre::StringVector items;
