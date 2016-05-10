@@ -138,17 +138,20 @@ void TutorialApplication::DoUpdate(const Ogre::FrameEvent& fe)
 //All gui stuff must be done here otherwise ogre decides that it doesnt want to run anymore
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
-	bool ret = BaseApplication::frameRenderingQueued(fe);
-	CheckCollision();
-	DoUpdate(fe);
-	DoGUI();
+	bool ret = BaseApplication::frameRenderingQueued(fe);\
+	if (!paused)
+	{
+		CheckCollision();
+		DoUpdate(fe);
+		DoGUI();
+	}
 	return ret;
 }
 
 void TutorialApplication::DoGUI()
 {
 	ship->DoGui(respawnGUI, speedGUI, powerupGUI, mTrayMgr);
-	ship2->DoGui(respawnGUI2, speedGUI2, powerupGUI2, mTrayMgr);
+	ship2->DoGui(respawnGUI, speedGUI2, powerupGUI2, mTrayMgr);
 }
 
 void TutorialApplication::CheckCollision()

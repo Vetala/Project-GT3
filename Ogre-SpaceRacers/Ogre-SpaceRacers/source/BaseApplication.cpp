@@ -53,6 +53,7 @@ BaseApplication::BaseApplication(void)
     mKeyboard(0),
     mOverlaySystem(0)
 {
+	paused = false;
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
     m_ResourcePath = Ogre::macBundlePath() + "/Contents/Resources/";
 #else
@@ -159,8 +160,7 @@ void BaseApplication::createFrameListener(void)
 	powerupGUI = mTrayMgr->createLabel(OgreBites::TL_TOP, "Powerup", "", 900);
 	
 	respawnGUI = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn", "Respawning in",600); //Also gets used at the start and finish of the race
-	respawnGUI2 = mTrayMgr->createLabel(OgreBites::TL_CENTER, "Respawn2", "Respawning in", 600); //Also gets used at the start and finish of the race
-
+	
     // Create a params panel for displaying sample details
     Ogre::StringVector items;
     items.push_back("cam.pX");
@@ -360,11 +360,21 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
     {
         mWindow->writeContentsToTimestampedFile("screenshot", ".jpg");
     }
+	else if (arg.key == OIS::KC_P)   // pause the game
+	{
+		if (!paused)
+		{
+			paused = true;
+		}
+		else
+		{
+			paused = false;
+		}
+	}
     else if (arg.key == OIS::KC_ESCAPE)
     {
         mShutDown = true;
     }
-
     //mCameraMan->injectKeyDown(arg);
     return true;
 }
