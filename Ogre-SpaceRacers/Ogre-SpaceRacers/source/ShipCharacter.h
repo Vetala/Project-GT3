@@ -1,6 +1,6 @@
 #pragma once
-#ifndef __ParticleFX_H__
-#define __ParticleFX_H__
+//#ifndef __ParticleFX_H__
+//#define __ParticleFX_H__
 
 #include "Character.h"
 #include "Controls.h"
@@ -39,7 +39,7 @@ protected:
 	Ogre::String powerUpText;
 	int powerUpTimer;
 	int basePUTimer;
-	Ogre::ParticleSystem *ps;
+	//Ogre::ParticleSystem *ps;
 
 public:
 	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, 
@@ -80,5 +80,5 @@ public:
 	int vibrateTimer;///Remaining amount of frames the controller is vibrating
 	int shootTimer;///Amount of frames between shots
 };
-#endif
+//#endif
 
