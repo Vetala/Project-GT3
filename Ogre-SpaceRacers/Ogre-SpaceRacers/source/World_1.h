@@ -6,9 +6,13 @@ class World_1
 {
 public:
 	World_1(Ogre::SceneManager *mSceneMgr, std::list<Object *> &objectList, std::list<Powerup *> &powerUpList);
-	WorldObject *Start;	///The starting gate
 	Powerup *Powerup1;	///Powerup
 	Powerup *Powerup2;	///Powerup
+	Powerup *Powerup3;	///Powerup
+	Powerup *Powerup4;	///Powerup
+	Powerup *Powerup5;	///Powerup
+	Powerup *Powerup6;	///Powerup
+	Powerup *Powerup7;  ///Powerup
 	
 	WorldObject *Rock1;
 	WorldObject *Rock2;
@@ -28,9 +32,6 @@ public:
 	WorldObject *Rock16;
 	WorldObject *Rock17;
 	WorldObject *Rock18;
-
-	WorldObject *Struc1;	///This is a random building visible in the map
-
 	WorldObject *Rock19;
 	WorldObject *Rock20;
 	WorldObject *Rock21;
@@ -100,4 +101,18 @@ public:
 	WorldObject *Rock85;
 	WorldObject *Rock86;
 	WorldObject *Rock87;
+	WorldObject *Rock88;
+	WorldObject *Rock89;
+	WorldObject *Rock90;
+
+	WorldObject *Rock91;
+	WorldObject *Rock92;
+	WorldObject *Rock93;
+	WorldObject *Rock94;
+	WorldObject *Rock95;
+	WorldObject *Rock96;
+	WorldObject *Rock97;
+	WorldObject *Rock98;
+	WorldObject *Rock99;
+	WorldObject *Rock100;
 };

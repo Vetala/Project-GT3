@@ -106,6 +106,9 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	s->setPositionToParentPosition(mMainNode->getPosition());
 	sphereColliders.push_back(s);
 	respawnTimer = baseRespawnTime+ 50;
+
+	//ps = mSceneMgr->createParticleSystem("Particle" + mName, "Examples/GreenyNimbus");
+	//mShipNode->attachObject(ps);
 }
 
 void ShipCharacter::DoDamage(int damage)
