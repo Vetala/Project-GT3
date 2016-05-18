@@ -29,7 +29,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	*
 	*/
 	mShipHealthCap = 200;
-	mBoostCap = 1;
+	mBoostCap = 2;
 	mAmmoCap = 20;
 	mShipHealthGain = 50;
 	mBoostGain = 1;
@@ -249,10 +249,11 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 		float speedBefore = rigidbody->velocity.length();
 		MovableObject::HandleCollision(mSphere.sphere, col, sphere.sphere);
 		float speedAfter = rigidbody->velocity.length();
-		DoDamage((speedBefore - speedAfter) * 10);
+		DoDamage((speedBefore - speedAfter) * 30);
 	}
 	if (col.mTag == "Powerup")
 	{
+		Ogre::MaterialPtr m_pMat = mEntity->getSubEntity(0)->getMaterial();
 		powerUp = true;
 		int v1 = rand() % 100;
 
@@ -260,6 +261,9 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 		{
 			if (mBoost < mBoostCap)
 			{
+				m_pMat->getTechnique(0)->getPass(0)->setAmbient(255.0f / 255.0f, 243.0f / 255.0f, 112.0f / 255.0f);
+				m_pMat->getTechnique(0)->getPass(0)->setDiffuse(255.0f / 255.0f, 243.0f / 255.0f, 112.0f / 255.0f, 0);
+				mEntity->setMaterialName(m_pMat->getName());
 				powerUpText = "       \t\t   Boost!      \t\t\t       \t\t\t       \t\t\t        ";
 				mBoost += mBoostGain;
 				if (mBoost > mBoostCap)
@@ -275,6 +279,9 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 		{
 			if (mAmmo < mAmmoCap)
 			{
+				m_pMat->getTechnique(0)->getPass(0)->setAmbient(112.0f / 255.0f, 125.0f / 255.0f, 255.0f / 255.0f);
+				m_pMat->getTechnique(0)->getPass(0)->setDiffuse(112.0f / 255.0f, 125.0f / 255.0f, 255.0f / 255.0f, 0);
+				mEntity->setMaterialName(m_pMat->getName());
 				powerUpText = "       \t\t         \t\t\t       \t\t\t       \t Ammo! \t\t        ";
 				mAmmo += mAmmoGain;
 				if (mAmmo > mAmmoCap)
@@ -290,6 +297,9 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 		{
 			if (mShipHealth < mShipHealthCap)
 			{
+				m_pMat->getTechnique(0)->getPass(0)->setAmbient(255.0f / 255.0f, 112.0f / 255.0f, 196.0f / 255.0f);
+				m_pMat->getTechnique(0)->getPass(0)->setDiffuse(255.0f / 255.0f, 112.0f / 255.0f, 196.0f / 255.0f, 0);
+				mEntity->setMaterialName(m_pMat->getName());
 				powerUpText = "Health!   \t\t\t\t\t         \t\t\t       \t\t\t       \t\t\t        ";
 				mShipHealth += mShipHealthGain;
 				if (mShipHealth > mShipHealthCap)
@@ -304,6 +314,9 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, Object col, SphereCo
 		{
 			if (!shield)
 			{
+				m_pMat->getTechnique(0)->getPass(0)->setAmbient(112.0f / 255.0f, 255.0f / 255.0f, 171.0f / 255.0f);
+				m_pMat->getTechnique(0)->getPass(0)->setDiffuse(112.0f / 255.0f, 255.0f / 255.0f, 171.0f / 255.0f, 0);
+				mEntity->setMaterialName(m_pMat->getName());
 				powerUpText = "Shielded!";
 				powerUpTimer = basePUTimer;
 				mMainNode->attachObject(shieldEntity);

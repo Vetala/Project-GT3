@@ -1,16 +1,16 @@
-// Material genrated by blender2ogre 0.6.0
+// Rock3 genrated by blender2ogre 0.6.0
 
-material Material 
+material Rock3 
 {
     receive_shadows on 
 
     technique
     {
-        pass Material
+        pass Rock3
         {
-            ambient 0.800000011920929 0.800000011920929 0.800000011920929 1.0
-            diffuse 0.6400000190734865 0.6400000190734865 0.6400000190734865 1.0
-            specular 0.5 0.5 0.5 1.0 12.5
+            ambient 0.30000001192092896 0.10000000149011612 0.0 1.0
+            diffuse 0.30000001192092896 0.10000000149011612 0.0 1.0
+            specular 0.20000000298023224 0.0600000032782555 0.0 1.0 12.5
             emissive 0.0 0.0 0.0 1.0
 
             alpha_to_coverage off

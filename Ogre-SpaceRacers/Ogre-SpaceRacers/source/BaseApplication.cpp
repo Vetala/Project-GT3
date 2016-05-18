@@ -204,7 +204,7 @@ void BaseApplication::createViewports(void)
 	vp3->setOverlaysEnabled(true);
 	vp3->setSkiesEnabled(false);
 
-	mWindow->setFullscreen(true,1600,900);
+	//mWindow->setFullscreen(true,1600,900);
 
     // Alter the camera aspect ratio to match the viewport
     mCamera->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
