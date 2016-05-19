@@ -164,20 +164,48 @@ void TutorialApplication::DoUpdate(const Ogre::FrameEvent& fe)
 //All gui stuff must be done here otherwise ogre decides that it doesnt want to run anymore
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
-	bool ret = BaseApplication::frameRenderingQueued(fe);\
+	bool ret = BaseApplication::frameRenderingQueued(fe);
+	if (inputManager->IsConnected(0))
+	{
+		if(inputManager->GetButton(0x0010,0))
+		{
+			if(paused)
+			{
+				paused = false;
+			}
+			else
+			{
+				paused = true;
+			}
+		}
+	}
+	if (inputManager->IsConnected(1))
+	{
+		if (inputManager->GetButton(0x0010, 1))
+		{
+			if (paused)
+			{
+				paused = false;
+			}
+			else
+			{
+				paused = true;
+			}
+		}
+	}
 	if (!paused)
 	{
 		CheckCollision();
 		DoUpdate(fe);
-		DoGUI();
+		DoGUI(fe);
 	}
 	return ret;
 }
 
-void TutorialApplication::DoGUI()
+void TutorialApplication::DoGUI(const Ogre::FrameEvent& fe)
 {
-	ship->DoGui(respawnGUI, speedGUI, powerupGUI, mTrayMgr);
-	ship2->DoGui(respawnGUI, speedGUI2, powerupGUI2, mTrayMgr);
+	ship->DoGui(respawnGUI, speedGUI, powerupGUI, mTrayMgr, fe.timeSinceLastFrame);
+	ship2->DoGui(respawnGUI, speedGUI2, powerupGUI2, mTrayMgr, fe.timeSinceLastFrame);
 }
 
 void TutorialApplication::CheckCollision()

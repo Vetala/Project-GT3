@@ -42,8 +42,8 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	starting = true;
 	finished = false;
 	respawning = true;
-	baseRespawnTime = 120;
-	startTime = 3;
+	baseRespawnTime = 3;
+	startTime = 10;
 	maxVibrateTime = 30;
 	vibrateTimer = -1;
 	mSceneMgr = sceneMgr;
@@ -105,7 +105,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	SphereCollider *s = new SphereCollider(false, Ogre::Sphere(Ogre::Vector3(0, 0, 0), mEntity->getBoundingRadius() * mMainNode->getScale().z));
 	s->setPositionToParentPosition(mMainNode->getPosition());
 	sphereColliders.push_back(s);
-	respawnTimer = baseRespawnTime+ 50;
+	respawnTimer = startTime;
 
 	//ps = mSceneMgr->createParticleSystem("Particle" + mName, "Examples/GreenyNimbus");
 	//mShipNode->attachObject(ps);
@@ -439,7 +439,7 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	}
 	else {
 		rigidbody->velocity = (0, 0, 0);
-		respawnTimer--;
+		respawnTimer = respawnTimer - elapsedTime;
 		if(respawnTimer < 0){
 			if (!starting && !finished)
 			{
@@ -480,7 +480,7 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	shootTimer--;
 }
 
-void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::Label* powerUpGUI,  OgreBites::SdkTrayManager* mTrayMgr)
+void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::Label* powerUpGUI,  OgreBites::SdkTrayManager* mTrayMgr, Ogre::Real elapsedTime)
 {
 	if(powerUp)
 	{
@@ -499,7 +499,7 @@ void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedG
 	}
 	if (starting)
 	{
-		respawnGUI->setCaption("Starting in: " + converter.toString(respawnTimer));
+		respawnGUI->setCaption("Starting in: " + converter.toString((int)respawnTimer));
 		mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
 		respawnGUI->show();
 	}
@@ -507,7 +507,7 @@ void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedG
 	{
 		if (respawning)
 		{
-			respawnGUI->setCaption(respawnText + " Respawning in: "+ converter.toString(respawnTimer));
+			respawnGUI->setCaption(respawnText + " Respawning in: "+ converter.toString((int)respawnTimer));
 			mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
 			respawnGUI->show();
 		}

@@ -46,7 +46,7 @@ public:
 		int shipBoost, std::list<Bullet *> &bulletList, Controls *controls = 0,InputManager *inputManager = 0,  Ogre::Camera *camera = 0);
 	~ShipCharacter();
 	void Update(Ogre::Real elapsedTime, OIS::Keyboard * input);
-	void DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::Label* powerupGUI, OgreBites::SdkTrayManager* mTrayMgr);
+	void DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::Label* powerupGUI, OgreBites::SdkTrayManager* mTrayMgr, Ogre::Real elapsedTime);
 	void Respawn();
 	void Boost(Ogre::Real elapsedTime);
 	void Shoot();
@@ -66,13 +66,12 @@ public:
 	Ogre::Radian turned; ///The amount of degrees the ship has turned. Used to turn the ship back after it has stop turning
 	Ogre::Real accelSpeed; ///The speed at which the ship accelerates, becomes doubled  if the ship is boosting
 	Ogre::Real baseAccel; ///The base acceleration speed the ship has. Used to reset the acceleration speed after boosting
-	
+	Ogre::Real respawnTimer; ///The remaining time it takes for the ship to respawn after crashing
 	bool respawning; ///a boolean to check if the ship is currently respawning. If the ship is respawning the update function cannot be called upon resulting in no possible movement
 	bool starting;///A boolean used to check if the ship is currently starting. Works similarly to the respawning boolean but displays a different text on the gui
 	bool finished;///A boolean used to check if the ship has finished. 
 	bool turning; ///A boolean to check if the ship is turning or not. Used to check if an animation needs to be played
 	bool shield; ///A boolean to check if a shield is up to prevent DoDamage from affecting player health
-	int respawnTimer;///The remaining time it takes for the ship to respawn after crashing
 	float rollSpeed;///The speed at which the ship rolls during turning
 	float pitchSpeed;///The speed at which the ship pitches during acceleration/decelleration
 	int baseRespawnTime;///The max time it can take for a ship to respawn
