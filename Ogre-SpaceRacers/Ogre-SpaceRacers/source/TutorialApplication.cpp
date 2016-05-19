@@ -76,9 +76,37 @@ void TutorialApplication::createScene(void)
 	spotLight->setDiffuseColour(0, 0, 1.0);
 	spotLight->setSpecularColour(0, 0, 1.0);
 	spotLight->setType(Ogre::Light::LT_SPOTLIGHT);
-	spotLight->setDirection(-1, -1, 0);
+	spotLight->setDirection(-1, -1, 1);
 	spotLight->setPosition(Ogre::Vector3(200, 200, 0));
-	spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
+	spotLight->setPowerScale(2);
+	spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(35));
+
+	Ogre::Light* spotLight2 = mSceneMgr->createLight("SpotLight2");
+	spotLight2->setDiffuseColour(1.0, 0, 0);
+	spotLight2->setSpecularColour(1.0, 0, 0);
+	spotLight2->setType(Ogre::Light::LT_SPOTLIGHT);
+	spotLight2->setDirection(-1, -1, -1);
+	spotLight2->setPosition(Ogre::Vector3(200, 200, 0));
+	spotLight2->setPowerScale(2);
+	spotLight2->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(35));
+
+	Ogre::Light* spotLight3 = mSceneMgr->createLight("SpotLight3");
+	spotLight3->setDiffuseColour(0, 1.0, 0);
+	spotLight3->setSpecularColour(0, 1.0, 0);
+	spotLight3->setType(Ogre::Light::LT_SPOTLIGHT);
+	spotLight3->setDirection(1, -1, -1);
+	spotLight3->setPosition(Ogre::Vector3(200, 200, 0));
+	spotLight3->setPowerScale(2);
+	spotLight3->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(35));
+
+	Ogre::Light* spotLight4 = mSceneMgr->createLight("SpotLight4");
+	spotLight4->setDiffuseColour(1.0, 1.0, 0);
+	spotLight4->setSpecularColour(1.0, 1.0, 0);
+	spotLight4->setType(Ogre::Light::LT_SPOTLIGHT);
+	spotLight4->setDirection(1, -1, 1);
+	spotLight4->setPosition(Ogre::Vector3(200, 200, 0));
+	spotLight4->setPowerScale(2);
+	spotLight4->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(35));
 
 	//creates the background light
 	Ogre::Light* directionalLight = mSceneMgr->createLight("BackgroundLight");
@@ -89,25 +117,23 @@ void TutorialApplication::createScene(void)
     // Create your scene here
 	if (inputManager->IsConnected(0))
 	{
-		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, bulletList, 0, inputManager, mCamera);
+		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, -100), shipBoost, bulletList, 0, inputManager, mCamera);
 	}
 	else
 	{
-		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, 0), shipBoost, bulletList, player1, 0, mCamera);
+		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, -100), shipBoost, bulletList, player1, 0, mCamera);
 	}
 	if (inputManager->IsConnected(1))
 	{
-		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, bulletList, 0, inputManager, mCamera2);
+		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(300, 0, 200), shipBoost, bulletList, 0, inputManager, mCamera2);
 	}
 	else
 	{
-		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(10, 0, 0), shipBoost, bulletList, player2, 0, mCamera2);
+		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(300, 0, 200), shipBoost, bulletList, player2, 0, mCamera2);
 	}
 	world1 = new World_1(mSceneMgr, objectList, powerUpList);
-	finish = new Finish("Finish", mSceneMgr, "Start_Line", Ogre::Vector3(200, 10, 700), Ogre::Vector3(3, 5, 8));
 	shipList.push_back(ship);
 	shipList.push_back(ship2);
-	objectList.push_back(finish);
 	for (int i = 0; i < 40; i++)
 	{
 		Bullet *bullet;
