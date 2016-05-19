@@ -200,6 +200,7 @@ void ShipCharacter::Respawn()
 	/**
 	*If the characters health drops below 0 this function is called. The players position is set back.
 	*/
+	mShipNode->detachObject(mEntity);
 	respawning = true;
 	mShipHealth = mStartShipHealth;
 }
@@ -444,6 +445,7 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 			if (!starting && !finished)
 			{
 				mMainNode->setPosition(mRespawnNode->_getDerivedPosition());
+				mShipNode->attachObject(mEntity);
 			}
 			respawning = false;
 			starting = false;
