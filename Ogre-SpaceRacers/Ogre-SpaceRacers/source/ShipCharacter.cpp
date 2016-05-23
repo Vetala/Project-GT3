@@ -42,8 +42,8 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	starting = true;
 	finished = false;
 	respawning = true;
-	baseRespawnTime = 120;
-	startTime = 3;
+	baseRespawnTime = 3;
+	startTime = 10;
 	maxVibrateTime = 30;
 	vibrateTimer = -1;
 	mSceneMgr = sceneMgr;
@@ -55,7 +55,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	bullet = NULL;
 	soundManager = new SoundManager();
 	shieldEntity = mSceneMgr->createEntity(mName + "shield", "Shield.mesh");
-
+	
 	if(inputManager != 0)
 	{
 		controllerManager = new InputManager();
@@ -105,7 +105,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	SphereCollider *s = new SphereCollider(false, Ogre::Sphere(Ogre::Vector3(0, 0, 0), mEntity->getBoundingRadius() * mMainNode->getScale().z));
 	s->setPositionToParentPosition(mMainNode->getPosition());
 	sphereColliders.push_back(s);
-	respawnTimer = baseRespawnTime+ 50;
+	respawnTimer = startTime;
 
 	//ps = mSceneMgr->createParticleSystem("Particle" + mName, "Examples/GreenyNimbus");
 	//mShipNode->attachObject(ps);
@@ -179,7 +179,7 @@ void ShipCharacter::Boost(Ogre::Real elapsedTime)
 	/**
 	*If the player presses the boost key it temporarily gets additional acceleration speed resulting in a higher top speed while the player has boost
 	*/
-	if (mBoost > 0)
+	if (mBoost > 0 && !boosting)
 	{
 		if (!soundManager->soundEngine->isCurrentlyPlaying("../../Media/sounds/boostUse.wav"))
 		{
@@ -187,6 +187,8 @@ void ShipCharacter::Boost(Ogre::Real elapsedTime)
 		}
 		rigidbody->velocity = mMainNode->getOrientation() * Ogre::Vector3(0, 0, 250*elapsedTime);
 		mBoost--;
+		boosting = true;
+		boostTimer = 30;
 	}
 	else
 	{
@@ -200,6 +202,7 @@ void ShipCharacter::Respawn()
 	/**
 	*If the characters health drops below 0 this function is called. The players position is set back.
 	*/
+	mShipNode->detachObject(mEntity);
 	respawning = true;
 	mShipHealth = mStartShipHealth;
 }
@@ -452,11 +455,12 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	}
 	else {
 		rigidbody->velocity = (0, 0, 0);
-		respawnTimer--;
+		respawnTimer = respawnTimer - elapsedTime;
 		if(respawnTimer < 0){
 			if (!starting && !finished)
 			{
 				mMainNode->setPosition(mRespawnNode->_getDerivedPosition());
+				mShipNode->attachObject(mEntity);
 			}
 			respawning = false;
 			starting = false;
@@ -491,9 +495,14 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	}
 	mMainNode->setPosition(fixedY);
 	shootTimer--;
+	boostTimer--;
+	if(boostTimer < 0)
+	{
+		boosting = false;
+	}
 }
 
-void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::Label* powerUpGUI,  OgreBites::SdkTrayManager* mTrayMgr)
+void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::Label* powerUpGUI,  OgreBites::SdkTrayManager* mTrayMgr, Ogre::Real elapsedTime)
 {
 	if(powerUp)
 	{
@@ -512,7 +521,7 @@ void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedG
 	}
 	if (starting)
 	{
-		respawnGUI->setCaption("Starting in: " + converter.toString(respawnTimer));
+		respawnGUI->setCaption("Starting in: " + converter.toString((int)respawnTimer));
 		mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
 		respawnGUI->show();
 	}
@@ -520,7 +529,7 @@ void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedG
 	{
 		if (respawning)
 		{
-			respawnGUI->setCaption(respawnText + " Respawning in: "+ converter.toString(respawnTimer));
+			respawnGUI->setCaption(respawnText + " Respawning in: "+ converter.toString((int)respawnTimer));
 			mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
 			respawnGUI->show();
 		}
