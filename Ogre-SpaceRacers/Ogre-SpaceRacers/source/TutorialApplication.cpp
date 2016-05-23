@@ -36,7 +36,7 @@ TutorialApplication::TutorialApplication(void)
 
 	player1Name = "Ship1";
 	player2Name = "Ship2";
-	player1Ship = "Ship";
+	player1Ship = "Ship1";
 	player2Ship = "Ship3";
 
 }
@@ -68,7 +68,7 @@ void TutorialApplication::createScene(void)
 		Ogre::Vector3::UNIT_Z);
 	Ogre::Entity* groundEntity = mSceneMgr->createEntity("ground");
 	groundEntity->setCastShadows(false);
-	groundEntity->setMaterialName("rockwall.tga");  //WAAROM WERKT DEZE NIET WAT DE FUCK MATERIAL PLEASE, hebben we later toch niet nodig but fug it
+	groundEntity->setMaterialName("");  //WAAROM WERKT DEZE NIET WAT DE FUCK MATERIAL PLEASE, hebben we later toch niet nodig but fug it
 	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
 	
 	//creates the blue light
