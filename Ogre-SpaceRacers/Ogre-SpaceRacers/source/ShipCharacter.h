@@ -72,10 +72,12 @@ public:
 	bool finished;///A boolean used to check if the ship has finished. 
 	bool turning; ///A boolean to check if the ship is turning or not. Used to check if an animation needs to be played
 	bool shield; ///A boolean to check if a shield is up to prevent DoDamage from affecting player health
+	bool boosting; ///A boolean to avoid boosting to occur multiple times on the same/consecutive frame
 	float rollSpeed;///The speed at which the ship rolls during turning
 	float pitchSpeed;///The speed at which the ship pitches during acceleration/decelleration
 	int baseRespawnTime;///The max time it can take for a ship to respawn
 	int maxVibrateTime;///The max time a controller can vibrate after taking damage
+	int boostTimer;///A timer used to avoid boosting to occur multiple times on the same/consecutive  frames
 	int vibrateTimer;///Remaining amount of frames the controller is vibrating
 	int shootTimer;///Amount of frames between shots
 };

@@ -29,7 +29,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	*
 	*/
 	mShipHealthCap = 200;
-	mBoostCap = 1;
+	mBoostCap = 2;
 	mAmmoCap = 20;
 	mShipHealthGain = 50;
 	mBoostGain = 1;
@@ -55,7 +55,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Og
 	bullet = NULL;
 	soundManager = new SoundManager();
 	shieldEntity = mSceneMgr->createEntity(mName + "shield", "Shield.mesh");
-
+	
 	if(inputManager != 0)
 	{
 		controllerManager = new InputManager();
@@ -179,7 +179,7 @@ void ShipCharacter::Boost(Ogre::Real elapsedTime)
 	/**
 	*If the player presses the boost key it temporarily gets additional acceleration speed resulting in a higher top speed while the player has boost
 	*/
-	if (mBoost > 0)
+	if (mBoost > 0 && !boosting)
 	{
 		if (!soundManager->soundEngine->isCurrentlyPlaying("../../Media/sounds/boostUse.wav"))
 		{
@@ -187,6 +187,8 @@ void ShipCharacter::Boost(Ogre::Real elapsedTime)
 		}
 		rigidbody->velocity = mMainNode->getOrientation() * Ogre::Vector3(0, 0, 250*elapsedTime);
 		mBoost--;
+		boosting = true;
+		boostTimer = 30;
 	}
 	else
 	{
@@ -480,6 +482,11 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard * input)
 	}
 	mMainNode->setPosition(fixedY);
 	shootTimer--;
+	boostTimer--;
+	if(boostTimer < 0)
+	{
+		boosting = false;
+	}
 }
 
 void ShipCharacter::DoGui(OgreBites::Label* respawnGUI, OgreBites::Label* speedGUI, OgreBites::Label* powerUpGUI,  OgreBites::SdkTrayManager* mTrayMgr, Ogre::Real elapsedTime)
