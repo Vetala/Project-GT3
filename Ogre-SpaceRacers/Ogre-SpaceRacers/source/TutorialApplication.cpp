@@ -13,7 +13,7 @@
 TutorialApplication::TutorialApplication(void)
 {
 	soundManager = new SoundManager();
-	
+
 
 	shipHealth = 100;
 	shipBoost = 1;
@@ -38,7 +38,6 @@ TutorialApplication::TutorialApplication(void)
 	player2Name = "Ship2";
 	player1Ship = "Ship1";
 	player2Ship = "Ship3";
-
 }
 
 
@@ -68,9 +67,9 @@ void TutorialApplication::createScene(void)
 		Ogre::Vector3::UNIT_Z);
 	Ogre::Entity* groundEntity = mSceneMgr->createEntity("ground");
 	groundEntity->setCastShadows(false);
-	groundEntity->setMaterialName("");  //WAAROM WERKT DEZE NIET WAT DE FUCK MATERIAL PLEASE, hebben we later toch niet nodig but fug it
+	groundEntity->setMaterialName(""); //WAAROM WERKT DEZE NIET WAT DE FUCK MATERIAL PLEASE, hebben we later toch niet nodig but fug it
 	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
-	
+
 	//creates the blue light
 	Ogre::Light* spotLight = mSceneMgr->createLight("SpotLight");
 	spotLight->setDiffuseColour(0, 0, 1.0);
@@ -114,7 +113,7 @@ void TutorialApplication::createScene(void)
 	directionalLight->setDiffuseColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
-    // Create your scene here
+	// Create your scene here
 	if (inputManager->IsConnected(0))
 	{
 		ship = new ShipCharacter(player1Name, mSceneMgr, player1Ship, shipHealth, Ogre::Vector3(0, 0, -100), shipBoost, bulletList, 0, inputManager, mCamera);
@@ -136,7 +135,7 @@ void TutorialApplication::createScene(void)
 	shipList.push_back(ship2);
 	for (int i = 0; i < 40; i++)
 	{
-		Bullet *bullet;
+		Bullet* bullet;
 		Ogre::String bulletName;
 		bulletName = "bullets" + converter.toString(bulletList.size());
 		bullet = new Bullet(bulletName, mSceneMgr, "Bullet");
@@ -146,15 +145,15 @@ void TutorialApplication::createScene(void)
 
 void TutorialApplication::DoUpdate(const Ogre::FrameEvent& fe)
 {
-	for each (ShipCharacter *ship in shipList)
+	for each (ShipCharacter* ship in shipList)
 	{
 		ship->Update(fe.timeSinceLastFrame, mKeyboard);
 	}
-	for each (Bullet *bullet in bulletList)
+	for each (Bullet* bullet in bulletList)
 	{
 		bullet->Update(fe.timeSinceLastFrame, mKeyboard);
 	}
-	for each (Powerup *powerup in powerUpList)
+	for each (Powerup* powerup in powerUpList)
 	{
 		powerup->Update(fe.timeSinceLastFrame, mKeyboard);
 	}
@@ -167,9 +166,9 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 	bool ret = BaseApplication::frameRenderingQueued(fe);
 	if (inputManager->IsConnected(0))
 	{
-		if(inputManager->GetButton(0x0010,0))
+		if (inputManager->GetButton(0x0010, 0))
 		{
-			if(paused)
+			if (paused)
 			{
 				paused = false;
 			}
@@ -210,15 +209,15 @@ void TutorialApplication::DoGUI(const Ogre::FrameEvent& fe)
 
 void TutorialApplication::CheckCollision()
 {
-	for each (ShipCharacter *ship in shipList)
+	for each (ShipCharacter* ship in shipList)
 	{
-		for each (SphereCollider *sCol in ship->sphereColliders)
+		for each (SphereCollider* sCol in ship->sphereColliders)
 		{
-			for each (Bullet *b in bulletList)
+			for each (Bullet* b in bulletList)
 			{
 				if (b->active == true)
 				{
-					for each (SphereCollider *sCol2 in b->sphereColliders)
+					for each (SphereCollider* sCol2 in b->sphereColliders)
 					{
 						bool col = isCollision(sCol->sphere, sCol2->sphere);
 						if (col)
@@ -230,11 +229,11 @@ void TutorialApplication::CheckCollision()
 					}
 				}
 			}
-			for each (ShipCharacter *ship2 in shipList)
+			for each (ShipCharacter* ship2 in shipList)
 			{
 				if (ship != ship2)
 				{
-					for each (SphereCollider *sCol2 in ship2->sphereColliders)
+					for each (SphereCollider* sCol2 in ship2->sphereColliders)
 					{
 						bool col = isCollision(sCol->sphere, sCol2->sphere);
 						if (col)
@@ -250,9 +249,9 @@ void TutorialApplication::CheckCollision()
 				}
 			}
 
-			for each (Object *object in objectList)
+			for each (Object* object in objectList)
 			{
-				for each (SphereCollider *sCol2 in object->sphereColliders)
+				for each (SphereCollider* sCol2 in object->sphereColliders)
 				{
 					bool col = isCollision(sCol->sphere, sCol2->sphere);
 					if (col)
@@ -261,10 +260,11 @@ void TutorialApplication::CheckCollision()
 					}
 				}
 			}
-			for each (Powerup *powerUp in powerUpList)
+			for each (Powerup* powerUp in powerUpList)
 			{
-				if (powerUp->Inactive == false){
-					for each (SphereCollider *sCol2 in powerUp->sphereColliders)
+				if (powerUp->Inactive == false)
+				{
+					for each (SphereCollider* sCol2 in powerUp->sphereColliders)
 					{
 						bool col = isCollision(sCol->sphere, sCol2->sphere);
 						if (col)
@@ -290,34 +290,40 @@ bool TutorialApplication::isCollision(Ogre::Sphere s, Ogre::Sphere s2)
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-    INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
+	INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 #else
     int main(int argc, char *argv[])
 #endif
-    {
-        // Create application object
-        TutorialApplication app;
+	{
+		// Create application object
+		TutorialApplication app;
 
-        try {
-            app.go();
-        } catch(Ogre::Exception& e)  {
+		try
+		{
+			app.go();
+		}
+		catch (Ogre::Exception& e)
+		{
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-            MessageBox(NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+			MessageBox(NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 #else
             std::cerr << "An exception has occurred: " <<
                 e.getFullDescription().c_str() << std::endl;
 #endif
-        }
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 
 #ifdef __cplusplus
 }
 #endif
 
 //---------------------------------------------------------------------------
+
+

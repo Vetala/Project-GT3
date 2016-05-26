@@ -24,8 +24,9 @@ Every unclear function should have some comments to further describe the functio
 
 Try to place big comments at the top of the function.
 
-In the case of Egyptian brackets all statements will look like the following example:
-	if(test){
+In the case of curly brackets all statements will look like the following example:
+	if(test)
+	{
 		insert stuff here;
 	}
 

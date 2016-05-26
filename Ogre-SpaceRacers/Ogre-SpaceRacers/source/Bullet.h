@@ -14,6 +14,5 @@ public:
 	void SetActive(Ogre::SceneNode *mShipNode);
 	void SetInactive();
 	void Update(Ogre::Real elapsedTime, OIS::Keyboard * input);
-	void Destroy();
 };
 
