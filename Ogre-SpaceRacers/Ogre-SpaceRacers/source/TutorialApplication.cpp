@@ -124,11 +124,11 @@ void TutorialApplication::createScene(void)
 	}
 	if (inputManager->IsConnected(1))
 	{
-		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(300, 0, 200), shipBoost, bulletList, 0, inputManager, mCamera2);
+		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(350, 0, -100), shipBoost, bulletList, 0, inputManager, mCamera2);
 	}
 	else
 	{
-		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(300, 0, 200), shipBoost, bulletList, player2, 0, mCamera2);
+		ship2 = new ShipCharacter(player2Name, mSceneMgr, player2Ship, shipHealth, Ogre::Vector3(350, 0, -100), shipBoost, bulletList, player2, 0, mCamera2);
 	}
 	world1 = new World_1(mSceneMgr, objectList, powerUpList);
 	shipList.push_back(ship);
@@ -140,6 +140,7 @@ void TutorialApplication::createScene(void)
 		bulletName = "bullets" + converter.toString(bulletList.size());
 		bullet = new Bullet(bulletName, mSceneMgr, "Bullet");
 		bulletList.push_back(bullet);
+		
 	}
 }
 

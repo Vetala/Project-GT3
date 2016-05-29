@@ -55,6 +55,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager* sceneMgr, Og
 	bullet = NULL;
 	soundManager = new SoundManager();
 	shieldEntity = mSceneMgr->createEntity(mName + "shield", "Shield.mesh");
+	hitActivateParticle = false;
 
 	if (inputManager != 0)
 	{
@@ -107,8 +108,11 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager* sceneMgr, Og
 	sphereColliders.push_back(s);
 	respawnTimer = startTime;
 
-	//ps = mSceneMgr->createParticleSystem("Particle" + mName, "Examples/GreenyNimbus");
-	//mShipNode->attachObject(ps);
+	pEngine = mSceneMgr->createParticleSystem("ParticleEngine" + mName, "Examples/ShipSmoke");
+	pCrash = mSceneMgr->createParticleSystem("ParticleCrash" + mName, "Examples/Crash");
+	pBoost = mSceneMgr->createParticleSystem("ParticleBoost" + mName, "Examples/Boost");
+	pHit = mSceneMgr->createParticleSystem("ParticleHit" + mName, "Examples/Hit");
+	mShipNode->attachObject(pEngine);
 }
 
 void ShipCharacter::DoDamage(int damage)
@@ -117,6 +121,8 @@ void ShipCharacter::DoDamage(int damage)
 	*If the player takes damage from hitting an obstacle or being hit by a bullet this function is called.
 	*If the players health drops below 0 the player respawns
 	*/
+	hitTimer = 30;
+	
 	if (!respawning)
 	{
 		if (!shield)
@@ -162,7 +168,8 @@ void ShipCharacter::DoDamage(int damage)
 						respawnText = "Player 1 wins!";
 					}
 				}
-				mLifes--;
+				mLifes--; 
+				
 			}
 		}
 		if (shield)
@@ -189,6 +196,7 @@ void ShipCharacter::Boost(Ogre::Real elapsedTime)
 		mBoost--;
 		boosting = true;
 		boostTimer = 30;
+		mShipNode->attachObject(pBoost);
 	}
 	else
 	{
@@ -201,6 +209,7 @@ void ShipCharacter::Respawn()
 	/**
 	*If the characters health drops below 0 this function is called. The players position is set back.
 	*/
+	mShipNode->attachObject(pCrash);
 	mShipNode->detachObject(mEntity);
 	respawning = true;
 	mShipHealth = mStartShipHealth;
@@ -479,6 +488,7 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard* input)
 			if (!starting && !finished)
 			{
 				mMainNode->setPosition(mRespawnNode->_getDerivedPosition());
+				mShipNode->detachObject(pCrash);
 				mShipNode->attachObject(mEntity);
 			}
 			respawning = false;
@@ -515,9 +525,28 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard* input)
 	mMainNode->setPosition(fixedY);
 	shootTimer--;
 	boostTimer--;
+	hitTimer--;
+	if (hitTimer == 30)
+	{
+		hitActivateParticle = true;
+	}
+	if (hitTimer > 0)
+	{
+		if (hitActivateParticle)
+		{
+			mShipNode->attachObject(pHit);
+			hitActivateParticle = false;
+		}
+	}
+	if (hitTimer < 0)
+	{
+		mShipNode->detachObject(pHit);
+		hitActivateParticle = true;
+	}
 	if (boostTimer < 0)
 	{
 		boosting = false;
+		mShipNode->detachObject(pBoost);
 	}
 }
 

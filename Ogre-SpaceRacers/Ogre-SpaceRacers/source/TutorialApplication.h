@@ -71,6 +71,7 @@ private:
 	std::list<ShipCharacter *> shipList;
 	std::list<Powerup *> powerUpList;
 	std::list<Bullet *> bulletList;
+	
 };
 	
 //---------------------------------------------------------------------------

@@ -1,52 +1,86 @@
-// Example particle systems
-
-// Exudes greeny particles which float upwards
-particle_system Examples/GreenyNimbus
-{
-    material        Examples/FlarePointSprite
-    particle_width	35
-    particle_height 35
-    cull_each       false
-	cull_each       false
-    quota           5000
-    billboard_type  point
-    
-    // Area emitter
-    emitter Box
-    {
-        angle           30
-        emission_rate   30
-        time_to_live    1
-        direction       0 1 0
-        velocity    	0
-        colour_range_start  1 1 0
-        colour_range_end    0.3 1 0.3
-        width           60
-        height          60
-        depth           60
-    }
-
-    // Make em float upwards
-    affector LinearForce
-    {
-        force_vector      0 100 0
-        force_application add
-    }
-
-    // Fader
-    affector ColourFader
-    {
-        red -0.25
-        green -0.25
-        blue -0.25
-    }
-}
-
 //Smoke
 particle_system Examples/ShipSmoke
 {
-	particle_width		2
-	particle_height		2
+    	material        	Examples/FlarePointSprite
+	particle_width		1
+	particle_height		1
+	cull_each       	false
+	cull_each      		false
+	quota           	50
+	billboard_type  	point
+    
+   	 // Area emitter
+   	emitter Box
+    	{
+        	angle           	30
+        	emission_rate   	30
+       		time_to_live   	 	1
+       		direction       	0 0 -1
+        	velocity    		0
+       		colour		  	1 1 0 0.1
+        	width           	2
+       		height         		1
+        	depth           	2
+   	}
+   	// Make them float upwards axis X Y Z
+   	affector LinearForce
+    	{
+        	force_vector     	0 0 0
+        	force_application 	add
+    	}
+
+   	// Fader
+    	affector ColourFader
+    	{
+	
+    	}
+}
+
+//Crash
+particle_system Examples/Crash
+{
+    	material        	Examples/FlarePointSprite
+    	particle_width		1
+	particle_height		1
+	cull_each       	false
+	cull_each      		false
+	quota           	5000
+	billboard_type  	point
+    
+   	 // Area emitter
+   	emitter Box
+    	{
+        	angle           	90
+        	emission_rate   	1000
+       		time_to_live   	 	0.5
+       		direction       	1 1 1
+        	velocity_min   		-100
+		velocity_max		100
+       		colour		  	1 0 0 1
+        	width           	0
+       		height         		0
+        	depth           	0
+   	}
+   	// Make them float upwards axis X Y Z
+   	affector LinearForce
+    	{
+        	force_vector     	0 0 0
+        	force_application 	add
+    	}
+
+   	// Fader
+    	affector ColourFader
+    	{
+        		red -0.25
+    	}
+}
+
+//Boost
+particle_system Examples/Boost
+{
+    	material        	Examples/FlarePointSprite
+    	particle_width		1
+	particle_height		1
 	cull_each       	false
 	cull_each      		false
 	quota           	5000
@@ -56,15 +90,53 @@ particle_system Examples/ShipSmoke
    	emitter Box
     	{
         	angle           	30
-        	emission_rate   	30
-       		time_to_live   	 	1
-       		direction       	0 1 0
-        	velocity    		0
-       		colour_range_start  	0 0 0
-        	colour_range_end    	0.3 0.3 0.3
-        	width           	2
-       		height         		1
-        	depth           	2
+        	emission_rate   	2000
+       		time_to_live   	 	0.5
+       		direction       	0 0 -1
+        	velocity		100
+       		colour		  	0 1 0 1
+        	width           	0
+       		height         		0
+        	depth           	0
+   	}
+   	// Make them float upwards axis X Y Z
+   	affector LinearForce
+    	{
+        	force_vector     	0 0 -1
+        	force_application 	add
+    	}
+
+   	// Fader
+    	affector ColourFader
+    	{
+        		
+    	}
+}
+
+//Hit
+particle_system Examples/Hit
+{
+    	//material        	Examples/FlarePointSprite
+    	particle_width		1
+	particle_height		1
+	cull_each       	false
+	cull_each      		false
+	quota           	1000
+	billboard_type  	point
+    
+   	 // Area emitter
+   	emitter Box
+    	{
+        	angle           	90
+        	emission_rate   	50
+       		time_to_live   	 	0.5
+       		direction       	1 1 1
+        	velocity_min   		-100
+		velocity_max		100
+       		colour  		1 1 1 1
+        	width           	0
+       		height         		0
+        	depth           	0
    	}
    	// Make them float upwards axis X Y Z
    	affector LinearForce
@@ -76,8 +148,8 @@ particle_system Examples/ShipSmoke
    	// Fader
     	affector ColourFader
     	{
-        		
+        	red	-1
+		green	-1
+		blue	-1	
     	}
 }
-
-

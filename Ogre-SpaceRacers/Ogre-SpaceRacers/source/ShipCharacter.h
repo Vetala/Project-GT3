@@ -1,6 +1,6 @@
 #pragma once
-//#ifndef __ParticleFX_H__
-//#define __ParticleFX_H__
+#ifndef __ParticleFX_H__
+#define __ParticleFX_H__
 
 #include "Character.h"
 #include "Controls.h"
@@ -30,7 +30,7 @@ protected:
 	InputManager *controllerManager;///The controllermanager which contains the logic used if a XBOX controller is connected
 	Ogre::SceneManager *mSceneMgr;
 	std::list<Bullet *> &mBulletList;///The bulletlist
-	Ogre::StringConverter converter;///a converter which converts numbers to ogre::string to be used in the GUI
+	Ogre::StringConverter converter;///A converter which converts numbers to ogre::string to be used in the GUI
 	Bullet *bullet;///A single bullet
 	SoundManager *soundManager;
 	Ogre::String respawnText;
@@ -39,7 +39,11 @@ protected:
 	Ogre::String powerUpText;
 	int powerUpTimer;
 	int basePUTimer;
-	//Ogre::ParticleSystem *ps;
+	Ogre::ParticleSystem *pEngine;///A particle system displaying the engine emission
+	Ogre::ParticleSystem *pCrash;///A particle system displaying a ship explosion
+	Ogre::ParticleSystem *pBoost;///A particle system displaying the engine emission at boost level
+	Ogre::ParticleSystem *pHit;///A particle system displaying the ship taking damage
+
 
 public:
 	ShipCharacter(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::String meshName, int shipHealth, Ogre::Vector3 positionOffset, 
@@ -80,6 +84,8 @@ public:
 	int boostTimer;///A timer used to avoid boosting to occur multiple times on the same/consecutive  frames
 	int vibrateTimer;///Remaining amount of frames the controller is vibrating
 	int shootTimer;///Amount of frames between shots
+	int hitTimer;///A timer used to show the hit particles for a short amount of time
+	bool hitActivateParticle;///A bool to only attach the hit particles once to prevent an error
 };
-//#endif
+#endif
 
