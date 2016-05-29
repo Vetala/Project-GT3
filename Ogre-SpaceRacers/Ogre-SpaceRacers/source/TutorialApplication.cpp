@@ -113,6 +113,8 @@ void TutorialApplication::createScene(void)
 	directionalLight->setDiffuseColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
+	gameOver = false;
+	gameOverCount = 0;
 	// Create your scene here
 	if (inputManager->IsConnected(0))
 	{
@@ -149,6 +151,20 @@ void TutorialApplication::DoUpdate(const Ogre::FrameEvent& fe)
 	for each (ShipCharacter* ship in shipList)
 	{
 		ship->Update(fe.timeSinceLastFrame, mKeyboard);
+		if (ship->restart)
+		{
+			gameOver = true;
+		}
+		if(gameOver)
+		{
+			ship->Restart();
+			gameOverCount++;
+		}
+		if(gameOverCount == 2)
+		{
+			gameOver = false;
+			gameOverCount = 0;
+		}
 	}
 	for each (Bullet* bullet in bulletList)
 	{

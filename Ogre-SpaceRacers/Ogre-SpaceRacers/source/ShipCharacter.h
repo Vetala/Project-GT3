@@ -22,7 +22,6 @@ protected:
 	int mBoostCap;
 	int mBoostGain;
 	int playerNumber; ///Used if a controller is connected
-	int mLifes;
 	int mAmmo; ///The current amount of ammo this spaceship has
 	int mAmmoCap;
 	int mAmmoGain;
@@ -61,7 +60,10 @@ public:
 	void TurnLeft(Ogre::Real elapsedTime);
 	void TurnRight(Ogre::Real elapsedTime);
 	void HandleCollision(SphereCollider mSphere, Object col, SphereCollider sphere);
+	void Restart();
 
+	int mLifes;
+	bool restart;
 	Ogre::SceneNode *mRespawnNode; ///The spot where the ship will respawn in case of a crash
 	Ogre::SceneNode *mShipNode; ///The ship itself gets a node to make sure certain rotations are only done by the ship and do not use any of the other nodes
 	Ogre::Vector3 respawnNodeOffSet; ///The difference between the ship position and the respawn position

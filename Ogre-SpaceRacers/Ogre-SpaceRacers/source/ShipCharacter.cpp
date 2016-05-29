@@ -113,6 +113,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager* sceneMgr, Og
 	pBoost = mSceneMgr->createParticleSystem("ParticleBoost" + mName, "Examples/Boost");
 	pHit = mSceneMgr->createParticleSystem("ParticleHit" + mName, "Examples/Hit");
 	mShipNode->attachObject(pEngine);
+	restart = false;
 }
 
 void ShipCharacter::DoDamage(int damage)
@@ -146,7 +147,7 @@ void ShipCharacter::DoDamage(int damage)
 				}
 				if (mName == "ship1")
 				{
-					if (mLifes > 0)
+					if (mLifes > 1)
 					{
 						respawnText = "Player 1 has lost a life!";
 						Respawn();
@@ -154,11 +155,12 @@ void ShipCharacter::DoDamage(int damage)
 					else
 					{
 						respawnText = "Player 2 wins!";
+						restart = true;
 					}
 				}
 				else
 				{
-					if (mLifes > 0)
+					if (mLifes > 1)
 					{
 						respawnText = "Player 2 has lost a life!";
 						Respawn();
@@ -166,6 +168,7 @@ void ShipCharacter::DoDamage(int damage)
 					else
 					{
 						respawnText = "Player 1 wins!";
+						restart = true;
 					}
 				}
 				mLifes--; 
@@ -349,6 +352,21 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, MovableObject col, S
 	}
 }
 
+void ShipCharacter::Restart()
+{
+	mLifes = 5;
+	mShipHealth = mStartShipHealth;
+	mAmmo = 10;
+	respawnTimer = startTime;
+	mBoost = 1;
+	mMainNode->setPosition(mPositionOffset);
+	mMainNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD, Ogre::Vector3::UNIT_X);
+	starting = true;
+	restart = false;
+	respawning = true;
+}
+
+
 void ShipCharacter::Forward(Ogre::Real elapsedTime)
 {
 	rigidbody->acceleration = mMainNode->getOrientation() * Ogre::Vector3(0, 0, accelSpeed * elapsedTime);
@@ -487,7 +505,6 @@ void ShipCharacter::Update(Ogre::Real elapsedTime, OIS::Keyboard* input)
 		{
 			if (!starting && !finished)
 			{
-				mMainNode->setPosition(mRespawnNode->_getDerivedPosition());
 				mShipNode->detachObject(pCrash);
 				mShipNode->attachObject(mEntity);
 			}
