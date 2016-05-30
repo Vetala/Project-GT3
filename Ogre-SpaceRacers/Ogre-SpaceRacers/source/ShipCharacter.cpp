@@ -37,7 +37,7 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager* sceneMgr, Og
 	mStartShipHealth = shipHealth;
 	mShipHealth = shipHealth;
 	mBoost = shipBoost;
-	mLifes = 5;
+	mLifes = 3;
 	shield = false;
 	starting = true;
 	finished = false;
@@ -155,7 +155,6 @@ void ShipCharacter::DoDamage(int damage)
 					else
 					{
 						respawnText = "Player 2 wins!";
-						restart = true;
 					}
 				}
 				else
@@ -168,7 +167,6 @@ void ShipCharacter::DoDamage(int damage)
 					else
 					{
 						respawnText = "Player 1 wins!";
-						restart = true;
 					}
 				}
 				mLifes--; 
@@ -354,13 +352,13 @@ void ShipCharacter::HandleCollision(SphereCollider mSphere, MovableObject col, S
 
 void ShipCharacter::Restart()
 {
-	mLifes = 5;
+	mLifes = 3;
 	mShipHealth = mStartShipHealth;
 	mAmmo = 10;
 	respawnTimer = startTime;
 	mBoost = 1;
+	rigidbody->velocity = Ogre::Vector3(0, 0, 0);
 	mMainNode->setPosition(mPositionOffset);
-	mMainNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD, Ogre::Vector3::UNIT_X);
 	starting = true;
 	restart = false;
 	respawning = true;

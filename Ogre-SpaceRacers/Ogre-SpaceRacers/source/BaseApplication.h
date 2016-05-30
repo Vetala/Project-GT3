@@ -65,6 +65,7 @@ public:
 	OgreBites::Label* powerupGUI;
 	OgreBites::Label* powerupGUI2;
 	bool paused;
+	bool gameOverOverride;
 
     virtual void go(void);
 	

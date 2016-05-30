@@ -63,6 +63,8 @@ private:
 	Finish *finish;
 	Powerup *powerup;
 	
+	bool canPause;
+	int canPauseTimer;
 	bool gameOver;
 	int gameOverCount;
 	bool isCollision(Ogre::Sphere s, Ogre::Sphere s2);

@@ -155,6 +155,11 @@ void TutorialApplication::DoUpdate(const Ogre::FrameEvent& fe)
 		{
 			gameOver = true;
 		}
+		if(gameOverOverride)
+		{
+			ship->Restart();
+			gameOverCount++;
+		}
 		if(gameOver)
 		{
 			ship->Restart();
@@ -163,6 +168,7 @@ void TutorialApplication::DoUpdate(const Ogre::FrameEvent& fe)
 		if(gameOverCount == 2)
 		{
 			gameOver = false;
+			gameOverOverride = false;
 			gameOverCount = 0;
 		}
 	}
@@ -180,11 +186,18 @@ void TutorialApplication::DoUpdate(const Ogre::FrameEvent& fe)
 //All gui stuff must be done here otherwise ogre decides that it doesnt want to run anymore
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
+	canPauseTimer--;
+	if(canPauseTimer < 0)
+	{
+		canPause = true;
+	}
 	bool ret = BaseApplication::frameRenderingQueued(fe);
 	if (inputManager->IsConnected(0))
 	{
-		if (inputManager->GetButton(0x0010, 0))
+		if (inputManager->GetButton(0x0010, 0)&&canPause)
 		{
+			canPause = false;
+			canPauseTimer = 10;
 			if (paused)
 			{
 				paused = false;
@@ -197,8 +210,10 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 	}
 	if (inputManager->IsConnected(1))
 	{
-		if (inputManager->GetButton(0x0010, 1))
+		if (inputManager->GetButton(0x0010, 1)&& canPause)
 		{
+			canPause = false;
+			canPauseTimer = 10;
 			if (paused)
 			{
 				paused = false;
