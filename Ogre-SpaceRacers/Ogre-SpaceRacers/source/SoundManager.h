@@ -32,6 +32,11 @@ public:
 		soundEngine->play2D(soundFileName, loop);
 	}
 
+	void Pause2D(bool pause)
+	{
+		soundEngine->setAllSoundsPaused(pause);
+	}
+
 	~SoundManager()
 	{
 		soundEngine->drop();

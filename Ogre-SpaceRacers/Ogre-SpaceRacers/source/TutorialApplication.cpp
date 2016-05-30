@@ -172,10 +172,12 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 			if (paused)
 			{
 				paused = false;
+				soundManager->Pause2D(paused);
 			}
 			else
 			{
 				paused = true;
+				soundManager->Pause2D(paused);
 			}
 		}
 	}
@@ -186,10 +188,12 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 			if (paused)
 			{
 				paused = false;
+				soundManager->Pause2D(paused);
 			}
 			else
 			{
 				paused = true;
+				soundManager->Pause2D(paused);
 			}
 		}
 	}
@@ -198,6 +202,12 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 		CheckCollision();
 		DoUpdate(fe);
 		DoGUI(fe);
+	}
+	else if(paused)
+	{
+		respawnGUI->setCaption("Paused");
+		mTrayMgr->moveWidgetToTray(respawnGUI, OgreBites::TL_CENTER, 0);
+		respawnGUI->show();
 	}
 	return ret;
 }
