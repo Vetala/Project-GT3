@@ -63,6 +63,10 @@ private:
 	Finish *finish;
 	Powerup *powerup;
 	
+	bool canPause;
+	int canPauseTimer;
+	bool gameOver;
+	int gameOverCount;
 	bool isCollision(Ogre::Sphere s, Ogre::Sphere s2);
 	void CheckCollision();
 	void DoUpdate(const Ogre::FrameEvent& fe);

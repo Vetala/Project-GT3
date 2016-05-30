@@ -113,6 +113,8 @@ void TutorialApplication::createScene(void)
 	directionalLight->setDiffuseColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
+	gameOver = false;
+	gameOverCount = 0;
 	// Create your scene here
 	if (inputManager->IsConnected(0))
 	{
@@ -149,6 +151,26 @@ void TutorialApplication::DoUpdate(const Ogre::FrameEvent& fe)
 	for each (ShipCharacter* ship in shipList)
 	{
 		ship->Update(fe.timeSinceLastFrame, mKeyboard);
+		if (ship->restart)
+		{
+			gameOver = true;
+		}
+		if(gameOverOverride)
+		{
+			ship->Restart();
+			gameOverCount++;
+		}
+		if(gameOver)
+		{
+			ship->Restart();
+			gameOverCount++;
+		}
+		if(gameOverCount == 2)
+		{
+			gameOver = false;
+			gameOverOverride = false;
+			gameOverCount = 0;
+		}
 	}
 	for each (Bullet* bullet in bulletList)
 	{
@@ -164,11 +186,18 @@ void TutorialApplication::DoUpdate(const Ogre::FrameEvent& fe)
 //All gui stuff must be done here otherwise ogre decides that it doesnt want to run anymore
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 {
+	canPauseTimer--;
+	if(canPauseTimer < 0)
+	{
+		canPause = true;
+	}
 	bool ret = BaseApplication::frameRenderingQueued(fe);
 	if (inputManager->IsConnected(0))
 	{
-		if (inputManager->GetButton(0x0010, 0))
+		if (inputManager->GetButton(0x0010, 0)&&canPause)
 		{
+			canPause = false;
+			canPauseTimer = 10;
 			if (paused)
 			{
 				paused = false;
@@ -183,8 +212,10 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& fe)
 	}
 	if (inputManager->IsConnected(1))
 	{
-		if (inputManager->GetButton(0x0010, 1))
+		if (inputManager->GetButton(0x0010, 1)&& canPause)
 		{
+			canPause = false;
+			canPauseTimer = 10;
 			if (paused)
 			{
 				paused = false;
