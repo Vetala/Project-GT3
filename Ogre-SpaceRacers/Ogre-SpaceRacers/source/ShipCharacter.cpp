@@ -118,6 +118,8 @@ ShipCharacter::ShipCharacter(Ogre::String name, Ogre::SceneManager* sceneMgr, Og
 
 void ShipCharacter::DoDamage(int damage)
 {
+	if (damage < 0)
+		damage *= -1;
 	/**
 	*If the player takes damage from hitting an obstacle or being hit by a bullet this function is called.
 	*If the players health drops below 0 the player respawns

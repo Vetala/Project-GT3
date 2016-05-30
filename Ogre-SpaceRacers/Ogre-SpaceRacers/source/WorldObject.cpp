@@ -19,7 +19,7 @@ WorldObject::WorldObject(Ogre::String name, Ogre::SceneManager *sceneMgr, Ogre::
 
 	SphereCollider *s = new SphereCollider(false, Ogre::Sphere(Ogre::Vector3(0, 0, 0), mEntity->getBoundingRadius() * 0.75 * mMainNode->getScale().z));	///Initialises the sphere collision with a scale of 0.75 times the Z scale, a scale of 0.75 was the most realistic size for current object scaling
 	s->setPositionToParentPosition(mMainNode->getPosition());	///Sets the Spherecollider position to the center of the main node
-	physicsMat->bounciness = 0.1;	///Sets a bounce effect for when the ship collides with the collider, knocking it back
+	physicsMat->bounciness = 0.02f;	///Sets a bounce effect for when the ship collides with the collider, knocking it back
 	sphereColliders.push_back(s);	///Adds the collider to the collision list
 }
 
